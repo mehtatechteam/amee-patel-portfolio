@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Reintroduces a warm, print-shop-inspired palette per
+ * direct client/dev-lead request — a deliberate reversal of an earlier
+ * "restrained Apple-minimal" pass. The multi-color system here is
+ * literally the CMYK separation palette (Cyan/Magenta/Yellow + Key black)
+ * used to differentiate service categories and print-craft motifs (swatch
+ * chips, registration marks) — tying the color story directly to Amee's
+ * actual trade rather than being arbitrary decoration. Coral remains the
+ * single PRIMARY accent for CTAs/highlights; CMYK colors are SECONDARY,
+ * used only for category badges/swatches so the page doesn't turn into
+ * uncontrolled confetti.
+ */
+:root {
+  --color-paper: #fcfcfa;
+  --color-paper-raised: #f4f3ee;
+  --color-ink: #1d1d1f;
+  --color-ink-soft: #6e6e73;
+  --color-ink-faint: #86868b;
+  --color-accent: #f5471c;
+  --color-accent-soft: #fff0ea;
+  --color-line: #efece6;
+
+  --color-cyan: #00a3e0;
+  --color-cyan-soft: #e0f4fc;
+  --color-magenta: #ec008c;
+  --color-magenta-soft: #fde3f2;
+  --color-yellow: #ffd100;
+  --color-yellow-soft: #fff8dc;
+}
+
+@theme inline {
+  --color-paper: var(--color-paper);
+  --color-paper-raised: var(--color-paper-raised);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-ink-faint: var(--color-ink-faint);
+  --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-line: var(--color-line);
+  --color-cyan: var(--color-cyan);
+  --color-cyan-soft: var(--color-cyan-soft);
+  --color-magenta: var(--color-magenta);
+  --color-magenta-soft: var(--color-magenta-soft);
+  --color-yellow: var(--color-yellow);
+  --color-yellow-soft: var(--color-yellow-soft);
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-spec: var(--font-space-mono), ui-monospace, monospace;
+
+  --animate-marquee: marquee 28s linear infinite;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-paper);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
