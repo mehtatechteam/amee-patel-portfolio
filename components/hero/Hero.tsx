@@ -6,9 +6,9 @@ import { KineticWordmark } from "./KineticWordmark";
 import { HeroParallaxCollage } from "./HeroParallaxCollage";
 
 const collage = [
-  { item: portfolioItems.find((i) => i.slug === "lilaura-lavender")!, rotate: "-rotate-3", cls: "top-0 right-0 w-[46%]", depth: 1.4 },
-  { item: portfolioItems.find((i) => i.slug === "madburgs-burger-box")!, rotate: "rotate-2", cls: "bottom-0 -right-4 w-[58%]", depth: 0.8 },
-  { item: portfolioItems.find((i) => i.slug === "medween-pharma-box")!, rotate: "rotate-3", cls: "top-6 left-0 w-[38%] hidden xl:block", depth: 1.9 },
+  { item: portfolioItems.find((i) => i.slug === "lilaura-lavender")!, rotate: "-rotate-3", cls: "top-0 right-2 w-[46%]", depth: 1.4 },
+  { item: portfolioItems.find((i) => i.slug === "madburgs-burger-box")!, rotate: "rotate-2", cls: "bottom-2 -right-2 w-[54%]", depth: 0.8 },
+  { item: portfolioItems.find((i) => i.slug === "medween-pharma-box")!, rotate: "rotate-3", cls: "top-8 left-2 w-[38%] hidden xl:block", zoom: true, depth: 1.9 },
 ];
 
 // Compact 2-image stack for phones/tablets — the full desktop collage is
@@ -18,6 +18,11 @@ const mobileCollage = [
   { item: portfolioItems.find((i) => i.slug === "littlegrow-baby-cereal")!, rotate: "-rotate-3", cls: "left-1/2 -translate-x-[62%]" },
   { item: portfolioItems.find((i) => i.slug === "siriza-herbal-soap")!, rotate: "rotate-2", cls: "left-1/2 translate-x-[2%]" },
 ];
+
+// Real client names, pulled from the actual portfolio data below (not
+// invented) — grounds the empty space under the CTAs with quick proof
+// rather than a decorative claim we can't back up.
+const featuredClients = ["Medween", "Lil'Aura", "Madburgs", "Globiomed"];
 
 export function Hero() {
   return (
@@ -44,10 +49,20 @@ export function Hero() {
             </Link>
             <Link
               href={hero.ctaSecondary.href}
-              className="rounded-full px-7 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-paper-raised"
+              className="group inline-flex items-center gap-1.5 rounded-full border border-ink/15 px-7 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-ink hover:bg-paper-raised"
             >
               {hero.ctaSecondary.label}
+              <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                ↗
+              </span>
             </Link>
+          </div>
+
+          <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line pt-6">
+            <span className="font-spec text-[11px] font-semibold tracking-wider text-ink-faint uppercase">
+              Featured Clients
+            </span>
+            <p className="text-xs font-semibold text-ink-soft">{featuredClients.join(" · ")}</p>
           </div>
 
           <div className="relative mt-12 h-48 sm:h-56 lg:hidden">
@@ -72,9 +87,11 @@ export function Hero() {
         <div className="relative">
           {/* Floating sticker badge — a print-house "quality control" stamp,
               tilted like it was slapped on by hand rather than laid out in a
-              grid. Real, sourced claims only (10+ Years, Print-Ready). */}
+              grid. Perched clear of the collage's own corner so it doesn't
+              overlap/obscure the artwork underneath. Real, sourced claims
+              only (10+ Years, Print-Ready). */}
           <div
-            className="absolute -top-4 right-8 z-20 hidden -rotate-6 items-center gap-2 rounded-full border-2 border-ink bg-yellow px-4 py-2 shadow-[4px_4px_0_0_var(--color-ink)] sm:flex lg:right-16"
+            className="absolute -top-10 right-2 z-20 hidden -rotate-6 items-center gap-2 rounded-full border-2 border-ink bg-yellow px-4 py-2 shadow-[4px_4px_0_0_var(--color-ink)] sm:flex lg:top-[-2.5rem] lg:right-6"
             aria-hidden
           >
             <span className="h-2 w-2 rounded-full bg-ink" />

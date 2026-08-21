@@ -6,7 +6,7 @@ import { gsap } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import type { PortfolioItem } from "@/lib/constants/portfolio";
 
-type CollageEntry = { item: PortfolioItem; rotate: string; cls: string; depth: number };
+type CollageEntry = { item: PortfolioItem; rotate: string; cls: string; depth: number; zoom?: boolean };
 
 export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -78,13 +78,13 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
 
   return (
     <div ref={containerRef} className="relative hidden aspect-square lg:block" style={{ perspective: "1200px" }}>
-      {collage.map(({ item, rotate, cls }, i) => (
+      {collage.map(({ item, rotate, cls, zoom }, i) => (
         <div
           key={item.slug}
           ref={(el) => {
             cardRefs.current[i] = el;
           }}
-          className={`absolute aspect-[4/5] overflow-hidden rounded-3xl shadow-[0_40px_80px_-20px_rgba(0,0,0,0.35)] ${rotate} ${cls} will-change-transform`}
+          className={`absolute aspect-[4/5] overflow-hidden rounded-3xl shadow-[0_35px_70px_-20px_rgba(0,0,0,0.28)] ${rotate} ${cls} will-change-transform`}
           style={{ transformStyle: "preserve-3d" }}
         >
           <Image
@@ -93,7 +93,7 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
             fill
             sizes="(min-width: 1024px) 30vw, 50vw"
             priority
-            className="h-full w-full object-cover"
+            className={`h-full w-full object-cover ${zoom ? "scale-125" : ""}`}
           />
         </div>
       ))}
