@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { cn } from "@/lib/utils";
 import type { PortfolioItem } from "@/lib/constants/portfolio";
 
 type CollageEntry = { item: PortfolioItem; rotate: string; cls: string; depth: number; zoom?: boolean };
@@ -11,7 +12,13 @@ type CollageEntry = { item: PortfolioItem; rotate: string; cls: string; depth: n
 export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const hoveredRef = useRef<number | null>(null);
   const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    hoveredRef.current = hovered;
+  }, [hovered]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -42,7 +49,21 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
       );
     });
 
+    function resetTilt() {
+      setters.forEach((setter) => {
+        if (!setter) return;
+        setter.x(0);
+        setter.y(0);
+        setter.rotateX(0);
+        setter.rotateY(0);
+      });
+    }
+
     function onMove(e: MouseEvent) {
+      // While a card is spotlighted, its tilt holds at 0 (straightened)
+      // instead of chasing the cursor — letting both run at once would
+      // fight over the same GSAP-driven transform.
+      if (hoveredRef.current !== null) return;
       const rect = container!.getBoundingClientRect();
       const normX = (e.clientX - rect.left) / rect.width - 0.5;
       const normY = (e.clientY - rect.top) / rect.height - 0.5;
@@ -58,45 +79,67 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
     }
 
     function onLeave() {
-      setters.forEach((setter) => {
-        if (!setter) return;
-        setter.x(0);
-        setter.y(0);
-        setter.rotateX(0);
-        setter.rotateY(0);
-      });
+      if (hoveredRef.current !== null) return;
+      resetTilt();
     }
 
     container.addEventListener("mousemove", onMove);
     container.addEventListener("mouseleave", onLeave);
+
+    const cardEls = cardRefs.current;
+    const enterHandlers = cardEls.map((_, i) => () => {
+      setHovered(i);
+      resetTilt();
+    });
+    const leaveHandlers = cardEls.map(() => () => setHovered(null));
+    cardEls.forEach((card, i) => {
+      card?.addEventListener("mouseenter", enterHandlers[i]);
+      card?.addEventListener("mouseleave", leaveHandlers[i]);
+    });
+
     return () => {
       container.removeEventListener("mousemove", onMove);
       container.removeEventListener("mouseleave", onLeave);
+      cardEls.forEach((card, i) => {
+        card?.removeEventListener("mouseenter", enterHandlers[i]);
+        card?.removeEventListener("mouseleave", leaveHandlers[i]);
+      });
       breathing.kill();
     };
   }, [collage, reducedMotion]);
 
   return (
     <div ref={containerRef} className="relative hidden aspect-square lg:block" style={{ perspective: "1200px" }}>
-      {collage.map(({ item, rotate, cls, zoom }, i) => (
-        <div
-          key={item.slug}
-          ref={(el) => {
-            cardRefs.current[i] = el;
-          }}
-          className={`absolute aspect-[4/5] overflow-hidden rounded-3xl shadow-[0_35px_70px_-20px_rgba(0,0,0,0.28)] ${rotate} ${cls} will-change-transform`}
-          style={{ transformStyle: "preserve-3d" }}
-        >
-          <Image
-            src={item.src}
-            alt={item.title}
-            fill
-            sizes="(min-width: 1024px) 30vw, 50vw"
-            priority
-            className={`h-full w-full object-cover ${zoom ? "scale-125" : ""}`}
-          />
-        </div>
-      ))}
+      {collage.map(({ item, rotate, cls, zoom }, i) => {
+        const isHovered = hovered === i;
+        const isDimmed = hovered !== null && !isHovered;
+
+        return (
+          <div
+            key={item.slug}
+            ref={(el) => {
+              cardRefs.current[i] = el;
+            }}
+            className={cn(
+              "absolute aspect-[4/5] overflow-hidden rounded-3xl bg-paper-raised transition-all duration-500 ease-out will-change-transform",
+              isHovered ? "z-30 scale-110 rotate-0 shadow-[0_45px_90px_-20px_rgba(0,0,0,0.4)]" : rotate,
+              !isHovered && "shadow-[0_35px_70px_-20px_rgba(0,0,0,0.28)]",
+              isDimmed && "z-0 scale-90 opacity-25 blur-[3px] pointer-events-none",
+              cls,
+            )}
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            <Image
+              src={item.src}
+              alt={item.title}
+              fill
+              sizes="(min-width: 1024px) 30vw, 50vw"
+              priority
+              className={cn("h-full w-full object-cover transition-transform duration-500", zoom && !isHovered && "scale-125")}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }

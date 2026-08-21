@@ -6,9 +6,9 @@ import { KineticWordmark } from "./KineticWordmark";
 import { HeroParallaxCollage } from "./HeroParallaxCollage";
 
 const collage = [
-  { item: portfolioItems.find((i) => i.slug === "lilaura-lavender")!, rotate: "-rotate-3", cls: "top-0 right-2 w-[46%]", depth: 1.4 },
-  { item: portfolioItems.find((i) => i.slug === "madburgs-burger-box")!, rotate: "rotate-2", cls: "bottom-2 -right-2 w-[54%]", depth: 0.8 },
-  { item: portfolioItems.find((i) => i.slug === "medween-pharma-box")!, rotate: "rotate-3", cls: "top-8 left-2 w-[38%] hidden xl:block", zoom: true, depth: 1.9 },
+  { item: portfolioItems.find((i) => i.slug === "medween-pharma-box")!, rotate: "-rotate-6", cls: "top-6 left-2 w-[44%]", depth: 1.4 },
+  { item: portfolioItems.find((i) => i.slug === "lilaura-lavender")!, rotate: "rotate-4", cls: "top-0 right-2 w-[48%]", depth: 1.0 },
+  { item: portfolioItems.find((i) => i.slug === "madburgs-burger-box")!, rotate: "-rotate-2", cls: "bottom-0 right-10 w-[54%]", depth: 0.7 },
 ];
 
 // Compact 2-image stack for phones/tablets — the full desktop collage is
@@ -85,21 +85,6 @@ export function Hero() {
         </div>
 
         <div className="relative">
-          {/* Floating sticker badge — a print-house "quality control" stamp,
-              tilted like it was slapped on by hand rather than laid out in a
-              grid. Perched clear of the collage's own corner so it doesn't
-              overlap/obscure the artwork underneath. Real, sourced claims
-              only (10+ Years, Print-Ready). */}
-          <div
-            className="absolute -top-10 right-2 z-20 hidden -rotate-6 items-center gap-2 rounded-full border-2 border-ink bg-yellow px-4 py-2 shadow-[4px_4px_0_0_var(--color-ink)] sm:flex lg:top-[-2.5rem] lg:right-6"
-            aria-hidden
-          >
-            <span className="h-2 w-2 rounded-full bg-ink" />
-            <span className="font-spec text-[11px] font-bold tracking-wide text-ink uppercase">
-              Print-Ready Certified · 10+ Yrs
-            </span>
-          </div>
-
           <HeroParallaxCollage collage={collage} />
         </div>
       </div>
