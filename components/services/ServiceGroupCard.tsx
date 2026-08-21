@@ -45,12 +45,12 @@ export function ServiceGroupCard({ group, className }: { group: ServiceGroup; cl
       <h3 className="mt-5 font-display text-xl font-semibold tracking-tight text-ink">{group.title}</h3>
       {group.intro && <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">{group.intro}</p>}
 
-      <div className="mt-6 flex flex-1 flex-wrap gap-2 border-t border-ink/[0.06] pt-6">
+      <div className="mt-6 flex flex-1 flex-wrap content-start items-start gap-2 border-t border-ink/[0.06] pt-6">
         {group.items.map((item) => (
           <span
             key={item}
             title={item}
-            className="rounded-full bg-paper px-3 py-1.5 text-xs font-medium text-ink-soft"
+            className="inline-flex h-fit items-center rounded-full bg-paper px-3 py-1.5 text-xs font-medium text-ink-soft"
           >
             {pillLabel(item)}
           </span>
