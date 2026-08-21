@@ -7,7 +7,7 @@ import { ProjectEstimator } from "./ProjectEstimator";
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="px-5 py-28 sm:px-8 sm:py-36">
+    <section id="pricing" className="scroll-mt-24 px-5 py-28 sm:scroll-mt-28 sm:px-8 sm:py-36">
       <div className="mx-auto max-w-7xl">
         <Reveal className="mb-16 max-w-2xl">
           <SectionIndex index="06" label="PRICING" meta="INVESTMENT" />

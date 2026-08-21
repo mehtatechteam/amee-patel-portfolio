@@ -18,7 +18,7 @@ export function PortfolioSection() {
   );
 
   return (
-    <section id="work" className="overflow-hidden py-28 sm:py-36">
+    <section id="work" className="scroll-mt-24 overflow-hidden py-28 sm:scroll-mt-28 sm:py-36">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionIndex index="01" label="WORK" meta="PRINT & PACKAGING ARCHIVE" />
       </div>

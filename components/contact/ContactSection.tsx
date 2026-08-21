@@ -6,7 +6,7 @@ import { whatsappLink } from "@/lib/utils";
 
 export function ContactSection() {
   return (
-    <section id="contact" className="px-5 py-28 sm:px-8 sm:py-36">
+    <section id="contact" className="scroll-mt-24 px-5 py-28 sm:scroll-mt-28 sm:px-8 sm:py-36">
       <Reveal className="mx-auto max-w-4xl rounded-[2.5rem] bg-ink px-10 py-16 text-center text-paper sm:px-16 sm:py-20">
         <div className="flex justify-center">
           <AvailabilityBadge />

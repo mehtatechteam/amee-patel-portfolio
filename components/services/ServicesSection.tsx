@@ -5,7 +5,7 @@ import { SectionIndex } from "@/components/motifs/SectionIndex";
 
 export function ServicesSection() {
   return (
-    <section id="services" className="px-5 py-28 sm:px-8 sm:py-36">
+    <section id="services" className="scroll-mt-24 px-5 py-28 sm:scroll-mt-28 sm:px-8 sm:py-36">
       <div className="mx-auto max-w-7xl">
         <Reveal className="mb-16 max-w-2xl">
           <SectionIndex index="02" label="SERVICES" meta="WHAT I DO" />
