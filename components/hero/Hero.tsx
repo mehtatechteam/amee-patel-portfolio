@@ -11,12 +11,19 @@ const collage = [
   { item: portfolioItems.find((i) => i.slug === "madburgs-burger-box")!, rotate: "-rotate-2", cls: "bottom-0 right-10 w-[54%]", depth: 0.7 },
 ];
 
-// Compact 2-image stack for phones/tablets — the full desktop collage is
-// `hidden` below `lg`, which previously left mobile visitors with zero
-// portfolio imagery above the fold.
+// 4-image fanned collage for phones/tablets — the full desktop collage is
+// `hidden` below `lg`. Deliberately a different set of images than the
+// desktop `collage` array above (medween/lilaura-lavender/madburgs):
+// next/image silently fails to load when the same `src` appears twice in
+// one component tree with different fill/priority configs, confirmed
+// live earlier in this project, so mobile and desktop never share a slug.
+// Picked naturally portrait/square source images (not the wide
+// "cardAspect: wide" product-range shots) to minimize object-cover crop.
 const mobileCollage = [
-  { item: portfolioItems.find((i) => i.slug === "littlegrow-baby-cereal")!, rotate: "-rotate-3", cls: "left-1/2 -translate-x-[62%]" },
-  { item: portfolioItems.find((i) => i.slug === "siriza-herbal-soap")!, rotate: "rotate-2", cls: "left-1/2 translate-x-[2%]" },
+  { item: portfolioItems.find((i) => i.slug === "littlegrow-baby-cereal")!, rotate: "-rotate-6", cls: "top-0 left-0 w-32", z: "z-10" },
+  { item: portfolioItems.find((i) => i.slug === "siriza-herbal-soap")!, rotate: "rotate-4", cls: "top-4 right-0 w-28", z: "z-20" },
+  { item: portfolioItems.find((i) => i.slug === "lilaura-oudh")!, rotate: "rotate-3", cls: "bottom-6 left-10 w-32", z: "z-30" },
+  { item: portfolioItems.find((i) => i.slug === "baby-cerelac-concept")!, rotate: "-rotate-4", cls: "bottom-0 right-6 w-28", z: "z-20" },
 ];
 
 // Real client names, pulled from the actual portfolio data below (not
@@ -65,11 +72,11 @@ export function Hero() {
             <p className="text-xs font-semibold text-ink-soft">{featuredClients.join(" · ")}</p>
           </div>
 
-          <div className="relative mt-12 h-48 sm:h-56 lg:hidden">
-            {mobileCollage.map(({ item, rotate, cls }) => (
+          <div className="relative mt-12 h-64 sm:h-72 lg:hidden">
+            {mobileCollage.map(({ item, rotate, cls, z }) => (
               <div
                 key={item.slug}
-                className={`absolute top-0 w-36 overflow-hidden rounded-2xl shadow-[0_25px_50px_-20px_rgba(0,0,0,0.3)] sm:w-40 ${rotate} ${cls}`}
+                className={`absolute overflow-hidden rounded-2xl shadow-[0_25px_50px_-20px_rgba(0,0,0,0.3)] sm:w-36 ${rotate} ${cls} ${z}`}
               >
                 <Image
                   src={item.src}
