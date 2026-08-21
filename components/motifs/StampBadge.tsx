@@ -1,23 +1,18 @@
 import { cn } from "@/lib/utils";
 
-/** A rubber-stamp-style circular trust badge — rotated slightly, dashed
- * ring, condensed caps text — reads as an ink-stamp mark rather than a
- * flat icon. Used in the trust section for real, sourced claims only. */
-export function StampBadge({ lines, className }: { lines: string[]; className?: string }) {
+/** Compact proof-point pill — a single short, real claim. Previously a
+ * 112px dashed-ring "stamp" with 9px text; shrunk to a pill that hugs its
+ * content so it reads as a tag, not an oversized placeholder graphic.
+ * Used in the trust section for real, sourced claims only. */
+export function StampBadge({ label, className }: { label: string; className?: string }) {
   return (
-    <div
+    <span
       className={cn(
-        "flex h-28 w-28 shrink-0 -rotate-6 items-center justify-center rounded-full border-2 border-dashed border-accent/60 text-center",
+        "inline-flex w-fit shrink-0 items-center rounded-full bg-accent-soft px-3 py-1.5 font-spec text-[10px] font-bold tracking-wide text-accent uppercase",
         className,
       )}
     >
-      <p className="px-3 font-spec text-[9px] leading-tight font-bold tracking-wide text-accent uppercase">
-        {lines.map((line, i) => (
-          <span key={i} className="block">
-            {line}
-          </span>
-        ))}
-      </p>
-    </div>
+      {label}
+    </span>
   );
 }
