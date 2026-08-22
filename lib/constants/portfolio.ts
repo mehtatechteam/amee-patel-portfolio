@@ -123,6 +123,17 @@ export const portfolioItems: PortfolioItem[] = [
     cardAspect: "wide",
   },
   {
+    slug: "taj-wood-paint-tin",
+    title: "Taj Wood Paints — Wood Finish Tin Label",
+    client: "Taj Wood Paints",
+    category: "packaging",
+    tags: ["Home Improvement", "Label Design"],
+    src: "/portfolio/packaging/taj-wood-paint-tin.png",
+    width: 1541,
+    height: 1021,
+    cardAspect: "wide",
+  },
+  {
     slug: "littlegrow-baby-cereal",
     title: "LittleGrow — Baby Cereal Box",
     client: "LittleGrow",

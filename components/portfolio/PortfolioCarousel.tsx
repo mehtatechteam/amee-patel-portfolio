@@ -203,7 +203,36 @@ export function PortfolioCarousel({
         ))}
       </div>
 
-      <div className="mt-8 flex items-center justify-between px-5 sm:px-8">
+      {/*
+        Prev/Next float as side overlays, vertically centered on the
+        carousel track — not tucked in a bottom-right corner button row —
+        so the "turn the page" affordance reads immediately without
+        hunting for it.
+      */}
+      <button
+        type="button"
+        aria-label="Previous project"
+        disabled={activeIndex === 0}
+        onClick={() => scrollToIndex(targetIndexRef.current - 1)}
+        className="absolute left-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-paper/90 text-ink shadow-lg backdrop-blur transition-colors hover:bg-ink hover:text-paper disabled:opacity-0 sm:flex sm:left-4"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        aria-label="Next project"
+        disabled={activeIndex === items.length - 1}
+        onClick={() => scrollToIndex(targetIndexRef.current + 1)}
+        className="absolute right-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-paper/90 text-ink shadow-lg backdrop-blur transition-colors hover:bg-ink hover:text-paper disabled:opacity-0 sm:flex sm:right-4"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
+      <div className="mt-8 flex items-center justify-center px-5 sm:px-8">
         <div className="flex gap-1.5" role="group" aria-label="Carousel position">
           {items.map((_, i) => (
             <button
@@ -218,31 +247,6 @@ export function PortfolioCarousel({
               )}
             />
           ))}
-        </div>
-
-        <div className="flex gap-2">
-          <button
-            type="button"
-            aria-label="Previous project"
-            disabled={activeIndex === 0}
-            onClick={() => scrollToIndex(targetIndexRef.current - 1)}
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-paper-raised text-ink transition-colors hover:bg-ink hover:text-paper disabled:opacity-30 disabled:hover:bg-paper-raised disabled:hover:text-ink"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-          <button
-            type="button"
-            aria-label="Next project"
-            disabled={activeIndex === items.length - 1}
-            onClick={() => scrollToIndex(targetIndexRef.current + 1)}
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-paper-raised text-ink transition-colors hover:bg-ink hover:text-paper disabled:opacity-30 disabled:hover:bg-paper-raised disabled:hover:text-ink"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
         </div>
       </div>
     </div>
