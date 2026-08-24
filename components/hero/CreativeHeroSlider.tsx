@@ -469,7 +469,7 @@ export function CreativeHeroSlider() {
                   </div>
                 </div>
 
-                {/* 2. Paracetamol Tablets Purple Hex Box Floating (Center-Right) */}
+                {/* 2. Paracetamol Tablets IP 500mg Box Floating (Center-Right) */}
                 <div
                   className="relative z-30 transition-transform duration-300 ease-out"
                   style={{
@@ -477,15 +477,15 @@ export function CreativeHeroSlider() {
                   }}
                 >
                   <div className="animate-float-slow">
-                    <div className="relative w-48 sm:w-60 aspect-[5/4] overflow-hidden rounded-2xl bg-paper shadow-[0_30px_50px_rgba(0,0,0,0.3)] border-2 border-purple-600/30">
+                    <div className="relative w-48 sm:w-60 aspect-[5/4] overflow-hidden rounded-2xl bg-paper shadow-[0_30px_50px_rgba(0,0,0,0.3)] border-2 border-sky-600/30">
                       <Image
-                        src="/portfolio/packaging/paracetamol-tablets-purple-box.png"
-                        alt="Paracetamol Box"
+                        src="/portfolio/packaging/paracetamol-tablets-blue-box.png"
+                        alt="Paracetamol Tablets IP 500 mg Box"
                         fill
                         className="object-cover"
                         sizes="(max-width: 640px) 200px, 240px"
                       />
-                      <span className="absolute bottom-2 left-2 rounded-full bg-purple-950/80 px-2 py-0.5 text-[9px] font-bold text-white backdrop-blur">
+                      <span className="absolute bottom-2 left-2 rounded-full bg-sky-950/80 px-2 py-0.5 text-[9px] font-bold text-white backdrop-blur">
                         Pharma Range
                       </span>
                     </div>
