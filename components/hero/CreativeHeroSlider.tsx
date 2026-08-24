@@ -256,25 +256,25 @@ export function CreativeHeroSlider() {
           <div className="lg:col-span-5 relative min-h-[340px] sm:min-h-[420px] lg:min-h-[480px] flex items-center justify-center">
             {/* SLIDE 1: Pencil Rocket + Binder Clip + Yellow Crumpled Note + Shavings */}
             {slide.theme === "creative-growth" && (
-              <div className="relative w-full h-full flex items-center justify-center">
+              <div className="relative w-full h-full flex items-center justify-center min-h-[380px] sm:min-h-[460px]">
                 {/* 1. Floating Binder Clip (Left) */}
                 <div
-                  className="absolute left-0 top-12 sm:left-4 z-20 transition-transform duration-300 ease-out"
+                  className="absolute left-0 top-6 sm:left-2 sm:top-10 z-20 transition-transform duration-300 ease-out"
                   style={{
                     transform: `translate3d(${mousePos.x * -25}px, ${mousePos.y * -25}px, 0)`,
                   }}
                 >
                   <div className="animate-float">
-                    <svg width="120" height="120" viewBox="0 0 100 100" className="drop-shadow-[0_20px_25px_rgba(0,0,0,0.25)]">
-                      {/* Chrome wire arms */}
-                      <path d="M35,15 L35,45 M65,15 L65,45" stroke="#71717a" strokeWidth="5" strokeLinecap="round" />
-                      <path d="M35,15 Q50,5 65,15" stroke="#a1a1aa" strokeWidth="5" fill="none" strokeLinecap="round" />
-                      {/* Black triangular body */}
-                      <polygon points="20,45 80,45 60,85 40,85" fill="#18181b" />
-                      {/* Shiny bevel highlights */}
-                      <line x1="22" y1="47" x2="78" y2="47" stroke="#3f3f46" strokeWidth="2" />
-                      <polygon points="40,85 60,85 50,88" fill="#09090b" />
-                    </svg>
+                    <div className="relative w-28 sm:w-36 aspect-square filter drop-shadow-[0_20px_30px_rgba(0,0,0,0.22)] transition-transform duration-300 hover:scale-105">
+                      <Image
+                        src="/hero/binder-clip.png"
+                        alt="Stationery Binder Clip"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 112px, 144px"
+                        priority
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -282,163 +282,146 @@ export function CreativeHeroSlider() {
                 <div
                   className="relative z-30 transition-transform duration-300 ease-out"
                   style={{
-                    transform: `translate3d(${mousePos.x * 35}px, ${mousePos.y * 35}px, 0) rotate(-25deg)`,
+                    transform: `translate3d(${mousePos.x * 35}px, ${mousePos.y * 35}px, 0) rotate(-12deg)`,
                   }}
                 >
                   <div className="animate-float-slow flex flex-col items-center">
-                    {/* Hand-drawn rocket nozzle flame & smoke trail */}
-                    <div className="relative mb-2">
-                      <svg width="220" height="300" viewBox="0 0 160 260" className="drop-shadow-[0_25px_35px_rgba(0,0,0,0.25)]">
-                        {/* Drawn rocket trail fins */}
-                        <path d="M30,180 Q80,240 80,260 Q80,240 130,180" fill="none" stroke="#e4e4e7" strokeWidth="3" strokeDasharray="4 4" />
-                        <path d="M20,130 L45,160 L45,110 Z" fill="#ef4444" opacity="0.9" />
-                        <path d="M140,130 L115,160 L115,110 Z" fill="#ef4444" opacity="0.9" />
-
-                        {/* Yellow Wooden Pencil Body */}
-                        <rect x="45" y="30" width="70" height="130" fill="#facc15" rx="3" />
-                        <rect x="68" y="30" width="24" height="130" fill="#eab308" />
-                        <line x1="45" y1="30" x2="45" y2="160" stroke="#ca8a04" strokeWidth="2" />
-                        <line x1="115" y1="30" x2="115" y2="160" stroke="#ca8a04" strokeWidth="2" />
-
-                        {/* Sharpened Wood Cone & Graphite Lead Tip */}
-                        <polygon points="45,30 115,30 80,-15" fill="#fde68a" />
-                        <polygon points="70,5 90,5 80,-15" fill="#18181b" />
-
-                        {/* Metal Ferrule & Pink Eraser at bottom */}
-                        <rect x="45" y="160" width="70" height="20" fill="#a1a1aa" />
-                        <line x1="45" y1="168" x2="115" y2="168" stroke="#71717a" strokeWidth="2" />
-                        <path d="M45,180 L115,180 C115,200 45,200 45,180 Z" fill="#f472b6" />
-
-                        {/* Flame blast particles */}
-                        <circle cx="80" cy="215" r="8" fill="#f97316" className="animate-ping" />
-                        <circle cx="70" cy="235" r="6" fill="#facc15" />
-                        <circle cx="90" cy="230" r="5" fill="#facc15" />
-                      </svg>
+                    <div className="relative w-64 sm:w-80 lg:w-92 aspect-square filter drop-shadow-[0_30px_45px_rgba(0,0,0,0.28)] transition-transform duration-500 hover:scale-105 hover:-rotate-3">
+                      <Image
+                        src="/hero/pencil-rocket.png"
+                        alt="Creative Pencil Rocket"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 256px, 360px"
+                        priority
+                      />
                     </div>
                   </div>
                 </div>
 
                 {/* 3. Floating Yellow Crumpled Paper Note (Bottom-Left) */}
                 <div
-                  className="absolute left-6 bottom-4 sm:left-12 sm:bottom-6 z-20 transition-transform duration-300 ease-out"
+                  className="absolute left-6 bottom-2 sm:left-10 sm:bottom-4 z-20 transition-transform duration-300 ease-out"
                   style={{
                     transform: `translate3d(${mousePos.x * -30}px, ${mousePos.y * -30}px, 0) rotate(12deg)`,
                   }}
                 >
                   <div className="animate-float-delayed">
-                    <svg width="90" height="90" viewBox="0 0 100 100" className="drop-shadow-[0_15px_20px_rgba(0,0,0,0.18)]">
-                      {/* Crumpled Sticky Note */}
-                      <path
-                        d="M20,20 Q35,10 60,15 Q85,20 80,45 Q75,70 60,80 Q45,90 25,80 Q10,70 15,45 Z"
-                        fill="#fde047"
+                    <div className="relative w-24 sm:w-32 aspect-square filter drop-shadow-[0_15px_25px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:scale-110">
+                      <Image
+                        src="/hero/crumpled-paper.png"
+                        alt="Crumpled Paper Ball"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 96px, 128px"
                       />
-                      <path d="M25,25 L45,45 L70,30 M30,55 L55,60 L75,70" stroke="#ca8a04" strokeWidth="2" fill="none" opacity="0.6" />
-                      <polygon points="35,35 60,40 50,60" fill="#facc15" opacity="0.8" />
-                    </svg>
+                    </div>
                   </div>
                 </div>
 
                 {/* 4. Floating Pencil Shavings (Top-Right) */}
                 <div
-                  className="absolute right-4 top-2 sm:right-10 z-10 transition-transform duration-300 ease-out"
+                  className="absolute right-2 top-0 sm:right-6 sm:top-2 z-10 transition-transform duration-300 ease-out"
                   style={{
                     transform: `translate3d(${mousePos.x * 20}px, ${mousePos.y * 20}px, 0) rotate(-15deg)`,
                   }}
                 >
-                  <svg width="70" height="70" viewBox="0 0 80 80" className="drop-shadow-md opacity-80">
-                    <path d="M10,40 Q40,10 70,40 Q40,70 10,40" fill="#fed7aa" stroke="#ca8a04" strokeWidth="1.5" />
-                    <path d="M20,40 Q40,20 60,40" fill="#fdba74" />
-                    <path d="M10,40 Q25,25 35,40" fill="#78350f" />
-                  </svg>
+                  <div className="animate-float">
+                    <div className="relative w-24 sm:w-32 aspect-square filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.15)] transition-transform duration-300 hover:scale-105">
+                      <Image
+                        src="/hero/pencil-shavings.png"
+                        alt="Pencil Shavings"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 96px, 128px"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
 
             {/* SLIDE 2: Leaping Cheetah / Creative Mascot + Golden Portal + Earphones + Botanical Leaf */}
             {slide.theme === "big-wins" && (
-              <div className="relative w-full h-full flex items-center justify-center">
-                {/* 1. Golden Gateway Arch Portal with Leaping Mascot */}
+              <div className="relative w-full h-full flex items-center justify-center min-h-[380px] sm:min-h-[460px]">
+                {/* 1. Golden Gateway Arch Portal with Leaping Cheetah */}
                 <div
                   className="relative z-20 transition-transform duration-300 ease-out"
                   style={{
                     transform: `translate3d(${mousePos.x * 25}px, ${mousePos.y * 25}px, 0)`,
                   }}
                 >
-                  <div className="animate-float relative">
-                    {/* Golden Door Frame */}
-                    <svg width="240" height="280" viewBox="0 0 160 220" className="drop-shadow-[0_25px_40px_rgba(0,0,0,0.3)]">
-                      {/* Door outer molding */}
-                      <rect x="20" y="20" width="120" height="190" fill="#fff" stroke="#d97706" strokeWidth="6" rx="4" />
-                      <rect x="28" y="28" width="104" height="174" fill="#fef3c7" stroke="#b45309" strokeWidth="2" />
-                      {/* Open Door Perspective Panel */}
-                      <polygon points="28,28 85,10 85,200 28,202" fill="#d97706" />
-                      <polygon points="35,35 80,18 80,192 35,195" fill="#f59e0b" />
-                      {/* Door Handle */}
-                      <circle cx="75" cy="110" r="4" fill="#78350f" />
-                    </svg>
-
-                    {/* Leaping dynamic cheetah/creative animal badge */}
-                    <div className="absolute top-10 -left-8 sm:-left-12 z-30 w-44 sm:w-52 transform -rotate-12 drop-shadow-[0_20px_25px_rgba(0,0,0,0.35)]">
-                      <div className="rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 p-4 text-white shadow-xl flex items-center gap-3">
-                        <span className="text-3xl">🐆</span>
-                        <div>
-                          <p className="text-xs font-bold uppercase tracking-wider text-amber-100">Bold & Dynamic</p>
-                          <p className="text-sm font-extrabold">Creative Impact</p>
-                        </div>
-                      </div>
+                  <div className="animate-float">
+                    <div className="relative w-72 sm:w-96 lg:w-[28rem] aspect-square filter drop-shadow-[0_30px_50px_rgba(0,0,0,0.3)] transition-transform duration-500 hover:scale-105">
+                      <Image
+                        src="/hero/golden-door-cheetah.png"
+                        alt="Cheetah Leaping through Golden Portal"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 288px, 448px"
+                      />
                     </div>
                   </div>
                 </div>
 
                 {/* 2. Floating Botanical Green Leaf (Organic Packaging symbol) */}
                 <div
-                  className="absolute left-2 top-8 sm:left-4 z-30 transition-transform duration-300 ease-out"
+                  className="absolute left-0 top-6 sm:left-2 sm:top-8 z-30 transition-transform duration-300 ease-out"
                   style={{
-                    transform: `translate3d(${mousePos.x * -35}px, ${mousePos.y * -35}px, 0) rotate(24deg)`,
+                    transform: `translate3d(${mousePos.x * -35}px, ${mousePos.y * -35}px, 0) rotate(18deg)`,
                   }}
                 >
-                  <div className="animate-float">
-                    <svg width="75" height="75" viewBox="0 0 100 100" className="drop-shadow-[0_15px_20px_rgba(16,185,129,0.3)]">
-                      <path
-                        d="M20,80 Q30,30 80,20 Q70,70 20,80 Z"
-                        fill="#10b981"
+                  <div className="animate-float-delayed">
+                    <div className="relative w-28 sm:w-36 aspect-square filter drop-shadow-[0_20px_25px_rgba(16,185,129,0.25)] transition-transform duration-300 hover:scale-110">
+                      <Image
+                        src="/hero/green-leaf.png"
+                        alt="Fresh Botanical Green Leaf"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 112px, 144px"
                       />
-                      <path d="M20,80 Q50,50 80,20" stroke="#047857" strokeWidth="3" fill="none" />
-                      <path d="M35,65 Q50,60 55,68 M50,50 Q65,45 70,53" stroke="#047857" strokeWidth="2" fill="none" />
-                    </svg>
+                    </div>
                   </div>
                 </div>
 
                 {/* 3. Floating Coiled Studio Earphones (Bottom-Left) */}
                 <div
-                  className="absolute left-4 bottom-2 sm:left-8 sm:bottom-4 z-20 transition-transform duration-300 ease-out"
+                  className="absolute left-2 bottom-0 sm:left-6 sm:bottom-2 z-20 transition-transform duration-300 ease-out"
                   style={{
                     transform: `translate3d(${mousePos.x * -20}px, ${mousePos.y * -20}px, 0)`,
                   }}
                 >
-                  <svg width="110" height="110" viewBox="0 0 120 120" className="drop-shadow-lg opacity-90">
-                    <circle cx="60" cy="60" r="45" stroke="#e4e4e7" strokeWidth="4" fill="none" />
-                    <circle cx="60" cy="60" r="35" stroke="#d4d4d8" strokeWidth="4" fill="none" />
-                    {/* Earphone earbuds */}
-                    <circle cx="35" cy="40" r="8" fill="#ffffff" stroke="#71717a" strokeWidth="2" />
-                    <circle cx="75" cy="35" r="8" fill="#ffffff" stroke="#71717a" strokeWidth="2" />
-                    <rect x="56" y="85" width="8" height="18" rx="2" fill="#71717a" />
-                  </svg>
+                  <div className="animate-float">
+                    <div className="relative w-36 sm:w-44 aspect-square filter drop-shadow-[0_15px_25px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:scale-105">
+                      <Image
+                        src="/hero/studio-earphones.png"
+                        alt="White Studio Earphones"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 144px, 176px"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 {/* 4. Luxury Fountain Pen (Top-Right) */}
                 <div
-                  className="absolute right-2 top-4 sm:right-6 z-20 transition-transform duration-300 ease-out"
+                  className="absolute right-0 top-2 sm:right-4 sm:top-4 z-20 transition-transform duration-300 ease-out"
                   style={{
-                    transform: `translate3d(${mousePos.x * 30}px, ${mousePos.y * 30}px, 0) rotate(45deg)`,
+                    transform: `translate3d(${mousePos.x * 30}px, ${mousePos.y * 30}px, 0) rotate(15deg)`,
                   }}
                 >
-                  <svg width="60" height="130" viewBox="0 0 40 120" className="drop-shadow-xl">
-                    <rect x="12" y="30" width="16" height="70" rx="3" fill="#09090b" stroke="#f59e0b" strokeWidth="1.5" />
-                    <polygon points="12,30 28,30 20,5" fill="#f59e0b" />
-                    <line x1="20" y1="5" x2="20" y2="25" stroke="#78350f" strokeWidth="1.5" />
-                    <circle cx="20" cy="20" r="1.5" fill="#78350f" />
-                  </svg>
+                  <div className="animate-float-slow">
+                    <div className="relative w-28 sm:w-36 aspect-square filter drop-shadow-[0_20px_30px_rgba(0,0,0,0.25)] transition-transform duration-300 hover:scale-110 hover:rotate-6">
+                      <Image
+                        src="/hero/fountain-pen.png"
+                        alt="Luxury Gold Fountain Pen"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 112px, 144px"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
