@@ -52,13 +52,13 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     slug: "paracetamol-tablets-blue",
-    title: "Paracetamol Tablets — Blue Wave Box",
+    title: "Paracetamol Tablets IP 500 mg — Blue Wave Box",
     client: "Pharmaceutical Range",
     category: "packaging",
-    tags: ["Pharmaceutical", "Box Design", "Strip Pack"],
+    tags: ["Pharmaceutical", "Box Design", "10x10 Tablets"],
     src: "/portfolio/packaging/paracetamol-tablets-blue-box.png",
-    width: 1600,
-    height: 914,
+    width: 1402,
+    height: 1122,
     cardAspect: "wide",
   },
   {
