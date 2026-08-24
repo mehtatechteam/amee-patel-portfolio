@@ -7,7 +7,7 @@ export function AboutSection() {
   return (
     <section id="about" className="scroll-mt-24 px-5 py-28 sm:scroll-mt-28 sm:px-8 sm:py-36">
       <div className="mx-auto max-w-7xl">
-        <SectionIndex index="05" label="ABOUT" meta="THE DESIGNER" />
+        <SectionIndex index="01" label="ABOUT" meta="THE DESIGNER" />
       </div>
 
       <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[1fr_1.2fr]">

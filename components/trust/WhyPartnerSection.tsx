@@ -3,8 +3,6 @@ import { Reveal } from "@/components/motion/Reveal";
 import { SectionIndex } from "@/components/motifs/SectionIndex";
 import { StampBadge } from "@/components/motifs/StampBadge";
 
-// Real, sourced proof only (docs/client-requirements.md) — nothing here
-// invents a stat or claim that isn't already in the client's own brief.
 const cardExtras = [
   { badge: "Est. 2001", footer: "Parth Offset (2001–2012) · Freelance (2012–Present)" },
   { badge: "Print-Ready", tags: ["Exact Bleeds", "Exact Dimensions", "Color Profiles"] },
@@ -22,16 +20,13 @@ export function WhyPartnerSection() {
     <section className="bg-paper-raised px-5 py-28 sm:px-8 sm:py-36">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionIndex index="04" label="TRUST" meta="WHY PARTNER WITH ME" />
+          <SectionIndex index="05" label="TRUST" meta="WHY PARTNER WITH ME" />
           <h2 className="max-w-2xl font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
             {whyPartner.heading}
           </h2>
         </Reveal>
 
         <Reveal className="mt-16 grid gap-6 sm:grid-cols-3" delay={0.1}>
-          {/* The one card with a matching real stat gets the hero-numeral
-              treatment; the other two lead with their title instead of
-              forcing an unrelated number next to them. */}
           <div className={cardClass}>
             <div>
               <div className="flex items-start justify-between gap-3">

@@ -9,20 +9,82 @@ export type PortfolioItem = {
   src: string;
   width: number;
   height: number;
-  /** Curated for the "reveal the system" case-study treatment (Phase 5). */
+  /** Curated for the flagship / featured showcase */
   isFlagship?: boolean;
-  /** Portrait (default) vs wide — set "wide" for landscape source photos
-   * (e.g. multi-product range shots) that a portrait crop would butcher. */
+  /** Portrait (default) vs wide — set "wide" for landscape source photos */
   cardAspect?: "portrait" | "wide";
 };
 
-/**
- * Source images: assets/portfolio/** (organized copies in public/portfolio/**).
- * Dimensions read directly from the PNG headers — required for next/image
- * to avoid layout shift. These are chat-shared mockup exports, not final
- * production files — see docs/client-requirements.md Open Risk #2.
- */
 export const portfolioItems: PortfolioItem[] = [
+  {
+    slug: "organic-amla-powder",
+    title: "Organic Amla Powder — Ayurvedic Herbal Box",
+    client: "Organic Amla",
+    category: "packaging",
+    tags: ["Ayurvedic & Herbal", "Box Design", "Retail Packaging"],
+    src: "/portfolio/packaging/organic-amla-powder-box.png",
+    width: 1024,
+    height: 1536,
+    isFlagship: true,
+  },
+  {
+    slug: "paracetamol-tablets-purple",
+    title: "Paracetamol Tablets — Purple Hex Box",
+    client: "Pharmaceutical Range",
+    category: "packaging",
+    tags: ["Pharmaceutical", "Box Design", "Blister Pack"],
+    src: "/portfolio/packaging/paracetamol-tablets-purple-box.png",
+    width: 1402,
+    height: 1122,
+    isFlagship: true,
+    cardAspect: "wide",
+  },
+  {
+    slug: "paracetamol-syrup-pediatric",
+    title: "Paracetamol Syrup — Pediatric Formula",
+    client: "Pharmaceutical Range",
+    category: "packaging",
+    tags: ["Pharmaceutical", "Syrup Box", "Pediatric Care"],
+    src: "/portfolio/packaging/paracetamol-syrup-pediatric-box.png",
+    width: 1122,
+    height: 1402,
+    isFlagship: true,
+  },
+  {
+    slug: "paracetamol-tablets-blue",
+    title: "Paracetamol Tablets — Blue Wave Box",
+    client: "Pharmaceutical Range",
+    category: "packaging",
+    tags: ["Pharmaceutical", "Box Design", "Strip Pack"],
+    src: "/portfolio/packaging/paracetamol-tablets-blue-box.png",
+    width: 1600,
+    height: 914,
+    cardAspect: "wide",
+  },
+  {
+    slug: "shri-hanuman-realty-dholera",
+    title: "Shri Hanuman Realty — Dholera Smart City Brochure",
+    client: "Shri Hanuman Realty",
+    category: "brand-literature",
+    tags: ["Real Estate", "Trifold Brochure", "Print Literature"],
+    src: "/portfolio/brochures-catalogs/shri-hanuman-realty-dholera-brochure.png",
+    width: 1536,
+    height: 1024,
+    isFlagship: true,
+    cardAspect: "wide",
+  },
+  {
+    slug: "npmakeover-bridal-catalog",
+    title: "NP's Makeover — Bridal Package Catalog",
+    client: "NP's Makeover",
+    category: "brand-literature",
+    tags: ["Beauty & Salon", "Catalog Design", "Brand Literature"],
+    src: "/portfolio/brochures-catalogs/npmakeover-bridal-catalog.png",
+    width: 1402,
+    height: 1122,
+    isFlagship: true,
+    cardAspect: "wide",
+  },
   {
     slug: "medween-pharma-box",
     title: "Medween — Pharma Bottle Box",
@@ -75,7 +137,6 @@ export const portfolioItems: PortfolioItem[] = [
     src: "/portfolio/packaging/aqua-water-filter-packaging-set.png",
     width: 1536,
     height: 1024,
-  
     cardAspect: "wide",
   },
   {
@@ -107,7 +168,6 @@ export const portfolioItems: PortfolioItem[] = [
     src: "/portfolio/packaging/tsd-world-cable-box.png",
     width: 1536,
     height: 1024,
-  
     cardAspect: "wide",
   },
   {
@@ -119,7 +179,6 @@ export const portfolioItems: PortfolioItem[] = [
     src: "/portfolio/packaging/peptidesdepot-research-powder-box.png",
     width: 1536,
     height: 1024,
-  
     cardAspect: "wide",
   },
   {
@@ -144,16 +203,6 @@ export const portfolioItems: PortfolioItem[] = [
     height: 575,
   },
   {
-    slug: "baby-cerelac-concept",
-    title: "Baby Cerelac — Concept Packaging",
-    client: "Concept work",
-    category: "packaging",
-    tags: ["Baby Products", "Box Design"],
-    src: "/portfolio/baby-products/generic-baby-cerelac-box.png",
-    width: 575,
-    height: 575,
-  },
-  {
     slug: "globiomed-pharma-book",
     title: "Globiomed Life Science — Pharma Visual Book",
     client: "Globiomed",
@@ -162,32 +211,6 @@ export const portfolioItems: PortfolioItem[] = [
     src: "/portfolio/brochures-catalogs/globiomed-pharma-visual-book.png",
     width: 1536,
     height: 1024,
-    isFlagship: true,
-  
-    cardAspect: "wide",
-  },
-  {
-    slug: "dholera-exotica-trifold",
-    title: "Dholera Exotica II — Real Estate Trifold",
-    client: "Dholera Exotica II",
-    category: "brand-literature",
-    tags: ["Real Estate", "Brochure"],
-    src: "/portfolio/brochures-catalogs/dholera-exotica-realestate-trifold.png",
-    width: 1536,
-    height: 1024,
-  
-    cardAspect: "wide",
-  },
-  {
-    slug: "npmakeover-catalog",
-    title: "NP's Makeover — Bridal Beautician Catalog",
-    client: "NP's Makeover",
-    category: "brand-literature",
-    tags: ["Beauty", "Catalog"],
-    src: "/portfolio/brochures-catalogs/npmakeover-beautician-catalog.png",
-    width: 1402,
-    height: 1122,
-  
     cardAspect: "wide",
   },
   {
@@ -199,6 +222,7 @@ export const portfolioItems: PortfolioItem[] = [
     src: "/portfolio/logos/logo-design-grid.png",
     width: 1600,
     height: 1075,
+    isFlagship: true,
   },
 ];
 

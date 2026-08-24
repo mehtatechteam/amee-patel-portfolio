@@ -1,8 +1,7 @@
 /**
  * "From Brief to Print" — grounded entirely in claims already established
- * elsewhere on the site (whyPartner, pricingTerms in site-copy.ts /
- * pricing.ts). No invented specifics (no fabricated regulatory/barcode/
- * nutrition-label claims) — just what's actually true about Amee's process.
+ * on the site (whyPartner in site-copy.ts). No invented specifics
+ * — just what's actually true about Amee's process.
  */
 export const processSteps = [
   {

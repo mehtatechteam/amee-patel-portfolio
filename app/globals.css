@@ -77,6 +77,45 @@ body {
   }
 }
 
+@keyframes floatAnim {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(2deg);
+  }
+}
+
+@keyframes floatSlowAnim {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(-2deg);
+  }
+}
+
+@keyframes floatDelayedAnim {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(3deg);
+  }
+}
+
+.animate-float {
+  animation: floatAnim 4.5s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: floatSlowAnim 6.5s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: floatDelayedAnim 5.2s ease-in-out 1.2s infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

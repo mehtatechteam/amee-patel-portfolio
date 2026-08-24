@@ -5,10 +5,10 @@ import { RegistrationMark } from "@/components/motifs/RegistrationMark";
 
 export function ProcessSection() {
   return (
-    <section className="px-5 py-28 sm:px-8 sm:py-36">
+    <section id="process" className="scroll-mt-24 px-5 py-28 sm:scroll-mt-28 sm:px-8 sm:py-36">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionIndex index="03" label="PROCESS" meta="FROM BRIEF TO PRINT" />
+          <SectionIndex index="04" label="PROCESS" meta="FROM BRIEF TO PRINT" />
           <h2 className="max-w-2xl font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
             From Brief to Print
           </h2>

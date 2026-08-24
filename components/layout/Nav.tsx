@@ -6,10 +6,12 @@ import { siteMeta } from "@/lib/constants/site-copy";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "#work", label: "Work" },
-  { href: "#services", label: "Services" },
+  { href: "#home", label: "Home" },
   { href: "#about", label: "About" },
-  { href: "#pricing", label: "Pricing" },
+  { href: "#services", label: "Services" },
+  { href: "#portfolio", label: "Portfolio" },
+  { href: "#process", label: "Process" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export function Nav() {
@@ -32,36 +34,37 @@ export function Nav() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 border-b bg-paper/85 backdrop-blur-md transition-shadow duration-200",
+        "sticky top-0 z-40 border-b bg-paper/90 backdrop-blur-md transition-shadow duration-200",
         scrolled ? "border-ink/10 shadow-[0_1px_0_0_rgba(0,0,0,0.04)]" : "border-transparent",
       )}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
         <Link
           id="site-logo"
-          href="#top"
-          className="font-display text-lg font-semibold tracking-tight text-ink"
+          href="#home"
+          className="font-display text-xl font-bold tracking-tight text-ink flex items-center gap-1.5"
         >
-          {siteMeta.name}
-          <span className="ml-1 text-accent">.</span>
+          <span>{siteMeta.name}</span>
+          <span className="h-2 w-2 rounded-full bg-accent" />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        {/* Desktop Navigation Links matching exact order requested */}
+        <nav className="hidden items-center gap-7 lg:gap-8 md:flex">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="font-body text-sm font-medium text-ink-soft transition-colors hover:text-ink"
+              className="font-body text-xs lg:text-sm font-semibold tracking-wider uppercase text-ink-soft transition-colors hover:text-accent"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <Link
             href="#contact"
-            className="hidden rounded-full bg-ink px-5 py-2.5 font-body text-sm font-semibold text-paper transition-transform hover:-translate-y-0.5 hover:bg-accent sm:inline-block"
+            className="hidden rounded-full bg-ink px-5 py-2.5 font-body text-xs lg:text-sm font-semibold uppercase tracking-wider text-paper transition-transform hover:-translate-y-0.5 hover:bg-accent sm:inline-block"
           >
             Let&apos;s talk
           </Link>
@@ -99,7 +102,7 @@ export function Nav() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="rounded-xl px-3 py-3 font-body text-base font-medium text-ink transition-colors hover:bg-paper-raised"
+                className="rounded-xl px-3 py-3 font-body text-sm font-semibold uppercase tracking-wider text-ink transition-colors hover:bg-paper-raised"
               >
                 {link.label}
               </Link>

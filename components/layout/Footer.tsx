@@ -4,10 +4,12 @@ import { LiveClock } from "@/components/motifs/LiveClock";
 import { BackToTop } from "./BackToTop";
 
 const navLinks = [
-  { href: "#work", label: "Work" },
-  { href: "#services", label: "Services" },
+  { href: "#home", label: "Home" },
   { href: "#about", label: "About" },
-  { href: "#pricing", label: "Pricing" },
+  { href: "#services", label: "Services" },
+  { href: "#portfolio", label: "Portfolio" },
+  { href: "#process", label: "Process" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export function Footer() {
@@ -48,14 +50,14 @@ export function Footer() {
                 href={whatsappLink(siteMeta.whatsapp, siteMeta.whatsappMessage)}
                 target="_blank"
                 rel="noreferrer"
-                className="transition-colors hover:text-accent"
+                className="transition-colors hover:text-accent flex items-center gap-2"
               >
-                {siteMeta.whatsappDisplay}
+                <span>WhatsApp: {siteMeta.whatsappDisplay}</span>
               </a>
             </li>
             <li>
               <a href={`mailto:${siteMeta.email}`} className="transition-colors hover:text-accent">
-                {siteMeta.email}
+                Email: {siteMeta.email}
               </a>
             </li>
           </ul>
