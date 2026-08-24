@@ -1,4 +1,5 @@
 import { whyPartner } from "@/lib/constants/site-copy";
+import { testimonials } from "@/lib/constants/testimonials";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionIndex } from "@/components/motifs/SectionIndex";
 import { StampBadge } from "@/components/motifs/StampBadge";
@@ -26,6 +27,7 @@ export function WhyPartnerSection() {
           </h2>
         </Reveal>
 
+        {/* 3 Pillar Cards */}
         <Reveal className="mt-16 grid gap-6 sm:grid-cols-3" delay={0.1}>
           <div className={cardClass}>
             <div>
@@ -84,6 +86,70 @@ export function WhyPartnerSection() {
             </div>
           </div>
         </Reveal>
+
+        {/* Client Reviews / Testimonials Section */}
+        <div className="mt-28 border-t border-line/70 pt-20">
+          <Reveal>
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <span className="font-spec text-xs font-semibold tracking-wider text-accent uppercase">
+                  Client Feedback
+                </span>
+                <h3 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+                  What Clients Say
+                </h3>
+              </div>
+              <p className="max-w-md text-sm text-ink-soft">
+                Real reviews from brand owners, pharmaceutical manufacturers, and businesses across India.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal className="mt-12 grid gap-6 md:grid-cols-2" delay={0.15}>
+            {testimonials.map((t) => (
+              <div
+                key={t.id}
+                className="group relative flex flex-col justify-between rounded-3xl border border-line bg-paper p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:p-8"
+              >
+                <div>
+                  {/* Top Bar: Stars + Project Chip */}
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-1 text-amber-500" aria-label={`${t.rating} out of 5 stars`}>
+                      {[...Array(t.rating)].map((_, idx) => (
+                        <svg key={idx} width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                        </svg>
+                      ))}
+                    </div>
+                    <span className="rounded-full bg-paper-raised px-3 py-1 font-spec text-[10px] font-semibold text-ink-faint uppercase">
+                      {t.project}
+                    </span>
+                  </div>
+
+                  {/* Quote */}
+                  <blockquote className="mt-6 text-[15px] leading-relaxed text-ink-soft">
+                    &ldquo;{t.content}&rdquo;
+                  </blockquote>
+                </div>
+
+                {/* Client Profile Footer */}
+                <div className="mt-7 flex items-center gap-3.5 border-t border-line/60 pt-5">
+                  <div
+                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm ${t.avatarBg}`}
+                  >
+                    {t.initials}
+                  </div>
+                  <div>
+                    <p className="font-display text-sm font-bold text-ink">{t.name}</p>
+                    <p className="text-xs text-ink-soft">
+                      {t.role} · <span className="font-medium text-ink">{t.company}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Reveal>
+        </div>
       </div>
     </section>
   );
