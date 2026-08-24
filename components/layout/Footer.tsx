@@ -15,18 +15,38 @@ const navLinks = [
 export function Footer() {
   return (
     <footer className="border-t border-line/40 bg-ink text-paper">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-3">
+      <div className="mx-auto grid max-w-7xl gap-8 px-5 py-14 sm:px-8 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="font-display text-xl font-semibold">
             {siteMeta.name}
             <span className="text-accent">.</span>
           </div>
-          <p className="mt-2 text-sm text-paper/60">
-            {siteMeta.title} — {siteMeta.location}
+          <p className="mt-2 text-sm text-paper/70">
+            {siteMeta.title}
+          </p>
+          <p className="mt-1 text-xs text-paper/50">
+            Available 100% Remotely Worldwide & Local Studio in Ahmedabad.
           </p>
           <p className="mt-3 font-spec text-xs tracking-wide text-paper/40 uppercase">
             Ahmedabad, India · <LiveClock />
           </p>
+        </div>
+
+        <div>
+          <p className="text-xs font-semibold tracking-wide text-paper/40 uppercase">Design Studio</p>
+          <div className="mt-3 text-xs leading-relaxed text-paper/70 flex flex-col gap-1">
+            <p className="font-semibold text-paper/90">{siteMeta.officeAddress.line1}</p>
+            <p>{siteMeta.officeAddress.line2}</p>
+            <p>{siteMeta.officeAddress.area}</p>
+            <a
+              href={siteMeta.googleMapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-2 inline-flex items-center gap-1.5 text-accent hover:underline font-medium"
+            >
+              <span>📍 View on Google Maps →</span>
+            </a>
+          </div>
         </div>
 
         <div>

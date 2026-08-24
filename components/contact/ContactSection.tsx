@@ -126,6 +126,81 @@ export function ContactSection() {
           </MagneticButton>
         </div>
       </Reveal>
+
+      {/* Studio Location & Google Maps Section */}
+      <Reveal className="mx-auto mt-16 max-w-4xl" delay={0.15}>
+        <div className="overflow-hidden rounded-[2.5rem] border border-line bg-paper p-8 sm:p-10 shadow-lg">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
+            {/* Left: Address & Studio Details */}
+            <div className="lg:col-span-6 flex flex-col justify-between h-full">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 font-spec text-[10px] font-bold text-accent uppercase">
+                    📍 Design Studio · Ahmedabad
+                  </span>
+                  <span className="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 font-spec text-[10px] font-semibold text-emerald-700 uppercase">
+                    Remote Worldwide
+                  </span>
+                </div>
+
+                <h3 className="mt-4 font-display text-2xl font-bold text-ink sm:text-3xl">
+                  Visit the Studio
+                </h3>
+
+                <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                  While most packaging and design work is handled 100% remotely for clients across India and globally, you can also connect at my design studio for in-person project discussions.
+                </p>
+
+                <div className="mt-6 rounded-2xl bg-paper-raised p-4 border border-line/60">
+                  <p className="font-display text-sm font-bold text-ink">
+                    {siteMeta.officeAddress.line1}
+                  </p>
+                  <p className="mt-0.5 text-xs text-ink-soft">
+                    {siteMeta.officeAddress.line2}
+                  </p>
+                  <p className="mt-0.5 text-xs font-semibold text-ink">
+                    {siteMeta.officeAddress.area}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <a
+                  href={siteMeta.googleMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-xs font-semibold text-paper hover:bg-accent transition-colors shadow-sm"
+                >
+                  <span>🗺️ Open in Google Maps</span>
+                </a>
+                <a
+                  href={whatsappLink(siteMeta.whatsapp, "Hi Amee, I would like to schedule an in-person / remote meeting to discuss a project.")}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-4 py-2.5 text-xs font-semibold text-ink-soft hover:text-ink hover:border-ink/40 transition-colors"
+                >
+                  <span>📅 Book an Appointment</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Right: Interactive Google Map Embed */}
+            <div className="lg:col-span-6 overflow-hidden rounded-2xl border border-line bg-paper-raised h-[260px] sm:h-[300px] relative shadow-inner">
+              <iframe
+                title="Amee Patel Graphic Design Studio Location"
+                src={siteMeta.googleMapsEmbedUrl}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={false}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full grayscale-[20%] contrast-[105%]"
+              />
+            </div>
+          </div>
+        </div>
+      </Reveal>
     </section>
   );
 }

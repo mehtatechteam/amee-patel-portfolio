@@ -1,8 +1,12 @@
-import { whyPartner } from "@/lib/constants/site-copy";
-import { testimonials } from "@/lib/constants/testimonials";
+"use client";
+
+import { useState } from "react";
+import { whyPartner, siteMeta } from "@/lib/constants/site-copy";
+import { testimonials as initialTestimonials, Testimonial } from "@/lib/constants/testimonials";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionIndex } from "@/components/motifs/SectionIndex";
 import { StampBadge } from "@/components/motifs/StampBadge";
+import { WriteReviewModal } from "@/components/testimonials/WriteReviewModal";
 
 const cardExtras = [
   { badge: "Est. 2001", footer: "Parth Offset (2001–2012) · Freelance (2012–Present)" },
@@ -16,6 +20,43 @@ const cardClass =
 export function WhyPartnerSection() {
   const [expertise, printReady, approachable] = whyPartner.items;
   const [yearsStat, revisionsStat, advanceStat] = whyPartner.stats;
+  const [reviewList, setReviewList] = useState<Testimonial[]>(initialTestimonials);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddReview = (newReview: {
+    name: string;
+    company: string;
+    project: string;
+    content: string;
+    rating: number;
+  }) => {
+    const initials = newReview.name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+
+    const colors = ["bg-amber-600", "bg-emerald-600", "bg-sky-600", "bg-purple-600", "bg-rose-600"];
+    const avatarBg = colors[Math.floor(Math.random() * colors.length)];
+
+    const item: Testimonial = {
+      id: `user-${Date.now()}`,
+      name: newReview.name,
+      role: "Client",
+      company: newReview.company,
+      project: newReview.project,
+      content: newReview.content,
+      rating: newReview.rating,
+      date: "Just now",
+      verified: true,
+      source: "Verified Client",
+      avatarBg,
+      initials: initials || "CL",
+    };
+
+    setReviewList((prev) => [item, ...prev]);
+  };
 
   return (
     <section className="bg-paper-raised px-5 py-28 sm:px-8 sm:py-36">
@@ -87,70 +128,111 @@ export function WhyPartnerSection() {
           </div>
         </Reveal>
 
-        {/* Client Reviews / Testimonials Section */}
+        {/* Client Reviews & Testimonials Corner */}
         <div className="mt-28 border-t border-line/70 pt-20">
           <Reveal>
-            <div className="flex flex-wrap items-end justify-between gap-4">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div>
-                <span className="font-spec text-xs font-semibold tracking-wider text-accent uppercase">
-                  Client Feedback
-                </span>
-                <h3 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-                  What Clients Say
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 font-spec text-[11px] font-bold text-amber-700 uppercase">
+                    <span className="text-amber-500">★</span> 5.0 Google Rating · Verified Studio
+                  </span>
+                </div>
+                <h3 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+                  Client Reviews & Testimonials Corner
                 </h3>
+                <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">
+                  Real feedback from pharma manufacturers, real estate developers, and brand owners across India & worldwide.
+                </p>
               </div>
-              <p className="max-w-md text-sm text-ink-soft">
-                Real reviews from brand owners, pharmaceutical manufacturers, and businesses across India.
-              </p>
+
+              {/* Action Buttons: Write a Review & Google Profile */}
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(true)}
+                  className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-semibold text-paper shadow-md transition-all hover:bg-accent hover:shadow-lg"
+                >
+                  <span>✍️ Write a Review</span>
+                </button>
+                <a
+                  href={siteMeta.googleMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-ink/40 hover:bg-paper-raised"
+                >
+                  <span>📍 Studio Location</span>
+                </a>
+              </div>
             </div>
           </Reveal>
 
+          {/* Testimonial Cards Grid */}
           <Reveal className="mt-12 grid gap-6 md:grid-cols-2" delay={0.15}>
-            {testimonials.map((t) => (
+            {reviewList.map((t) => (
               <div
                 key={t.id}
                 className="group relative flex flex-col justify-between rounded-3xl border border-line bg-paper p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:p-8"
               >
                 <div>
-                  {/* Top Bar: Stars + Project Chip */}
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-1 text-amber-500" aria-label={`${t.rating} out of 5 stars`}>
-                      {[...Array(t.rating)].map((_, idx) => (
-                        <svg key={idx} width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                        </svg>
-                      ))}
+                  {/* Top Bar: Stars + Source / Project Chip */}
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1 text-amber-500" aria-label={`${t.rating} out of 5 stars`}>
+                        {[...Array(t.rating)].map((_, idx) => (
+                          <svg key={idx} width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                          </svg>
+                        ))}
+                      </div>
+                      <span className="font-display text-xs font-bold text-ink">{t.rating}.0</span>
                     </div>
-                    <span className="rounded-full bg-paper-raised px-3 py-1 font-spec text-[10px] font-semibold text-ink-faint uppercase">
-                      {t.project}
-                    </span>
+
+                    <div className="flex items-center gap-1.5">
+                      <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 font-spec text-[9px] font-bold text-emerald-700 uppercase">
+                        ✓ {t.source}
+                      </span>
+                      <span className="rounded-full bg-paper-raised px-2.5 py-0.5 font-spec text-[9px] font-semibold text-ink-faint uppercase">
+                        {t.project}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Quote */}
-                  <blockquote className="mt-6 text-[15px] leading-relaxed text-ink-soft">
+                  <blockquote className="mt-5 text-[15px] leading-relaxed text-ink-soft">
                     &ldquo;{t.content}&rdquo;
                   </blockquote>
                 </div>
 
                 {/* Client Profile Footer */}
-                <div className="mt-7 flex items-center gap-3.5 border-t border-line/60 pt-5">
-                  <div
-                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm ${t.avatarBg}`}
-                  >
-                    {t.initials}
+                <div className="mt-7 flex items-center justify-between border-t border-line/60 pt-5">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm ${t.avatarBg}`}
+                    >
+                      {t.initials}
+                    </div>
+                    <div>
+                      <p className="font-display text-sm font-bold text-ink">{t.name}</p>
+                      <p className="text-xs text-ink-soft">
+                        {t.role} · <span className="font-semibold text-ink">{t.company}</span>
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-display text-sm font-bold text-ink">{t.name}</p>
-                    <p className="text-xs text-ink-soft">
-                      {t.role} · <span className="font-medium text-ink">{t.company}</span>
-                    </p>
-                  </div>
+                  <span className="font-spec text-[10px] text-ink-faint">{t.date}</span>
                 </div>
               </div>
             ))}
           </Reveal>
         </div>
       </div>
+
+      {/* Interactive Write Review Modal */}
+      <WriteReviewModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAddReview={handleAddReview}
+      />
     </section>
   );
 }

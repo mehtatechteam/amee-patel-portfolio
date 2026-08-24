@@ -62,6 +62,11 @@ export function DesignerSpecCard() {
             Years — Print-Ready Every Time
           </span>
         </div>
+
+        <div className="mt-4 rounded-xl bg-paper px-3 py-2 border border-line/60 flex items-center justify-between text-[11px] text-ink-soft">
+          <span className="font-medium text-ink">📍 Ahmedabad Studio</span>
+          <span className="font-spec text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-bold">100% REMOTE</span>
+        </div>
       </div>
     </div>
   );

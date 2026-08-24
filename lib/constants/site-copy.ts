@@ -8,7 +8,18 @@ export const siteMeta = {
   name: "Amee Patel",
   title: "Graphic Designer",
   tagline: "Creative Design. Print-Ready Perfection.",
-  location: "India — available for remote work",
+  location: "Remote Worldwide · Studio in Ahmedabad, India",
+  workMode: "100% Remote Available Worldwide · Physical Design Studio in Ahmedabad",
+  officeAddress: {
+    line1: "FF-12, OMKAR LOTUS",
+    line2: "Opp. SMVS Swaminarayan Temple, Motera to Chandkheda Road",
+    area: "Chandkheda, Ahmedabad — 382424, Gujarat, India",
+    full: "FF-12, OMKAR LOTUS, Opp. SMVS Swaminarayan Temple, Motera to Chandkheda Road, Chandkheda, Ahmedabad — 382424",
+  },
+  googleMapsUrl:
+    "https://maps.google.com/?q=FF-12+OMKAR+LOTUS+Opposite+SMVS+Swaminarayan+Temple+Motera+to+Chandkheda+Road+Chandkheda+Ahmedabad+382424",
+  googleMapsEmbedUrl:
+    "https://maps.google.com/maps?q=FF-12+OMKAR+LOTUS+Opposite+SMVS+Swaminarayan+Temple+Motera+to+Chandkheda+Road+Chandkheda+Ahmedabad+382424&t=&z=15&ie=UTF8&iwloc=&output=embed",
   email: "amiptl4@gmail.com",
   whatsapp: "919512155717",
   whatsappDisplay: "+91 95121 55717",
