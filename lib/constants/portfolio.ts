@@ -62,6 +62,18 @@ export const portfolioItems: PortfolioItem[] = [
     cardAspect: "wide",
   },
   {
+    slug: "kenheal-healthcare-wellness",
+    title: "Kenheal Healthcare — Clinical Nutrition & Wellness Portfolio",
+    client: "Kenheal Healthcare",
+    category: "brand-literature",
+    tags: ["Pharmaceutical", "Visual Book", "Brand Literature"],
+    src: "/portfolio/brochures-catalogs/kenheal-healthcare-wellness-portfolio.png",
+    width: 1536,
+    height: 1024,
+    isFlagship: true,
+    cardAspect: "wide",
+  },
+  {
     slug: "npmakeover-bridal-catalog",
     title: "NP's Makeover — Bridal Package Catalog",
     client: "NP's Makeover",
