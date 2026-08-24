@@ -6,20 +6,37 @@ import { siteMeta } from "@/lib/constants/site-copy";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#services", label: "Services" },
-  { href: "#portfolio", label: "Portfolio" },
-  { href: "#process", label: "Process" },
-  { href: "#contact", label: "Contact" },
+  { href: "#home", id: "home", label: "HOME" },
+  { href: "#about", id: "about", label: "ABOUT" },
+  { href: "#services", id: "services", label: "SERVICES" },
+  { href: "#portfolio", id: "portfolio", label: "PORTFOLIO" },
+  { href: "#process", id: "process", label: "PROCESS" },
+  { href: "#contact", id: "contact", label: "CONTACT" },
 ];
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+
+      const sectionElements = links
+        .map((l) => document.getElementById(l.id))
+        .filter((el): el is HTMLElement => el !== null);
+
+      const scrollPos = window.scrollY + 200;
+      for (let i = sectionElements.length - 1; i >= 0; i--) {
+        const el = sectionElements[i];
+        if (el.offsetTop <= scrollPos) {
+          setActiveSection(el.id);
+          break;
+        }
+      }
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -49,16 +66,22 @@ export function Nav() {
         </Link>
 
         {/* Desktop Navigation Links matching exact order requested */}
-        <nav className="hidden items-center gap-7 lg:gap-8 md:flex">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="font-body text-xs lg:text-sm font-semibold tracking-wider uppercase text-ink-soft transition-colors hover:text-accent"
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="hidden items-center gap-7 lg:gap-9 md:flex">
+          {links.map((link) => {
+            const isActive = activeSection === link.id;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "font-body text-xs lg:text-sm font-semibold tracking-wider transition-colors uppercase",
+                  isActive ? "text-accent font-bold" : "text-ink-soft hover:text-accent"
+                )}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-3">
