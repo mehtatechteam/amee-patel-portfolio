@@ -7,6 +7,7 @@ import { gsap, Flip } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useAssetPreloader } from "./useAssetPreloader";
 import { siteMeta } from "@/lib/constants/site-copy";
+import { LOADING_SCREEN_DONE_EVENT } from "@/lib/loadingScreenEvent";
 
 const SAFETY_TIMEOUT_MS = 6000;
 
@@ -53,6 +54,12 @@ export function LoadingScreen() {
   function finish() {
     if (finishedRef.current) return;
     finishedRef.current = true;
+
+    // Let other components (the hero's registration-snap entrance) sync
+    // their own one-time animation to this moment instead of guessing a
+    // fixed delay against a preload time that varies by network/device.
+    window.__loadingScreenDone = true;
+    window.dispatchEvent(new Event(LOADING_SCREEN_DONE_EVENT));
 
     const unlock = () => {
       setHidden(true);

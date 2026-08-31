@@ -24,13 +24,21 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
     const container = containerRef.current;
     if (!container || reducedMotion) return;
 
+    // Establish x/y/z/rotateX/rotateY together on one clean baseline before
+    // handing out individual quickTo setters per property — without this,
+    // GSAP logs "rotateX not eligible for reset" on every hover because it
+    // has no combined-transform baseline to reset against.
+    cardRefs.current.forEach((card) => {
+      if (card) gsap.set(card, { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0 });
+    });
+
     const setters = cardRefs.current.map((card) =>
       card
         ? {
-            x: gsap.quickTo(card, "x", { duration: 0.6, ease: "power3" }),
-            y: gsap.quickTo(card, "y", { duration: 0.6, ease: "power3" }),
-            rotateX: gsap.quickTo(card, "rotateX", { duration: 0.6, ease: "power3" }),
-            rotateY: gsap.quickTo(card, "rotateY", { duration: 0.6, ease: "power3" }),
+            x: gsap.quickTo(card, "x", { duration: 0.6, ease: "power3", force3D: true }),
+            y: gsap.quickTo(card, "y", { duration: 0.6, ease: "power3", force3D: true }),
+            rotateX: gsap.quickTo(card, "rotateX", { duration: 0.6, ease: "power3", force3D: true }),
+            rotateY: gsap.quickTo(card, "rotateY", { duration: 0.6, ease: "power3", force3D: true }),
           }
         : null,
     );

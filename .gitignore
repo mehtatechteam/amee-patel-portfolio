@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# claude-in-chrome / playwright MCP debug console logs
+/.playwright-mcp/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

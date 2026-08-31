@@ -1,5 +1,106 @@
-import { CreativeHeroSlider } from "./CreativeHeroSlider";
+import Image from "next/image";
+import Link from "next/link";
+import { hero } from "@/lib/constants/site-copy";
+import { portfolioItems } from "@/lib/constants/portfolio";
+import { KineticWordmark } from "./KineticWordmark";
+import { HeroParallaxCollage } from "./HeroParallaxCollage";
+import { RegistrationMark } from "@/components/motifs/RegistrationMark";
+import { InkTrailCanvas } from "./InkTrailCanvas";
+
+const collage = [
+  { item: portfolioItems.find((i) => i.slug === "medween-pharma-box")!, rotate: "-rotate-6", cls: "top-6 left-2 w-[44%]", depth: 1.4 },
+  { item: portfolioItems.find((i) => i.slug === "lilaura-lavender")!, rotate: "rotate-4", cls: "top-0 right-2 w-[48%]", depth: 1.0 },
+  { item: portfolioItems.find((i) => i.slug === "madburgs-burger-box")!, rotate: "-rotate-2", cls: "bottom-0 right-10 w-[54%]", depth: 0.7 },
+];
+
+// 4-image fanned collage for phones/tablets — the full desktop collage is
+// `hidden` below `lg`. Deliberately a different set of images than the
+// desktop `collage` array above (medween/lilaura-lavender/madburgs):
+// next/image silently fails to load when the same `src` appears twice in
+// one component tree with different fill/priority configs, confirmed
+// live earlier in this project, so mobile and desktop never share a slug.
+// Picked naturally portrait/square source images (not the wide
+// "cardAspect: wide" product-range shots) to minimize object-cover crop.
+const mobileCollage = [
+  { item: portfolioItems.find((i) => i.slug === "littlegrow-baby-cereal")!, rotate: "-rotate-6", cls: "top-0 left-0 w-32", z: "z-10" },
+  { item: portfolioItems.find((i) => i.slug === "siriza-herbal-soap")!, rotate: "rotate-4", cls: "top-4 right-0 w-28", z: "z-20" },
+  { item: portfolioItems.find((i) => i.slug === "lilaura-oudh")!, rotate: "rotate-3", cls: "bottom-6 left-10 w-32", z: "z-30" },
+  { item: portfolioItems.find((i) => i.slug === "paracetamol-syrup-pediatric")!, rotate: "-rotate-4", cls: "bottom-0 right-6 w-28", z: "z-20" },
+];
+
+// Real client names, pulled from the actual portfolio data below (not
+// invented) — grounds the empty space under the CTAs with quick proof
+// rather than a decorative claim we can't back up.
+const featuredClients = ["Medween", "Kenheal", "Lil'Aura", "Madburgs", "Globiomed"];
 
 export function Hero() {
-  return <CreativeHeroSlider />;
+  return (
+    <section id="home" className="relative overflow-hidden px-5 pt-20 pb-28 sm:px-8 sm:pt-28 sm:pb-32">
+      <RegistrationMark className="absolute top-6 left-6 hidden lg:block" />
+      <RegistrationMark className="absolute right-6 bottom-10 hidden lg:block" />
+      <InkTrailCanvas />
+
+      <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1fr_1.15fr] lg:items-center xl:max-w-none xl:grid-cols-[1fr_1.3fr]">
+        <div className="relative z-10">
+          <span className="inline-flex items-center gap-2 rounded-full bg-paper-raised px-4 py-1.5 text-xs font-medium text-ink-soft">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
+            {hero.eyebrow}
+          </span>
+
+          <div className="mt-7">
+            <KineticWordmark lines={hero.heading.split("\n")} accentLine={1} />
+          </div>
+
+          <p className="mt-7 max-w-lg text-lg leading-relaxed text-ink-soft">{hero.body}</p>
+
+          <div className="mt-9 flex flex-wrap items-center gap-4">
+            <Link
+              href={hero.ctaPrimary.href}
+              className="rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-paper transition-all duration-300 hover:scale-[1.03] hover:bg-accent"
+            >
+              {hero.ctaPrimary.label}
+            </Link>
+            <Link
+              href={hero.ctaSecondary.href}
+              className="group inline-flex items-center gap-1.5 rounded-full border border-ink/15 px-7 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-ink hover:bg-paper-raised"
+            >
+              {hero.ctaSecondary.label}
+              <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                ↗
+              </span>
+            </Link>
+          </div>
+
+          <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line pt-6">
+            <span className="font-spec text-[11px] font-semibold tracking-wider text-ink-faint uppercase">
+              Featured Clients
+            </span>
+            <p className="text-xs font-semibold text-ink-soft">{featuredClients.join(" · ")}</p>
+          </div>
+
+          <div className="relative mt-12 h-64 sm:h-72 lg:hidden">
+            {mobileCollage.map(({ item, rotate, cls, z }) => (
+              <div
+                key={item.slug}
+                className={`absolute overflow-hidden rounded-2xl shadow-[0_25px_50px_-20px_rgba(0,0,0,0.3)] sm:w-36 ${rotate} ${cls} ${z}`}
+              >
+                <Image
+                  src={item.src}
+                  alt={item.title}
+                  width={160}
+                  height={200}
+                  priority
+                  className="h-auto w-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative">
+          <HeroParallaxCollage collage={collage} />
+        </div>
+      </div>
+    </section>
+  );
 }
