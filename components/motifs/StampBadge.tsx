@@ -8,7 +8,7 @@ export function StampBadge({ label, className }: { label: string; className?: st
   return (
     <span
       className={cn(
-        "inline-flex w-fit shrink-0 items-center rounded-full bg-accent-soft px-3 py-1.5 font-spec text-[10px] font-bold tracking-wide text-accent uppercase",
+        "inline-flex w-fit shrink-0 items-center rounded-full bg-accent-soft px-3 py-1.5 font-spec text-[10px] font-normal tracking-wide text-accent uppercase",
         className,
       )}
     >

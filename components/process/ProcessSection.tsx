@@ -8,7 +8,7 @@ export function ProcessSection() {
     <section id="process" className="scroll-mt-24 px-5 py-28 sm:scroll-mt-28 sm:px-8 sm:py-36">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionIndex index="04" label="PROCESS" meta="FROM BRIEF TO PRINT" />
+          <SectionIndex index="05" label="PROCESS" meta="FROM BRIEF TO PRINT" />
           <h2 className="max-w-2xl font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
             From Brief to Print
           </h2>
@@ -18,7 +18,7 @@ export function ProcessSection() {
           {processSteps.map((step) => (
             <div key={step.index} className="relative bg-paper p-8">
               <RegistrationMark className="absolute top-6 right-6" />
-              <span className="font-spec text-sm font-bold text-accent">{step.index}</span>
+              <span className="font-spec text-sm font-normal tracking-wide text-accent">{step.index}</span>
               <h3 className="mt-4 font-display text-lg font-semibold text-ink">{step.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-ink-soft">{step.body}</p>
             </div>

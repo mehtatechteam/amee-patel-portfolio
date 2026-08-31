@@ -36,10 +36,14 @@ export function ProjectModal({
   const triggerRef = useRef<HTMLElement | null>(null);
   const [zoomed, setZoomed] = useState(false);
 
-  // Reset zoom when item changes
-  useEffect(() => {
+  // Reset zoom when item changes — adjusted during render (React's recommended
+  // pattern) instead of in an effect, to avoid a synchronous setState-in-effect
+  // cascading render.
+  const [prevItem, setPrevItem] = useState(item);
+  if (item !== prevItem) {
+    setPrevItem(item);
     setZoomed(false);
-  }, [item]);
+  }
 
   const currentIndex = items && item ? items.findIndex((i) => i.slug === item.slug) : -1;
   const hasPrev = items && currentIndex > 0;
@@ -269,7 +273,7 @@ export function ProjectModal({
             </div>
 
             <div className="mt-6 border-t border-line pt-5">
-              <p className="font-spec text-[11px] font-semibold tracking-wider text-ink-faint uppercase">
+              <p className="font-spec text-[11px] font-normal tracking-wider text-ink-faint uppercase">
                 Production Standards
               </p>
               <div className="mt-3 flex flex-wrap gap-2">

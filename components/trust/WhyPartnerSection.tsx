@@ -7,6 +7,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { SectionIndex } from "@/components/motifs/SectionIndex";
 import { StampBadge } from "@/components/motifs/StampBadge";
 import { WriteReviewModal } from "@/components/testimonials/WriteReviewModal";
+import { Icon } from "@/lib/icons";
 
 const cardExtras = [
   { badge: "Est. 2001", footer: "Parth Offset (2001–2012) · Freelance (2012–Present)" },
@@ -59,10 +60,10 @@ export function WhyPartnerSection() {
   };
 
   return (
-    <section className="bg-paper-raised px-5 py-28 sm:px-8 sm:py-36">
+    <section id="trust" className="scroll-mt-24 bg-paper-raised px-5 py-28 sm:scroll-mt-28 sm:px-8 sm:py-36">
       <div className="mx-auto max-w-7xl">
         <Reveal>
-          <SectionIndex index="05" label="TRUST" meta="WHY PARTNER WITH ME" />
+          <SectionIndex index="06" label="TRUST" meta="WHY PARTNER WITH ME" />
           <h2 className="max-w-2xl font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
             {whyPartner.heading}
           </h2>
@@ -134,7 +135,7 @@ export function WhyPartnerSection() {
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 font-spec text-[11px] font-bold text-amber-700 uppercase">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 font-spec text-[11px] font-normal tracking-wide text-amber-700 uppercase">
                     <span className="text-amber-500">★</span> 5.0 Google Rating · Verified Studio
                   </span>
                 </div>
@@ -153,7 +154,8 @@ export function WhyPartnerSection() {
                   onClick={() => setIsModalOpen(true)}
                   className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-semibold text-paper shadow-md transition-all hover:bg-accent hover:shadow-lg"
                 >
-                  <span>✍️ Write a Review</span>
+                  <Icon name="pen" width={15} height={15} className="shrink-0" />
+                  <span>Write a Review</span>
                 </button>
                 <a
                   href={siteMeta.googleMapsUrl}
@@ -161,7 +163,8 @@ export function WhyPartnerSection() {
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-ink/40 hover:bg-paper-raised"
                 >
-                  <span>📍 Studio Location</span>
+                  <Icon name="pin" width={15} height={15} className="shrink-0" />
+                  <span>Studio Location</span>
                 </a>
               </div>
             </div>
@@ -189,10 +192,10 @@ export function WhyPartnerSection() {
                     </div>
 
                     <div className="flex items-center gap-1.5">
-                      <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 font-spec text-[9px] font-bold text-emerald-700 uppercase">
+                      <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 font-spec text-[11px] font-normal tracking-wide text-emerald-700 uppercase">
                         ✓ {t.source}
                       </span>
-                      <span className="rounded-full bg-paper-raised px-2.5 py-0.5 font-spec text-[9px] font-semibold text-ink-faint uppercase">
+                      <span className="rounded-full bg-paper-raised px-2.5 py-0.5 font-spec text-[11px] font-normal tracking-wide text-ink-faint uppercase">
                         {t.project}
                       </span>
                     </div>

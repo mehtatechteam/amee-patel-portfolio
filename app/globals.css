@@ -68,6 +68,18 @@ body {
   color: var(--color-paper);
 }
 
+/*
+ * Native cursor is hidden only once DesignCursor (components/motion/
+ * DesignCursor.tsx) has confirmed, post-mount, that the device is a
+ * fine-pointer / motion-tolerant one and has toggled this class onto
+ * <html>. Never hidden by default — a touch or reduced-motion visitor
+ * must always keep a visible pointer.
+ */
+html.custom-cursor-active,
+html.custom-cursor-active * {
+  cursor: none !important;
+}
+
 @keyframes marquee {
   from {
     transform: translateX(0);

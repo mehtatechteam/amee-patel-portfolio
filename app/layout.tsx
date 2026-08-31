@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, Archivo, Space_Mono } from "next/font/google";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { LoadingScreen } from "@/components/loading/LoadingScreen";
+import { DesignCursor } from "@/components/motion/DesignCursor";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -29,7 +30,7 @@ const spaceMono = Space_Mono({
 // host and won't actually load when scraped by Slack/WhatsApp/etc.
 const SITE_URL = "https://ameepatel.design";
 
-const title = "Amee Patel — Graphic Designer | Print-Ready Packaging, Branding & Print Design";
+const title = "Amee Patel — Graphic Designer | Pharmaceutical & Print-Ready Packaging Design";
 const description =
   "Freelance graphic designer with 10+ years of experience in pharmaceutical & food packaging, branding, brochures, and print-ready design. Based in India, working with clients worldwide.";
 
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-paper text-ink font-body">
         <SmoothScrollProvider>
           <LoadingScreen />
+          <DesignCursor />
           {children}
         </SmoothScrollProvider>
       </body>

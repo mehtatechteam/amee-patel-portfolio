@@ -76,6 +76,25 @@ export const whyPartner = {
   ],
 };
 
+// Sourced from docs/client-requirements.md → "Addendum — 2026-08-31:
+// Pharmaceutical & healthcare packaging repositioning". Derived from facts
+// already established elsewhere in that doc — no new claims, no
+// regulatory-body language (CDSCO/ISO/GMP) until Amee confirms she designs
+// to those standards, no fabricated testimonials or stats.
+export const pharma = {
+  eyebrow: "Specialization",
+  heading: "Pharmaceutical & Healthcare Packaging",
+  intro:
+    "Regulatory medicine boxes and clinical/wellness literature are where precision matters most — exact dielines, accurate label copy, and print files your manufacturer can run without a single back-and-forth. It's a specialty within my packaging practice, built on the same print-ready guarantee as everything else I design.",
+  ctaLabel: "Discuss a pharma packaging project",
+  whatsappMessage: "Hi Amee, I'd like to discuss a pharmaceutical/healthcare packaging project.",
+  trustPoints: [
+    "Exact dielines & bleeds",
+    "Accurate, print-checked label copy",
+    "Print-ready files your manufacturer can run as-is",
+  ],
+};
+
 export const contact = {
   heading: "Let's create something amazing.",
   body: "Have a project in mind? Message me on WhatsApp or drop an email — I usually reply within a day.",

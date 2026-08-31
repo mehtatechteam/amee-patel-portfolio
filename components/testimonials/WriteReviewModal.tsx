@@ -88,7 +88,7 @@ export function WriteReviewModal({ isOpen, onClose, onAddReview }: WriteReviewMo
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
-              <span className="font-spec text-[11px] font-bold tracking-wider text-accent uppercase">
+              <span className="font-spec text-[11px] font-normal tracking-wider text-accent uppercase">
                 Client Review Corner
               </span>
               <h3 id="write-review-title" className="mt-1 font-display text-2xl font-bold text-ink">

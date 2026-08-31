@@ -9,6 +9,8 @@ export type PortfolioItem = {
   src: string;
   width: number;
   height: number;
+  /** Optional 2-3 sentence "what it needed → what was designed" narrative — sourced from docs/client-requirements.md, no invented outcomes/stats */
+  description?: string;
   /** Curated for the flagship / featured showcase */
   isFlagship?: boolean;
   /** Portrait (default) vs wide — set "wide" for landscape source photos */
@@ -37,6 +39,8 @@ export const portfolioItems: PortfolioItem[] = [
     width: 1122,
     height: 1402,
     isFlagship: true,
+    description:
+      "A pediatric paracetamol syrup carton needed dosage and usage information to read clearly at a glance, plus a friendlier, more approachable visual tone than a typical adult medicine box. The design keeps that label hierarchy simple and legible while working within the exact dieline and print-ready specs the format requires.",
   },
   {
     slug: "paracetamol-tablets-blue",
@@ -48,6 +52,8 @@ export const portfolioItems: PortfolioItem[] = [
     width: 1402,
     height: 1122,
     cardAspect: "wide",
+    description:
+      "A 10x10 tablet strip carton needed to read clearly as a standard pharmaceutical pack — accurate strength and count labeling — built to the exact dieline the printer runs against. The blue wave graphic gives the pack a distinct shelf identity within an otherwise text-heavy, regulated layout.",
   },
   {
     slug: "shri-hanuman-realty-dholera",
@@ -72,6 +78,8 @@ export const portfolioItems: PortfolioItem[] = [
     height: 1024,
     isFlagship: true,
     cardAspect: "wide",
+    description:
+      "Kenheal Healthcare needed a full-booklet visual book — cover through inner pages — that presents its clinical nutrition and wellness brand with a consistent, professional layout. It follows the same company-literature format used for other technical/medical literature in this practice.",
   },
   {
     slug: "npmakeover-bridal-catalog",
@@ -95,6 +103,8 @@ export const portfolioItems: PortfolioItem[] = [
     width: 1024,
     height: 1024,
     isFlagship: true,
+    description:
+      "A pharma bottle carton for Medween needed to present accurate, compliant product labeling within a compact bottle-box dieline. It was finished to the same print-ready standard — exact bleeds and color profiles — used across the rest of the packaging practice.",
   },
   {
     slug: "lilaura-lavender",
@@ -180,6 +190,8 @@ export const portfolioItems: PortfolioItem[] = [
     width: 1536,
     height: 1024,
     cardAspect: "wide",
+    description:
+      "A research powder carton for PeptidesDepot needed clear product identification suited to a laboratory/research-use product, distinct in tone from a retail medicine box. It was built to the same precise dieline and print-ready file standard as the rest of the packaging work.",
   },
   {
     slug: "taj-wood-paint-tin",
@@ -238,9 +250,10 @@ export const portfolioItems: PortfolioItem[] = [
   },
 ];
 
-export const portfolioFilters: { label: string; value: "all" | PortfolioCategory }[] = [
+export const portfolioFilters: { label: string; value: "all" | PortfolioCategory | "pharma" }[] = [
   { label: "All Work", value: "all" },
   { label: "Packaging", value: "packaging" },
   { label: "Brand Literature", value: "brand-literature" },
   { label: "Logos & Branding", value: "logos" },
+  { label: "Pharma & Healthcare", value: "pharma" },
 ];

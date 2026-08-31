@@ -5,6 +5,7 @@ import { Hero } from "@/components/hero/Hero";
 import { Marquee } from "@/components/motifs/Marquee";
 import { AboutSection } from "@/components/about/AboutSection";
 import { ServicesSection } from "@/components/services/ServicesSection";
+import { PharmaSpecializationSection } from "@/components/pharma/PharmaSpecializationSection";
 import { PortfolioSection } from "@/components/portfolio/PortfolioSection";
 import { ProcessSection } from "@/components/process/ProcessSection";
 import { WhyPartnerSection } from "@/components/trust/WhyPartnerSection";
@@ -36,6 +37,9 @@ export default function Home() {
 
         {/* 3. Services */}
         <ServicesSection />
+
+        {/* 3.5. Pharmaceutical & Healthcare Packaging specialization */}
+        <PharmaSpecializationSection />
 
         {/* 4. Portfolio / Archive with new photos & Organic Amla Box */}
         <PortfolioSection />

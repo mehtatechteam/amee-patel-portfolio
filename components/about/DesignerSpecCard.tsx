@@ -1,5 +1,6 @@
 import { CMYKSwatch } from "@/components/motifs/CMYKSwatch";
 import { RegistrationMark } from "@/components/motifs/RegistrationMark";
+import { Icon } from "@/lib/icons";
 
 const tools = ["CorelDRAW", "Photoshop", "Canva"];
 
@@ -35,7 +36,7 @@ export function DesignerSpecCard() {
 
         <div className="mt-6 flex items-center justify-between">
           <div className="flex h-16 w-16 -rotate-3 items-center justify-center rounded-full border-2 border-dashed border-ink/40">
-            <span className="font-spec text-[9px] leading-tight font-bold text-ink-soft uppercase">
+            <span className="font-spec text-[9px] leading-tight font-normal tracking-wide text-ink-soft uppercase">
               SCFA
               <br />
               Alum
@@ -64,8 +65,11 @@ export function DesignerSpecCard() {
         </div>
 
         <div className="mt-4 rounded-xl bg-paper px-3 py-2 border border-line/60 flex items-center justify-between text-[11px] text-ink-soft">
-          <span className="font-medium text-ink">📍 Ahmedabad Studio</span>
-          <span className="font-spec text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-bold">100% REMOTE</span>
+          <span className="flex items-center gap-1 font-medium text-ink">
+            <Icon name="pin" width={13} height={13} className="shrink-0 text-accent" />
+            Ahmedabad Studio
+          </span>
+          <span className="font-spec text-[10px] tracking-wide text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-normal">100% REMOTE</span>
         </div>
       </div>
     </div>

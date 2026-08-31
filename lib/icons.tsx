@@ -86,6 +86,43 @@ export function IconPrinter(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function IconCapsule(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
+      <path d="m8.5 8.5 7 7" />
+    </svg>
+  );
+}
+
+export function IconPin(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z" />
+      <circle cx="12" cy="9.5" r="2.25" />
+    </svg>
+  );
+}
+
+export function IconMap(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M9 4 3 6.5v13L9 17l6 3 6-2.5v-13L15 7 9 4Z" />
+      <path d="M9 4v13M15 7v13" />
+    </svg>
+  );
+}
+
+export function IconCalendar(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M3 10h18M8 3v4M16 3v4" />
+      <path d="M7 14h3M7 17h3M14 14h3M14 17h3" />
+    </svg>
+  );
+}
+
 export const iconMap = {
   box: IconBox,
   document: IconDocument,
@@ -94,6 +131,10 @@ export const iconMap = {
   sparkle: IconSparkle,
   pen: IconPen,
   printer: IconPrinter,
+  capsule: IconCapsule,
+  pin: IconPin,
+  map: IconMap,
+  calendar: IconCalendar,
 } as const;
 
 export type IconName = keyof typeof iconMap;

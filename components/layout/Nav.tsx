@@ -9,8 +9,10 @@ const links = [
   { href: "#home", id: "home", label: "HOME" },
   { href: "#about", id: "about", label: "ABOUT" },
   { href: "#services", id: "services", label: "SERVICES" },
+  { href: "#pharma", id: "pharma", label: "PHARMA" },
   { href: "#portfolio", id: "portfolio", label: "PORTFOLIO" },
   { href: "#process", id: "process", label: "PROCESS" },
+  { href: "#trust", id: "trust", label: "TRUST" },
   { href: "#contact", id: "contact", label: "CONTACT" },
 ];
 
@@ -66,7 +68,7 @@ export function Nav() {
         </Link>
 
         {/* Desktop Navigation Links matching exact order requested */}
-        <nav className="hidden items-center gap-7 lg:gap-9 md:flex">
+        <nav className="hidden items-center gap-7 lg:flex lg:gap-9">
           {links.map((link) => {
             const isActive = activeSection === link.id;
             return (
@@ -97,7 +99,7 @@ export function Nav() {
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-paper-raised md:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-paper-raised lg:hidden"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
               {menuOpen ? (
@@ -113,7 +115,7 @@ export function Nav() {
       {/* Mobile drawer */}
       <div
         className={cn(
-          "overflow-hidden border-t border-ink/10 bg-paper transition-[grid-template-rows] duration-300 md:hidden",
+          "overflow-hidden border-t border-ink/10 bg-paper transition-[grid-template-rows] duration-300 lg:hidden",
           "grid",
           menuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
         )}

@@ -45,15 +45,27 @@ const slides: SlideData[] = [
   },
   {
     id: "print-ready",
-    badge: "Technical Precision · Production Ready",
+    badge: "Pharma & Healthcare Packaging · Production Ready",
     headingLines: ["PRINT-READY", "PERFECTION"],
     description:
-      "Zero headache for your printer. Every file is delivered with exact dielines, proper bleeds, CMYK profiles, and vector-sharp accuracy.",
+      "Zero headache for your printer. Every pharmaceutical and healthcare box ships with exact dielines, proper bleeds, CMYK profiles, and vector-sharp accuracy.",
     ctaText: "Explore Portfolio",
     ctaHref: "#portfolio",
     secondaryCtaText: "Our Process",
     secondaryCtaHref: "#process",
     theme: "print-perfection",
+  },
+  {
+    id: "software-craft",
+    badge: "Design Tools & Craft · Vector to Print",
+    headingLines: ["EVERY TOOL.", "PERFECTED."],
+    description:
+      "From first sketch to final color separation, every curve, layer, and swatch is refined by hand before a single file reaches the printer.",
+    ctaText: "See My Process",
+    ctaHref: "#process",
+    secondaryCtaText: "Get In Touch",
+    secondaryCtaHref: "#contact",
+    theme: "software-craft",
   },
 ];
 
@@ -125,9 +137,13 @@ export function CreativeHeroSlider() {
         aria-hidden="true"
       />
 
-      {/* 2. Hand-Drawn Animated Background Doodle Sketches (Light gray blueprint lines) */}
+      {/* 2. Hand-Drawn Animated Background Doodle Sketches (Light gray blueprint lines).
+          No viewBox — coordinates map 1:1 to CSS px and were tuned for a
+          ~1440px desktop canvas, so they collide with real content at
+          mobile widths. Desktop-only until the doodle layout is redone
+          with a proper viewBox. */}
       <svg
-        className="absolute inset-0 w-full h-full pointer-events-none opacity-25"
+        className="absolute inset-0 hidden w-full h-full pointer-events-none opacity-25 lg:block"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
       >
@@ -359,6 +375,7 @@ export function CreativeHeroSlider() {
                         fill
                         className="object-contain"
                         sizes="(max-width: 640px) 288px, 448px"
+                        priority
                       />
                     </div>
                   </div>
@@ -492,6 +509,132 @@ export function CreativeHeroSlider() {
                     </div>
                     <div className="font-spec text-[9px] text-ink-faint uppercase tracking-wider">
                       Exact Bleeds & Creases
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* SLIDE 4: Layered Design Craft — Layers Stack (center) + Vector Pen, CMYK Swatch Fan, Stylus Trail, Eyedropper, Kinetic Letterform */}
+            {slide.theme === "software-craft" && (
+              <div className="relative w-full h-full flex items-center justify-center min-h-[380px] sm:min-h-[460px]">
+                {/* 1. Layers Stack (Center, largest — emblematic of the craft) */}
+                <div
+                  className="relative z-30 transition-transform duration-300 ease-out"
+                  style={{
+                    transform: `translate3d(${mousePos.x * 30}px, ${mousePos.y * 30}px, 0)`,
+                  }}
+                >
+                  <div className="animate-float-slow">
+                    <div className="relative w-64 sm:w-80 lg:w-92 aspect-square filter drop-shadow-[0_30px_45px_rgba(0,0,0,0.28)] transition-transform duration-500 hover:scale-105">
+                      <Image
+                        src="/hero/layers-stack.png"
+                        alt="Stacked Design Layers"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 256px, 360px"
+                        priority
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Vector Pen Tool (Top-Left) */}
+                <div
+                  className="absolute left-0 top-4 sm:left-2 sm:top-8 z-20 transition-transform duration-300 ease-out"
+                  style={{
+                    transform: `translate3d(${mousePos.x * -25}px, ${mousePos.y * -25}px, 0) rotate(-10deg)`,
+                  }}
+                >
+                  <div className="animate-float">
+                    <div className="relative w-24 sm:w-32 aspect-square filter drop-shadow-[0_18px_28px_rgba(0,0,0,0.2)] transition-transform duration-300 hover:scale-110">
+                      <Image
+                        src="/hero/vector-pen-tool.png"
+                        alt="Vector Pen Tool"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 96px, 128px"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. CMYK Swatch Fan (Bottom-Right) */}
+                <div
+                  className="absolute right-2 bottom-2 sm:right-6 sm:bottom-4 z-40 transition-transform duration-300 ease-out"
+                  style={{
+                    transform: `translate3d(${mousePos.x * 22}px, ${mousePos.y * 22}px, 0) rotate(8deg)`,
+                  }}
+                >
+                  <div className="animate-float-delayed">
+                    <div className="relative w-28 sm:w-36 aspect-square filter drop-shadow-[0_20px_30px_rgba(0,0,0,0.22)] transition-transform duration-300 hover:scale-105">
+                      <Image
+                        src="/hero/cmyk-swatch-fan.png"
+                        alt="CMYK Swatch Fan"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 112px, 144px"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 4. Digital Stylus Trail (Bottom-Left) */}
+                <div
+                  className="absolute left-4 bottom-0 sm:left-8 sm:bottom-2 z-20 transition-transform duration-300 ease-out"
+                  style={{
+                    transform: `translate3d(${mousePos.x * -30}px, ${mousePos.y * -30}px, 0) rotate(-6deg)`,
+                  }}
+                >
+                  <div className="animate-float">
+                    <div className="relative w-32 sm:w-40 aspect-square filter drop-shadow-[0_15px_25px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:scale-105">
+                      <Image
+                        src="/hero/digital-stylus-trail.png"
+                        alt="Digital Stylus Trail"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 128px, 160px"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 5. Eyedropper & Pigment (Top-Right) */}
+                <div
+                  className="absolute right-0 top-2 sm:right-4 sm:top-6 z-20 transition-transform duration-300 ease-out"
+                  style={{
+                    transform: `translate3d(${mousePos.x * 25}px, ${mousePos.y * 25}px, 0) rotate(12deg)`,
+                  }}
+                >
+                  <div className="animate-float-slow">
+                    <div className="relative w-24 sm:w-32 aspect-square filter drop-shadow-[0_18px_28px_rgba(0,0,0,0.2)] transition-transform duration-300 hover:scale-110 hover:-rotate-6">
+                      <Image
+                        src="/hero/eyedropper-pigment.png"
+                        alt="Eyedropper Sampling Pigment"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 96px, 128px"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 6. Kinetic Letterform (Small accent, upper-center-right) */}
+                <div
+                  className="absolute right-[30%] top-0 sm:right-[35%] z-10 transition-transform duration-300 ease-out"
+                  style={{
+                    transform: `translate3d(${mousePos.x * 15}px, ${mousePos.y * 15}px, 0) rotate(-4deg)`,
+                  }}
+                >
+                  <div className="animate-float">
+                    <div className="relative w-16 sm:w-20 aspect-square filter drop-shadow-[0_10px_18px_rgba(0,0,0,0.15)] transition-transform duration-300 hover:scale-110">
+                      <Image
+                        src="/hero/kinetic-letterform.png"
+                        alt="Kinetic Letterform"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 640px) 64px, 80px"
+                      />
                     </div>
                   </div>
                 </div>

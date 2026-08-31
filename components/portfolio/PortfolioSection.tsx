@@ -10,14 +10,16 @@ import { SectionIndex } from "@/components/motifs/SectionIndex";
 import { cn } from "@/lib/utils";
 
 export function PortfolioSection() {
-  const [active, setActive] = useState<"all" | PortfolioCategory>("all");
+  const [active, setActive] = useState<"all" | PortfolioCategory | "pharma">("all");
   const [selected, setSelected] = useState<PortfolioItem | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "carousel">("grid");
 
-  const filtered = useMemo(
-    () => (active === "all" ? portfolioItems : portfolioItems.filter((item) => item.category === active)),
-    [active],
-  );
+  const filtered = useMemo(() => {
+    if (active === "all") return portfolioItems;
+    // "pharma" is a cross-cutting tag filter, not a PortfolioCategory.
+    if (active === "pharma") return portfolioItems.filter((item) => item.tags.includes("Pharmaceutical"));
+    return portfolioItems.filter((item) => item.category === active);
+  }, [active]);
 
   return (
     <section id="portfolio" className="scroll-mt-24 overflow-hidden py-28 sm:scroll-mt-28 sm:py-36">
@@ -25,7 +27,7 @@ export function PortfolioSection() {
       <div id="work" className="sr-only" />
 
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionIndex index="03" label="PORTFOLIO" meta="PRINT & PACKAGING ARCHIVE" />
+        <SectionIndex index="04" label="PORTFOLIO" meta="PRINT & PACKAGING ARCHIVE" />
       </div>
 
       <Reveal className="mx-auto mb-12 flex max-w-7xl flex-wrap items-end justify-between gap-6 px-5 sm:px-8">

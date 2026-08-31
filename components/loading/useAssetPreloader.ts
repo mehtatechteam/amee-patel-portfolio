@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Gates the loading screen on real preload work — the hero collage images
@@ -17,15 +17,19 @@ const PRELOAD_IMAGES = [
 export function useAssetPreloader() {
   const [progress, setProgress] = useState(0);
   const [ready, setReady] = useState(false);
-  const doneCount = useRef(0);
 
   useEffect(() => {
     let cancelled = false;
+    // Scoped per effect run (not a ref) so React Strict Mode's dev-only
+    // double-invoke can't let a superseded run's stragglers keep
+    // incrementing a shared counter past `total` (was showing 175%+).
+    let doneCount = 0;
     const total = PRELOAD_IMAGES.length + 1; // +1 for document.fonts.ready
 
     function tick() {
-      doneCount.current += 1;
-      if (!cancelled) setProgress(Math.round((doneCount.current / total) * 100));
+      if (cancelled) return;
+      doneCount += 1;
+      setProgress(Math.round((doneCount / total) * 100));
     }
 
     const imagePromises = PRELOAD_IMAGES.map(

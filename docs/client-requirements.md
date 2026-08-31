@@ -93,3 +93,47 @@ All source images saved under `assets/portfolio/`, organized by category:
 - Real portfolio image assets — current ones are reference/mockup screenshots from chat; need final high-res files for production images (transparent backgrounds / print mockups) and permission to feature client names (Madburgs, Lil'Aura, etc.) publicly.
 - Logo/brand color for Amee's own personal brand (none supplied yet — to be derived from chosen reference direction + "colorful but professional" brief).
 - Contact form destination (email/WhatsApp) — client's WhatsApp number 9512155717 and email amiptl4@gmail.com available.
+
+## Addendum — 2026-08-31: Pharmaceutical & healthcare packaging repositioning
+
+**Source:** direct instruction from Aman (project owner), relayed goal from the client — reposition the site to attract more pharmaceutical packaging companies as clients, on top of the existing "make it Awwwards-level" brief (see "Explicit build directives" above, item 1 — largely still the mandate).
+
+Amee already has real pharmaceutical/healthcare packaging work in the portfolio (see "Portfolio work to feature" above): Paracetamol Syrup (Pediatric Formula), Paracetamol Tablets IP 500mg, Medween pharma bottle box, PeptidesDepot research powder box, and Kenheal Healthcare's clinical nutrition & wellness brand-literature piece. This addendum sources copy for a **new standalone "Pharmaceutical & Healthcare Packaging" section** (elevated out of the existing Services → Packaging → "Pharmaceutical & Medical" bullet, which stays as-is) using only facts already established elsewhere in this document — no new claims.
+
+### New section copy (source of truth for `lib/constants/site-copy.ts` → `pharma`)
+- **Eyebrow:** "Specialization"
+- **Heading:** "Pharmaceutical & Healthcare Packaging"
+- **Intro:** "Regulatory medicine boxes and clinical/wellness literature are where precision matters most — exact dielines, accurate label copy, and print files your manufacturer can run without a single back-and-forth. It's a specialty within my packaging practice, built on the same print-ready guarantee as everything else I design." (Derived directly from the existing Hero copy's "From regulatory medicine boxes..." line and the existing Why-Partner "Print-Ready Guarantee" claim — not a new promise.)
+- **CTA:** "Discuss a pharma packaging project" → WhatsApp, reusing `siteMeta.whatsapp` / a pharma-specific prefilled message: "Hi Amee, I'd like to discuss a pharmaceutical/healthcare packaging project."
+- **Case studies shown:** the 5 portfolio items tagged `"Pharmaceutical"` (Paracetamol Syrup, Paracetamol Tablets, Medween, PeptidesDepot, Kenheal Healthcare) — captions reuse each item's existing `title`/`tags`, no invented outcome metrics.
+
+### Explicitly NOT added (content gaps — do not fabricate)
+- **No regulatory-body language** (CDSCO, ISO 15378, GMP, cGMP, etc.). Two competitor sites researched for this repositioning (thedesignpeople.in, designerpeople.com) both cite specific standards, but that's only honest if Amee actually designs to them — **unconfirmed**. Ask Amee directly before ever adding this; until then the copy above stays scoped to "dielines, label accuracy, print-ready files," which is already true per the existing Why-Partner section.
+- **No pharma client testimonial** — none of the 4 testimonials in `lib/constants/testimonials.ts` are from a pharma client. Ask Amee for one from Kenheal Healthcare, Medween, or PeptidesDepot before claiming one in this section; ship with an honest "testimonials coming soon" state or omit the slot entirely until supplied.
+- **No new/inflated stats** ("X pharma clients served," "Y% compliance rate," etc.) — none exist in source material.
+
+### SEO
+Update the homepage `<title>`/description (`app/layout.tsx`) to explicitly name "pharmaceutical packaging design" — real buyer search intent per this session's research — not just "print-ready packaging." Description already mentions "pharmaceutical & food packaging"; title currently doesn't and should.
+
+### Hero slider — slide 3 copy sharpening
+`components/hero/CreativeHeroSlider.tsx` slide 3 ("print-ready" theme) already leans pharma-technical but doesn't name pharma explicitly. Sharpen, no new claims:
+- **Badge:** "Pharma & Healthcare Packaging · Production Ready" (was: "Technical Precision · Production Ready")
+- **Heading lines:** unchanged ("PRINT-READY" / "PERFECTION")
+- **Description:** "Zero headache for your printer. Every pharmaceutical and healthcare box ships with exact dielines, proper bleeds, CMYK profiles, and vector-sharp accuracy." (was: "Zero headache for your printer. Every file is delivered with exact dielines, proper bleeds, CMYK profiles, and vector-sharp accuracy." — same underlying claim, just names the audience. Deliberately avoids implying regulatory-review expertise — see "Explicitly NOT added" above.)
+
+### Pharma case-study card descriptions (source of truth for `lib/constants/portfolio.ts` → the 5 `"Pharmaceutical"`-tagged items' `description` field)
+Each description is 2–3 sentences framed as "what the piece needed → what was designed," sourced only from that item's existing `title`/`tags`/`category` plus facts already established elsewhere in this document (the Services section's "compliant labels" line, the Why-Partner "Print-Ready Guarantee" bleeds/dimensions/color-profile claim, and the "Full-Booklet Layouts"/"Company Literature" service line). No outcome metrics, client quotes, or regulatory claims — see "Explicitly NOT added" above, which still applies.
+
+- **`paracetamol-syrup-pediatric`** ("Paracetamol Syrup — Pediatric Formula"): A pediatric paracetamol syrup carton needed dosage and usage information to read clearly at a glance, plus a friendlier, more approachable visual tone than a typical adult medicine box. The design keeps that label hierarchy simple and legible while working within the exact dieline and print-ready specs the format requires.
+- **`paracetamol-tablets-blue`** ("Paracetamol Tablets IP 500 mg — Blue Wave Box"): A 10x10 tablet strip carton needed to read clearly as a standard pharmaceutical pack — accurate strength and count labeling — built to the exact dieline the printer runs against. The blue wave graphic gives the pack a distinct shelf identity within an otherwise text-heavy, regulated layout.
+- **`medween-pharma-box`** ("Medween — Pharma Bottle Box"): A pharma bottle carton for Medween needed to present accurate, compliant product labeling within a compact bottle-box dieline. It was finished to the same print-ready standard — exact bleeds and color profiles — used across the rest of the packaging practice.
+- **`peptidesdepot-research-powder`** ("PeptidesDepot — Research Powder Box"): A research powder carton for PeptidesDepot needed clear product identification suited to a laboratory/research-use product, distinct in tone from a retail medicine box. It was built to the same precise dieline and print-ready file standard as the rest of the packaging work.
+- **`kenheal-healthcare-wellness`** ("Kenheal Healthcare — Clinical Nutrition & Wellness Portfolio"): Kenheal Healthcare needed a full-booklet visual book — cover through inner pages — that presents its clinical nutrition and wellness brand with a consistent, professional layout. It follows the same company-literature format used for other technical/medical literature in this practice.
+
+### Hero slider — slide 4 copy (source of truth for `components/hero/CreativeHeroSlider.tsx` → the 4th `slides` entry, theme `"software-craft"`)
+Adds a 4th slide about the craft/process behind the work (vector drawing, layering, color separation). Deliberately does **not** name specific software brands (CorelDRAW/Photoshop/Canva are real per "Tools" above, but naming them reads as a software-mastery claim this project hasn't decided to make as marketing copy) — stays scoped to the craft itself, consistent with the "Explicitly NOT added" discipline above.
+- **Badge:** "Design Tools & Craft · Vector to Print"
+- **Heading lines:** "EVERY TOOL." / "EVERY LAYER." / "PERFECTED."
+- **Description:** "From first sketch to final color separation, every curve, layer, and swatch is refined by hand before a single file reaches the printer." (Consistent with the existing "Print-Ready Guarantee" claim and the vector/dieline precision language used in slide 3 — no new claims.)
+- **Primary CTA:** "See My Process" → `#process`
+- **Secondary CTA:** "Get In Touch" → `#contact`

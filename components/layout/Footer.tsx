@@ -1,14 +1,17 @@
 import { siteMeta } from "@/lib/constants/site-copy";
 import { whatsappLink } from "@/lib/utils";
 import { LiveClock } from "@/components/motifs/LiveClock";
+import { Icon } from "@/lib/icons";
 import { BackToTop } from "./BackToTop";
 
 const navLinks = [
   { href: "#home", label: "Home" },
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
+  { href: "#pharma", label: "Pharma" },
   { href: "#portfolio", label: "Portfolio" },
   { href: "#process", label: "Process" },
+  { href: "#trust", label: "Trust" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -44,7 +47,8 @@ export function Footer() {
               rel="noreferrer"
               className="mt-2 inline-flex items-center gap-1.5 text-accent hover:underline font-medium"
             >
-              <span>📍 View on Google Maps →</span>
+              <Icon name="pin" width={13} height={13} className="shrink-0" />
+              <span>View on Google Maps →</span>
             </a>
           </div>
         </div>

@@ -135,10 +135,11 @@ export function ContactSection() {
             <div className="lg:col-span-6 flex flex-col justify-between h-full">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 font-spec text-[10px] font-bold text-accent uppercase">
-                    📍 Design Studio · Ahmedabad
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 font-spec text-[10px] font-normal tracking-wide text-accent uppercase">
+                    <Icon name="pin" width={11} height={11} className="shrink-0" />
+                    Design Studio · Ahmedabad
                   </span>
-                  <span className="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 font-spec text-[10px] font-semibold text-emerald-700 uppercase">
+                  <span className="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 font-spec text-[11px] font-normal tracking-wide text-emerald-700 uppercase">
                     Remote Worldwide
                   </span>
                 </div>
@@ -171,7 +172,8 @@ export function ContactSection() {
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-xs font-semibold text-paper hover:bg-accent transition-colors shadow-sm"
                 >
-                  <span>🗺️ Open in Google Maps</span>
+                  <Icon name="map" width={14} height={14} className="shrink-0" />
+                  <span>Open in Google Maps</span>
                 </a>
                 <a
                   href={whatsappLink(siteMeta.whatsapp, "Hi Amee, I would like to schedule an in-person / remote meeting to discuss a project.")}
@@ -179,7 +181,8 @@ export function ContactSection() {
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-4 py-2.5 text-xs font-semibold text-ink-soft hover:text-ink hover:border-ink/40 transition-colors"
                 >
-                  <span>📅 Book an Appointment</span>
+                  <Icon name="calendar" width={14} height={14} className="shrink-0" />
+                  <span>Book an Appointment</span>
                 </a>
               </div>
             </div>
@@ -193,7 +196,6 @@ export function ContactSection() {
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen={false}
-                loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 className="w-full h-full grayscale-[20%] contrast-[105%]"
               />
