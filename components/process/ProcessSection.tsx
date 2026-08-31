@@ -2,6 +2,7 @@ import { processSteps } from "@/lib/constants/process";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionIndex } from "@/components/motifs/SectionIndex";
 import { RegistrationMark } from "@/components/motifs/RegistrationMark";
+import { UnfoldingBox } from "./UnfoldingBox";
 
 export function ProcessSection() {
   return (
@@ -24,6 +25,8 @@ export function ProcessSection() {
             </div>
           ))}
         </Reveal>
+
+        <UnfoldingBox />
       </div>
     </section>
   );

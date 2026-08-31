@@ -25,9 +25,14 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
     if (!container || reducedMotion) return;
 
     // Establish x/y/z/rotateX/rotateY together on one clean baseline before
-    // handing out individual quickTo setters per property — without this,
-    // GSAP logs "rotateX not eligible for reset" on every hover because it
-    // has no combined-transform baseline to reset against.
+    // handing out individual quickTo setters per property. Known
+    // incomplete fix: this (plus routing the idle breathing tween through
+    // the same `z` setter below, which WAS the fix for the console being
+    // spammed even at rest) still leaves a harmless "rotateX not eligible
+    // for reset" GSAP warning during active mousemove-driven tilt — tried
+    // this baseline, `force3D`, and the breathing fix; visual behavior is
+    // unaffected (confirmed via screenshots across two review passes), so
+    // this is left as a known cosmetic console item, not chased further.
     cardRefs.current.forEach((card) => {
       if (card) gsap.set(card, { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0 });
     });
@@ -37,22 +42,33 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
         ? {
             x: gsap.quickTo(card, "x", { duration: 0.6, ease: "power3", force3D: true }),
             y: gsap.quickTo(card, "y", { duration: 0.6, ease: "power3", force3D: true }),
+            z: gsap.quickTo(card, "z", { duration: 0.6, ease: "power3", force3D: true }),
             rotateX: gsap.quickTo(card, "rotateX", { duration: 0.6, ease: "power3", force3D: true }),
             rotateY: gsap.quickTo(card, "rotateY", { duration: 0.6, ease: "power3", force3D: true }),
           }
         : null,
     );
 
-    // Continuous idle "breathing" float so the stage feels alive at rest,
-    // layered on a different transform property (y offset via a wrapper
-    // translate handled by GSAP's own timeline) so it never fights the
-    // mousemove-driven quickTo tweens above.
+    // Continuous idle "breathing" float so the stage feels alive at rest.
+    // Tweens a plain proxy value (not the card itself) and routes every
+    // frame through the same `z` quickTo setter the mousemove tilt uses —
+    // an earlier version tweened `card`'s `z` directly via its own
+    // timeline, which kept invalidating GSAP's cached combined-transform
+    // against the x/y/rotateX/rotateY quickTo setters above and spammed
+    // "rotateX not eligible for reset" continuously, not just on hover.
     const breathing = gsap.timeline({ repeat: -1, yoyo: true });
     cardRefs.current.forEach((card, i) => {
-      if (!card) return;
+      const setter = setters[i];
+      if (!card || !setter) return;
+      const proxy = { z: 0 };
       breathing.to(
-        card,
-        { z: 6, duration: 2.4 + i * 0.3, ease: "sine.inOut" },
+        proxy,
+        {
+          z: 6,
+          duration: 2.4 + i * 0.3,
+          ease: "sine.inOut",
+          onUpdate: () => setter.z(proxy.z),
+        },
         i * 0.2,
       );
     });
