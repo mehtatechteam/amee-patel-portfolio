@@ -14,13 +14,19 @@ const UnfoldingBoxScene = dynamic(() => import("./UnfoldingBoxScene").then((m) =
 });
 
 /**
- * A real dieline literally folding into the finished carton, scrubbed to
- * scroll — the site's other GSAP work animates opacity/position; this is
+ * A real dieline literally folding into an open presentation tray, scrubbed
+ * to scroll — the site's other GSAP work animates opacity/position; this is
  * the one place it animates the actual product construction. Three.js is
  * lazy-loaded (dynamic import, `ssr:false`) and the Canvas itself only
  * mounts once the stage nears the viewport (IntersectionObserver), so the
  * WebGL context and its render loop never exist for a visitor who doesn't
- * scroll this far — see PERFORMANCE.md-equivalent reasoning inline below.
+ * scroll this far.
+ *
+ * Deliberately no closing lid: a convincing lid fold needs to be hinged
+ * relative to the (also-animating) back panel, which needs a nested
+ * parent/child transform to get right — scoped out rather than shipped
+ * half-verified, so the copy below describes an open tray, not a sealed
+ * carton, to match what's actually built.
  */
 export function UnfoldingBox() {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -148,7 +154,7 @@ export function UnfoldingBox() {
         )}
       </div>
       <p className="mt-6 text-center text-sm text-ink-soft">
-        Scroll to watch the dieline fold into the finished carton{isFinePointer ? " — drag to rotate" : ""}.
+        Scroll to watch the flat dieline fold up into shape{isFinePointer ? " — drag to rotate" : ""}.
       </p>
     </div>
   );

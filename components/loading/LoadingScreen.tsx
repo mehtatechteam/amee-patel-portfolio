@@ -55,16 +55,19 @@ export function LoadingScreen() {
     if (finishedRef.current) return;
     finishedRef.current = true;
 
-    // Let other components (the hero's registration-snap entrance) sync
-    // their own one-time animation to this moment instead of guessing a
-    // fixed delay against a preload time that varies by network/device.
-    window.__loadingScreenDone = true;
-    window.dispatchEvent(new Event(LOADING_SCREEN_DONE_EVENT));
-
     const unlock = () => {
       setHidden(true);
       lenis?.start();
       document.documentElement.classList.remove("overflow-hidden");
+      // Let other components (the hero's registration-snap entrance) sync
+      // their own one-time animation to this moment — dispatched once the
+      // overlay is actually gone, not when it starts clearing (an earlier
+      // version fired this at the top of finish(), which meant dependent
+      // animations could finish playing while still hidden behind the
+      // ~1.15s Flip+fade sequence below; confirmed via review that this
+      // made the hero's entrance effectively invisible in practice).
+      window.__loadingScreenDone = true;
+      window.dispatchEvent(new Event(LOADING_SCREEN_DONE_EVENT));
     };
 
     const logoTarget = document.getElementById("site-logo");

@@ -7,8 +7,13 @@ import { usePointerType } from "@/hooks/usePointerType";
 type InkDot = { x: number; y: number; r: number; color: string; life: number };
 
 const INK_COLORS = ["#00a3e0", "#ec008c", "#ffd100", "#1d1d1f"];
-const MAX_DOTS = 90;
-const DECAY_PER_MS = 0.0011;
+const MAX_DOTS = 150;
+// Life reaches 0 after ~1.4s — an earlier, faster-decaying/smaller/fainter
+// version was confirmed via review to be effectively invisible in
+// practice; bigger, more opaque, longer-lived dots fix that without
+// reintroducing the earlier fast-sweep wash-out bug, since the dot list
+// stays capped at MAX_DOTS regardless of stamp rate or lifespan.
+const DECAY_PER_MS = 1 / 1400;
 
 /**
  * A cursor-driven halftone ink trail — as the pointer moves across the
@@ -78,12 +83,12 @@ export function InkTrailCanvas() {
       const dt = now - lastFrame;
       lastFrame = now;
 
-      if (pointer.active && now - lastStamp > 40) {
+      if (pointer.active && now - lastStamp > 25) {
         lastStamp = now;
         dots.push({
           x: pointer.x,
           y: pointer.y,
-          r: 1.5 + Math.random() * 2,
+          r: 4 + Math.random() * 4,
           color: INK_COLORS[colorCursor % INK_COLORS.length],
           life: 1,
         });
@@ -99,7 +104,7 @@ export function InkTrailCanvas() {
           dots.splice(i, 1);
           continue;
         }
-        ctx!.globalAlpha = dot.life * 0.4;
+        ctx!.globalAlpha = dot.life * 0.75;
         ctx!.fillStyle = dot.color;
         ctx!.beginPath();
         ctx!.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);

@@ -57,14 +57,15 @@ export function KineticWordmark({
       );
 
       // Registration-snap entrance: three CMYK ghost duplicates of each
-      // word start offset like misaligned print plates and snap into
-      // perfect register once, before crossfading into the real ink-black
-      // text underneath — a literal print-production metaphor. Synced to
-      // LOADING_SCREEN_DONE_EVENT (dispatched from LoadingScreen.tsx the
-      // moment its overlay actually starts clearing) rather than a fixed
-      // delay — a hardcoded guess drifts out of sync with real preload
-      // time, which measurably let this play out fully hidden behind the
-      // overlay on slower connections.
+      // word start offset like misaligned print plates, hold for a beat,
+      // then snap into perfect register before crossfading into the real
+      // ink-black text underneath — a literal print-production metaphor.
+      // Synced to LOADING_SCREEN_DONE_EVENT (dispatched from
+      // LoadingScreen.tsx once its overlay is actually gone, not when it
+      // starts clearing) rather than a fixed delay — a hardcoded guess
+      // drifts out of sync with real preload time, and firing on "starts
+      // clearing" rather than "actually gone" let this play out mostly
+      // hidden behind the overlay's own ~1.15s Flip+fade sequence.
       //
       // Also: reads matchMedia synchronously here (not the reducedMotion
       // hook's state) specifically to hide realWords — the hook's SSR-safe
@@ -80,10 +81,13 @@ export function KineticWordmark({
       const prefersReducedNow = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       if (ghosts.length && !prefersReducedNow) {
+        // Offsets large enough to unmistakably read as separate colored
+        // plates (not a blur/jank) — an earlier 2-4px version was too
+        // subtle to register as "misaligned print plates" at all.
         const offsets: [number, number][] = [
-          [-4, 3],
-          [4, -3],
-          [-2, -4],
+          [-11, 8],
+          [11, -8],
+          [-6, -11],
         ];
         gsap.set(ghosts, {
           x: (i) => offsets[i % 3][0],
@@ -93,9 +97,14 @@ export function KineticWordmark({
 
         const entrance = gsap
           .timeline({ paused: true })
-          .to(ghosts, { x: 0, y: 0, duration: 0.45, ease: "power3.out", stagger: 0.02 })
-          .to(ghosts, { autoAlpha: 0, duration: 0.25, ease: "power1.out" }, "-=0.1")
-          .to(realWords, { autoAlpha: 1, duration: 0.25, ease: "power1.out" }, "<");
+          // Hold the misaligned state for a beat before snapping — an
+          // earlier version went straight into the snap, which resolved
+          // before a viewer's eye had actually landed on the hero (review
+          // confirmed the "before" state was never actually witnessed).
+          .to({}, { duration: 0.55 })
+          .to(ghosts, { x: 0, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.03 })
+          .to(ghosts, { autoAlpha: 0, duration: 0.3, ease: "power1.out" }, "-=0.1")
+          .to(realWords, { autoAlpha: 1, duration: 0.3, ease: "power1.out" }, "<");
 
         if (window.__loadingScreenDone) {
           entrance.play();
