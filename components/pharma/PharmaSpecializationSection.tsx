@@ -20,12 +20,27 @@ export function PharmaSpecializationSection() {
   const reducedMotion = useReducedMotion();
 
   // Scoped to this section only (per the build plan — not a site-wide motion
-  // rework). Desktop (lg+): the intro/trust-strip fades in as usual via
-  // Reveal, then the whole intro+grid block pins briefly while the
-  // case-study cards stagger in on scrub, before releasing and scrolling
-  // away normally. Below lg, and under prefers-reduced-motion, the cards
-  // fall back to a plain per-card fade-up that mirrors Reveal's own
-  // defaults — no pin, no scrub. Fully inert under reduced motion.
+  // rework). Every card fades/rises up as it individually scrolls into
+  // view — same mechanism at every breakpoint (desktop just gets a touch
+  // more distance and stagger for a fuller sweep), no pin, no scrub. Fully
+  // inert under reduced motion.
+  //
+  // An earlier version pinned the whole intro+grid block (`pin: true`,
+  // `end: "+=60%"`) so the cards could stagger in while the section held
+  // in place. Root-caused a real bug from that: `sequenceRef`'s natural
+  // content height (header + trust strip + a 2-row, 6-card grid, ~2000px+)
+  // is well over a typical viewport's height. Pinning an element taller
+  // than the viewport freezes its scroll position on screen but does NOT
+  // let you scroll to see what's below the fold *inside* it — so the
+  // second row of case-study cards was never actually visible during the
+  // pin, and the moment the pin released, the layout jumped straight to
+  // wherever the reserved scroll distance had already carried it,
+  // reading as a dead, empty gray band before Portfolio (confirmed via
+  // screenshot + DOM inspection: a literal 540px trailing `padding` on
+  // GSAP's own `.pin-spacer`, colored only by the section's own
+  // background with nothing rendered in it). A plain per-card
+  // scroll-reveal has no spacer, no fixed-height assumption, and no
+  // capacity to hide content below an arbitrary pin boundary.
   useGSAP(
     () => {
       if (reducedMotion || !sequenceRef.current || !gridRef.current) return;
@@ -38,24 +53,30 @@ export function PharmaSpecializationSection() {
         const cards = gsap.utils.toArray<HTMLElement>(grid.children);
         if (!cards.length) return undefined;
 
-        gsap.set(cards, { autoAlpha: 0, y: 36 });
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: sequenceRef.current,
-            start: "top top+=88",
-            end: "+=60%",
-            pin: true,
-            pinSpacing: true,
-            anticipatePin: 1,
-            scrub: 0.6,
-          },
-        });
-        tl.to(cards, { autoAlpha: 1, y: 0, stagger: 0.45, ease: "power2.out" });
+        const tweens = cards.map((card, i) =>
+          gsap.fromTo(
+            card,
+            { autoAlpha: 0, y: 36 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.7,
+              delay: i * 0.08,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 88%",
+                toggleActions: "play none none none",
+              },
+            },
+          ),
+        );
 
         return () => {
-          tl.scrollTrigger?.kill();
-          tl.kill();
+          tweens.forEach((tween) => {
+            tween.scrollTrigger?.kill();
+            tween.kill();
+          });
         };
       });
 
@@ -141,14 +162,24 @@ export function PharmaSpecializationSection() {
           </Reveal>
 
           {/* Case study cards — animated directly (not via Reveal) so the
-              lg+ pinned/staggered sequence above and the mobile fallback
-              can each own these elements without fighting over the same
-              autoAlpha/y transform. */}
-          <div ref={gridRef} className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              per-breakpoint scroll-reveal above owns these elements
+              without fighting Reveal over the same autoAlpha/y transform. */}
+          {/* items-start: see the matching note in PortfolioGrid.tsx — without
+              it, a short/no-description "wide"-aspect card (e.g. Globiomed)
+              sharing a row with a taller "portrait"-aspect card gets
+              stretched to match, and the empty space lands entirely in its
+              text body before the footer row. */}
+          <div ref={gridRef} className="mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {pharmaCaseStudies.map((item) => (
               <div
                 key={item.slug}
-                className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-paper shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                // `h-full` (100% of the grid area) used to fight the
+                // `items-start` above — a percentage height still resolves
+                // against the row track even when the item isn't stretched,
+                // so it silently reproduced the exact dead-space bug
+                // items-start was added to fix. Dropped: the card should
+                // simply size to its own content.
+                className="group relative flex flex-col overflow-hidden rounded-3xl border border-line bg-paper shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
                 <div className={`relative w-full overflow-hidden bg-paper-raised ${item.cardAspect === "wide" ? "aspect-4/3" : "aspect-4/5"}`}>
                   <Image

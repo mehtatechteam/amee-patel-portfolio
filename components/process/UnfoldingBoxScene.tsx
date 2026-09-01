@@ -14,6 +14,12 @@ export type UnfoldingBoxHandle = {
 const WIDTH = 2;
 const DEPTH = 1.4;
 const HEIGHT = 1.5;
+const LID_DEPTH = 1.15; // a touch shorter than DEPTH so it reads as a flap, not another wall
+// How far the lid ends up propped open once the box is fully folded, in
+// radians, measured relative to the back panel it's hinged to (not world
+// space) — see the lid rig comment below for why relative-to-parent is
+// what makes this a hinge rather than a second independently-driven panel.
+const LID_OPEN_ANGLE = -0.55;
 
 const PAPER_COLOR = "#f2efe6";
 const INK_COLOR = "#1d2a4a";
@@ -166,11 +172,16 @@ function useShadowTexture() {
  * `.current` at render time. Keeping every `ref={...}` attachment in the
  * same component that owns the `useRef` call sidesteps that entirely.
  *
- * Deliberately no top-lid flap: closing a lid convincingly requires it to
- * be hinged relative to the (also-animating) back panel, which needs a
- * nested parent/child transform to get right — scoped out for now rather
- * than shipped half-verified. What's built forms an open presentation
- * tray, and the copy in UnfoldingBox.tsx describes it as exactly that.
+ * Has a top-lid flap, hinged to the back panel via a real Object3D
+ * parent/child relationship (the lid mesh is nested inside `backRef`'s
+ * JSX, not a sibling) so it inherits the back panel's own fold rotation
+ * for free and only needs a small additional open/close delta on top —
+ * the nested-transform work an earlier version scoped out. It ends up
+ * propped open, not swung shut over the opening, so the "open
+ * presentation tray" framing in UnfoldingBox.tsx's copy still holds; a
+ * fully sealed lid would need the flap's swing to overshoot past the
+ * opening's plane and was judged more likely to clip through the front
+ * panel than to read as a convincing seal.
  */
 export function UnfoldingBoxScene({ onHandleReady }: { onHandleReady?: (handle: UnfoldingBoxHandle) => void }) {
   const groupRef = useRef<THREE.Group | null>(null);
@@ -178,6 +189,7 @@ export function UnfoldingBoxScene({ onHandleReady }: { onHandleReady?: (handle: 
   const backRef = useRef<THREE.Mesh | null>(null);
   const leftRef = useRef<THREE.Mesh | null>(null);
   const rightRef = useRef<THREE.Mesh | null>(null);
+  const lidRef = useRef<THREE.Mesh | null>(null);
   const textures = usePanelTextures();
   const shadowTexture = useShadowTexture();
 
@@ -197,6 +209,19 @@ export function UnfoldingBoxScene({ onHandleReady }: { onHandleReady?: (handle: 
     g.translate(0, HEIGHT / 2, 0);
     return g;
   }, []);
+  // Same hinge-at-edge technique as the walls above, but this geometry's
+  // mesh is nested as a JSX *child* of the back panel's own mesh (see the
+  // render below) rather than a sibling of it — a real Object3D parent/
+  // child relationship, not just visual proximity. That's what makes this
+  // a hinge relative to the back panel instead of a second panel animated
+  // independently: the lid's own rotation is defined in the back panel's
+  // local space, so it automatically inherits the back panel's fold and
+  // only needs its own small delta on top for the open/close swing.
+  const lidGeo = useMemo(() => {
+    const g = new THREE.PlaneGeometry(WIDTH, LID_DEPTH);
+    g.translate(0, LID_DEPTH / 2, 0);
+    return g;
+  }, []);
 
   useEffect(() => {
     onHandleReady?.({
@@ -207,6 +232,14 @@ export function UnfoldingBoxScene({ onHandleReady }: { onHandleReady?: (handle: 
         if (backRef.current) backRef.current.rotation.x = -swing;
         if (leftRef.current) leftRef.current.rotation.z = swing;
         if (rightRef.current) rightRef.current.rotation.z = -swing;
+        // At clamped=0 the lid's own local rotation is 0, so it stays
+        // flush with the back panel — correct for the flat dieline, where
+        // the lid is just another flap continuing the same 2D layout. As
+        // clamped rises toward 1 (box fully folded, back panel now
+        // standing upright), the lid swings open by LID_OPEN_ANGLE
+        // *relative to the back panel* — propped open, completing the box
+        // with a real hinged lid rather than leaving it as bare walls.
+        if (lidRef.current) lidRef.current.rotation.x = LID_OPEN_ANGLE * clamped;
       },
       setUserRotationY(rad: number) {
         if (groupRef.current) groupRef.current.rotation.y = rad;
@@ -240,6 +273,13 @@ export function UnfoldingBoxScene({ onHandleReady }: { onHandleReady?: (handle: 
         </mesh>
         <mesh ref={backRef} geometry={frontBackGeo} position={[0, 0, -DEPTH / 2]} rotation={[-Math.PI / 2, 0, 0]}>
           <meshStandardMaterial map={textures.back} side={THREE.DoubleSide} roughness={0.9} />
+          {/* Lid flap, hinged at the back panel's top edge — nested here
+              (a real Object3D child of backRef, not a sibling) so it
+              inherits the back panel's own fold rotation for free and only
+              needs the small extra open/close delta driven above. */}
+          <mesh ref={lidRef} geometry={lidGeo} position={[0, HEIGHT, 0]}>
+            <meshStandardMaterial color={PAPER_COLOR} side={THREE.DoubleSide} roughness={0.9} />
+          </mesh>
         </mesh>
         <mesh ref={leftRef} geometry={leftRightGeo} position={[-WIDTH / 2, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
           <meshStandardMaterial map={textures.left} side={THREE.DoubleSide} roughness={0.7} />

@@ -14,14 +14,24 @@ const tools = ["CorelDRAW", "Photoshop", "Canva"];
 export function DesignerSpecCard() {
   return (
     <div className="sticky top-24 flex w-full max-w-sm">
-      {/* simulated ruler ticks along the left edge */}
+      {/*
+       * Spiral-notebook binding along the left edge — a column of punched
+       * rings, not the plain repeating-dash ruler ticks this used to be.
+       * The dashes read as a half-hearted stand-in for "spiral binding"
+       * rather than the real thing; actual rings (two concentric circles —
+       * outer as the punched hole, a thin inner ring as the coil catching
+       * the light) sell the "Studio Spec Sheet as a real notebook page"
+       * conceit properly. Built as one repeating SVG background (not N
+       * individual DOM nodes) so the ring count scales with the card's
+       * height for free.
+       */}
       <div
-        className="hidden w-4 shrink-0 sm:block"
+        className="hidden w-5 shrink-0 sm:block"
         style={{
           backgroundImage:
-            "repeating-linear-gradient(to bottom, var(--color-ink-faint) 0 1px, transparent 1px 8px)",
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='28' viewBox='0 0 20 28'%3E%3Ccircle cx='10' cy='14' r='5' fill='none' stroke='%2386868b' stroke-width='1.25'/%3E%3Ccircle cx='10' cy='14' r='1.6' fill='none' stroke='%2386868b' stroke-width='1' stroke-opacity='0.55'/%3E%3C/svg%3E\")",
           backgroundPosition: "left center",
-          backgroundSize: "8px 8px",
+          backgroundSize: "20px 28px",
           backgroundRepeat: "repeat-y",
         }}
         aria-hidden

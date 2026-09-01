@@ -25,53 +25,64 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
     const container = containerRef.current;
     if (!container || reducedMotion) return;
 
-    // Establish x/y/z/rotateX/rotateY together on one clean baseline before
-    // handing out individual quickTo setters per property. Known
-    // incomplete fix: this (plus routing the idle breathing tween through
-    // the same `z` setter below, which WAS the fix for the console being
-    // spammed even at rest) still leaves a harmless "rotateX not eligible
-    // for reset" GSAP warning during active mousemove-driven tilt — tried
-    // this baseline, `force3D`, and the breathing fix; visual behavior is
-    // unaffected (confirmed via screenshots across two review passes), so
-    // this is left as a known cosmetic console item, not chased further.
-    cardRefs.current.forEach((card) => {
-      if (card) gsap.set(card, { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0 });
-    });
+    // Root-caused the long-standing "rotateX/rotateY not eligible for
+    // reset" console spam: it wasn't a cosmetic quirk, it was five
+    // independent `quickTo()` tweens (x, y, z, rotateX, rotateY) all
+    // writing the SAME element's composite `transform` property. GSAP's
+    // CSSPlugin keeps one shared parsed-transform cache per element;
+    // rotateX/rotateY can't be patched incrementally into that cache the
+    // way a plain translate can (rotation needs the whole matrix
+    // re-derived), so the instant a sibling quickTo (x/y/z) touched the
+    // same element's transform first, the rotateX/rotateY tweens' cached
+    // PropTween lookup went stale and every resetTo() call warned.
+    // Fix: quickTo now eases a plain numeric proxy object per card (not
+    // the DOM node — plain object properties have no CSSPlugin transform
+    // caching to invalidate), and a single gsap.ticker callback below
+    // writes all five current values to the card in one combined
+    // `gsap.set()` per frame. One transform write per element per frame,
+    // never a partial resetTo, so there's nothing left to invalidate —
+    // confirmed via a clean console across a full mousemove sweep.
+    const states = cardRefs.current.map(() => ({ x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0 }));
 
-    const setters = cardRefs.current.map((card) =>
+    const setters = cardRefs.current.map((card, i) =>
       card
         ? {
-            x: gsap.quickTo(card, "x", { duration: 0.6, ease: "power3", force3D: true }),
-            y: gsap.quickTo(card, "y", { duration: 0.6, ease: "power3", force3D: true }),
-            z: gsap.quickTo(card, "z", { duration: 0.6, ease: "power3", force3D: true }),
-            rotateX: gsap.quickTo(card, "rotateX", { duration: 0.6, ease: "power3", force3D: true }),
-            rotateY: gsap.quickTo(card, "rotateY", { duration: 0.6, ease: "power3", force3D: true }),
+            x: gsap.quickTo(states[i], "x", { duration: 0.6, ease: "power3" }),
+            y: gsap.quickTo(states[i], "y", { duration: 0.6, ease: "power3" }),
+            z: gsap.quickTo(states[i], "z", { duration: 0.6, ease: "power3" }),
+            rotateX: gsap.quickTo(states[i], "rotateX", { duration: 0.6, ease: "power3" }),
+            rotateY: gsap.quickTo(states[i], "rotateY", { duration: 0.6, ease: "power3" }),
           }
         : null,
     );
 
+    function syncTransforms() {
+      cardRefs.current.forEach((card, i) => {
+        if (!card) return;
+        const s = states[i];
+        // Read the five numbers into a *fresh* plain object rather than
+        // passing `states[i]` itself as gsap.set()'s vars. states[i] is
+        // also a live quickTo target, so GSAP has attached its own
+        // internal `_gsap` cache directly onto it as an enumerable own
+        // property; passing that same object as vars leaks `_gsap` in
+        // alongside x/y/z/rotateX/rotateY, which was confusing CSSPlugin's
+        // harness detection on `card` and produced a fresh batch of
+        // "Invalid property ... Missing plugin?" warnings at mount —
+        // caught by literally stringifying states[i] and hitting a
+        // circular-structure error pointing straight at `_gsap.target`.
+        gsap.set(card, { x: s.x, y: s.y, z: s.z, rotateX: s.rotateX, rotateY: s.rotateY });
+      });
+    }
+    gsap.ticker.add(syncTransforms);
+
     // Continuous idle "breathing" float so the stage feels alive at rest.
-    // Tweens a plain proxy value (not the card itself) and routes every
-    // frame through the same `z` quickTo setter the mousemove tilt uses —
-    // an earlier version tweened `card`'s `z` directly via its own
-    // timeline, which kept invalidating GSAP's cached combined-transform
-    // against the x/y/rotateX/rotateY quickTo setters above and spammed
-    // "rotateX not eligible for reset" continuously, not just on hover.
+    // Tweens the same plain `state.z` proxy the mousemove tilt's quickTo
+    // targets — safe to overlap now that both live on a plain object
+    // rather than the DOM element's transform.
     const breathing = gsap.timeline({ repeat: -1, yoyo: true });
     cardRefs.current.forEach((card, i) => {
-      const setter = setters[i];
-      if (!card || !setter) return;
-      const proxy = { z: 0 };
-      breathing.to(
-        proxy,
-        {
-          z: 6,
-          duration: 2.4 + i * 0.3,
-          ease: "sine.inOut",
-          onUpdate: () => setter.z(proxy.z),
-        },
-        i * 0.2,
-      );
+      if (!card) return;
+      breathing.to(states[i], { z: 6, duration: 2.4 + i * 0.3, ease: "sine.inOut" }, i * 0.2);
     });
 
     function resetTilt() {
@@ -155,6 +166,17 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
 
       function onPointerDown(e: PointerEvent) {
         if (draggingRef.current !== null) return;
+        // Without this, Chromium treats the mousedown-then-drag gesture as
+        // the start of a native text-selection drag (the same failure mode
+        // the process-section box hit) — it doesn't matter that the card
+        // itself has nothing selectable in it; an un-prevented mousedown
+        // anywhere still arms the browser's default selection-drag, and
+        // dragging the pointer then paints a selection across whatever
+        // *other* text it passes over (nav links, headings). preventDefault
+        // here is what actually suppresses that, confirmed via Playwright:
+        // a 15-step drag across the nav produced zero selected text after
+        // this, versus the whole page highlighting before it.
+        e.preventDefault();
         draggingRef.current = i;
         setHovered(i);
         card!.setPointerCapture(e.pointerId);
@@ -186,7 +208,12 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
           card!.releasePointerCapture(ev.pointerId);
           draggingRef.current = null;
           setHovered(null);
-          gsap.to(card, { x: 0, y: 0, rotateX: 0, rotateY: 0, duration: 0.7, ease: "elastic.out(1, 0.55)" });
+          // Tween the plain state proxy (not `card` directly) — the ticker
+          // above is the only thing allowed to write the card's transform,
+          // so an elastic release has to land through the same proxy the
+          // quickTo setters use, or the next tick's syncTransforms() would
+          // instantly stomp it back to the stale drag-end values.
+          gsap.to(states[i], { x: 0, y: 0, rotateX: 0, rotateY: 0, duration: 0.7, ease: "elastic.out(1, 0.55)" });
           setters.forEach((s, j) => {
             if (j === i || !s) return;
             s.x(0);
@@ -212,6 +239,7 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
       });
       dragCleanups.forEach((cleanup) => cleanup());
       breathing.kill();
+      gsap.ticker.remove(syncTransforms);
     };
   }, [collage, reducedMotion]);
 
@@ -228,7 +256,7 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
               cardRefs.current[i] = el;
             }}
             className={cn(
-              "absolute aspect-[4/5] touch-none overflow-hidden rounded-3xl bg-paper-raised transition-all duration-500 ease-out will-change-transform cursor-grab active:cursor-grabbing",
+              "absolute aspect-[4/5] touch-none select-none overflow-hidden rounded-3xl bg-paper-raised transition-all duration-500 ease-out will-change-transform cursor-grab active:cursor-grabbing",
               isHovered ? "z-30 scale-110 rotate-0 shadow-[0_45px_90px_-20px_rgba(0,0,0,0.4)]" : rotate,
               !isHovered && "shadow-[0_35px_70px_-20px_rgba(0,0,0,0.28)]",
               isDimmed && "z-0 scale-90 opacity-25 blur-[3px] pointer-events-none",

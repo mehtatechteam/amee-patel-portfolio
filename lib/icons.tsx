@@ -123,6 +123,17 @@ export function IconCalendar(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function IconWave(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M8.5 13.5v-8a1.5 1.5 0 0 1 3 0v6" />
+      <path d="M11.5 11.5v-1a1.5 1.5 0 0 1 3 0v1.5" />
+      <path d="M14.5 12v-.5a1.5 1.5 0 0 1 3 0V13" />
+      <path d="M17.5 13v1a1.5 1.5 0 0 1 3 0v2.5c0 3.31-2.69 6-6 6h-2a6 6 0 0 1-5-2.7L4.8 15.9a1.4 1.4 0 0 1 .5-2 1.42 1.42 0 0 1 1.8.35L8.5 16" />
+    </svg>
+  );
+}
+
 export const iconMap = {
   box: IconBox,
   document: IconDocument,
@@ -135,6 +146,7 @@ export const iconMap = {
   pin: IconPin,
   map: IconMap,
   calendar: IconCalendar,
+  wave: IconWave,
 } as const;
 
 export type IconName = keyof typeof iconMap;

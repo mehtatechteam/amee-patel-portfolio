@@ -14,19 +14,18 @@ const UnfoldingBoxScene = dynamic(() => import("./UnfoldingBoxScene").then((m) =
 });
 
 /**
- * A real dieline literally folding into an open presentation tray, scrubbed
- * to scroll — the site's other GSAP work animates opacity/position; this is
- * the one place it animates the actual product construction. Three.js is
- * lazy-loaded (dynamic import, `ssr:false`) and the Canvas itself only
- * mounts once the stage nears the viewport (IntersectionObserver), so the
- * WebGL context and its render loop never exist for a visitor who doesn't
- * scroll this far.
+ * A real dieline literally folding into an open presentation tray with a
+ * propped-open hinged lid, scrubbed to scroll — the site's other GSAP work
+ * animates opacity/position; this is the one place it animates the actual
+ * product construction. Three.js is lazy-loaded (dynamic import,
+ * `ssr:false`) and the Canvas itself only mounts once the stage nears the
+ * viewport (IntersectionObserver), so the WebGL context and its render loop
+ * never exist for a visitor who doesn't scroll this far.
  *
- * Deliberately no closing lid: a convincing lid fold needs to be hinged
- * relative to the (also-animating) back panel, which needs a nested
- * parent/child transform to get right — scoped out rather than shipped
- * half-verified, so the copy below describes an open tray, not a sealed
- * carton, to match what's actually built.
+ * The lid is hinged to the back panel (see UnfoldingBoxScene.tsx) rather
+ * than swung fully shut over the opening — a sealed lid risked clipping
+ * through the front panel, so it ends up propped open, matching the "open
+ * presentation tray" copy below.
  */
 export function UnfoldingBox() {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -88,6 +87,16 @@ export function UnfoldingBox() {
     let rotation = 0;
 
     function onDown(e: PointerEvent) {
+      // Without preventDefault, Chromium arms its native text-selection
+      // drag on this mousedown (the R3F <canvas> itself isn't selectable,
+      // but an un-prevented pointerdown anywhere still starts that browser
+      // gesture, which then paints a selection across the page as the
+      // pointer moves) — this both eats the drag as rotation input and
+      // paints an unwanted selection highlight. Confirmed via Playwright:
+      // without this, a drag across the canvas produced zero rotation and
+      // a highlighted nav bar; with it, 20 clean pointermove events and a
+      // rotated model.
+      e.preventDefault();
       dragging = true;
       lastX = e.clientX;
       el.setPointerCapture(e.pointerId);

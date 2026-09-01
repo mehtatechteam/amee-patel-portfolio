@@ -1,5 +1,7 @@
 "use client";
 
+import { InkBleedRule } from "./InkBleedRule";
+
 /**
  * Infinite horizontal studio ticker. Pure CSS animation (translateX loop,
  * see `@keyframes marquee` in globals.css) — no JS/GSAP needed, and it
@@ -24,12 +26,21 @@ export function Marquee({ items }: { items: string[] }) {
   // whole ticker is hidden from assistive tech rather than read twice.
   // A light paper-raised ribbon (not solid black) so a thin ticker doesn't
   // read as an abrupt dark stripe sandwiched between two light sections.
+  // Edges are hand-torn ink lines (InkBleedRule) rather than a straight
+  // CSS border-y — a cheap, static riso/misregistration texture that
+  // reinforces the print-shop identity right at the seam between the
+  // hero and the rest of the page. Kept outside the overflow-hidden
+  // ticker band so the SVGs, centered on the seam, are never clipped.
   return (
-    <div className="overflow-hidden border-y border-line bg-paper-raised py-3.5" aria-hidden="true">
-      <div className="flex w-max animate-marquee">
-        {track}
-        {track}
+    <div className="relative">
+      <InkBleedRule id="marquee-top" seed={7} className="absolute inset-x-0 top-0 z-10 -translate-y-1/2 text-ink/20" />
+      <div className="overflow-hidden bg-paper-raised py-3.5" aria-hidden="true">
+        <div className="flex w-max animate-marquee">
+          {track}
+          {track}
+        </div>
       </div>
+      <InkBleedRule id="marquee-bottom" seed={13} className="absolute inset-x-0 bottom-0 z-10 translate-y-1/2 text-ink/20" />
     </div>
   );
 }

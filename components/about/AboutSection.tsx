@@ -1,6 +1,7 @@
 import { about } from "@/lib/constants/site-copy";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionIndex } from "@/components/motifs/SectionIndex";
+import { Icon } from "@/lib/icons";
 import { DesignerSpecCard } from "./DesignerSpecCard";
 
 export function AboutSection() {
@@ -19,9 +20,13 @@ export function AboutSection() {
           <span className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
             {about.heading}
           </span>
-          <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
-            {about.greeting.replace(/\s*👋$/, "")}{" "}
-            <span aria-hidden="true">👋</span>
+          <h2 className="mt-4 flex flex-wrap items-center gap-3 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+            {about.greeting.replace(/\s*👋$/, "")}
+            {/* Hand-authored SVG in place of the raw 👋 emoji — this site's
+                icon set replaces platform-rendered emoji everywhere else
+                (see lib/icons.tsx); this was the one spot that had slipped
+                through. */}
+            <Icon name="wave" width={30} height={30} className="shrink-0 text-accent" aria-hidden />
           </h2>
 
           <div className="mt-7 flex flex-col gap-4 text-[17px] leading-relaxed text-ink-soft">
