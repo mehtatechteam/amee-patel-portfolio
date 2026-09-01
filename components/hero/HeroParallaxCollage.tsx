@@ -14,6 +14,7 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [hovered, setHovered] = useState<number | null>(null);
   const hoveredRef = useRef<number | null>(null);
+  const draggingRef = useRef<number | null>(null);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -84,10 +85,10 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
     }
 
     function onMove(e: MouseEvent) {
-      // While a card is spotlighted, its tilt holds at 0 (straightened)
-      // instead of chasing the cursor — letting both run at once would
-      // fight over the same GSAP-driven transform.
-      if (hoveredRef.current !== null) return;
+      // While a card is spotlighted or being dragged, tilt holds at 0
+      // (straightened) instead of chasing the cursor — letting either run
+      // at once would fight over the same GSAP-driven transform.
+      if (hoveredRef.current !== null || draggingRef.current !== null) return;
       const rect = container!.getBoundingClientRect();
       const normX = (e.clientX - rect.left) / rect.width - 0.5;
       const normY = (e.clientY - rect.top) / rect.height - 0.5;
@@ -103,7 +104,7 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
     }
 
     function onLeave() {
-      if (hoveredRef.current !== null) return;
+      if (hoveredRef.current !== null || draggingRef.current !== null) return;
       resetTilt();
     }
 
@@ -112,13 +113,94 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
 
     const cardEls = cardRefs.current;
     const enterHandlers = cardEls.map((_, i) => () => {
+      if (draggingRef.current !== null) return;
       setHovered(i);
       resetTilt();
     });
-    const leaveHandlers = cardEls.map(() => () => setHovered(null));
+    const leaveHandlers = cardEls.map(() => () => {
+      if (draggingRef.current !== null) return;
+      setHovered(null);
+    });
     cardEls.forEach((card, i) => {
       card?.addEventListener("mouseenter", enterHandlers[i]);
       card?.addEventListener("mouseleave", leaveHandlers[i]);
+    });
+
+    // Drag-to-lift: pick any card up off the stack and it follows the
+    // cursor 1:1 (snappier duration than the ambient tilt's quickTo) with
+    // a light swing proportional to drag distance; its two neighbors nudge
+    // aside like proofs shifting to make room. Release springs the card
+    // back with `elastic.out` — a distinctly bouncier motion signature
+    // than the hover tilt's `power3`, so "picked up and dropped" reads as
+    // its own gesture rather than a variant of the ambient tilt. Reuses
+    // the same quickTo setters (and the tilt/hover suppression above)
+    // rather than introducing a second transform-writing system.
+    //
+    // Root-caused a real bug while building this: dragging silently died
+    // after exactly one pointermove, always ending in a `pointercancel`.
+    // Eliminated setPointerCapture-vs-window-listening, the transform
+    // writes themselves, the sibling nudge, the hover CSS-class swap,
+    // `transition-all`, `overflow-hidden` + `preserve-3d`, all one at a
+    // time — none were it. The actual cause: images are natively
+    // draggable in the browser, and once pointer movement crosses a small
+    // threshold on an `<img>` (which next/image renders under the hood),
+    // Chromium hands the gesture to native OS drag-and-drop and cancels
+    // the in-flight pointer sequence. `draggable={false}` on the `Image`
+    // below is the fix — confirmed live afterward with a 20-step drag
+    // producing 20 clean pointermove events and a normal pointerup.
+    const dragCleanups = cardEls.map((card, i) => {
+      if (!card) return () => {};
+      const setter = setters[i];
+      if (!setter) return () => {};
+
+      function onPointerDown(e: PointerEvent) {
+        if (draggingRef.current !== null) return;
+        draggingRef.current = i;
+        setHovered(i);
+        card!.setPointerCapture(e.pointerId);
+        const startX = e.clientX;
+        const startY = e.clientY;
+
+        // Nudge the two neighbors a few px away from the lifted card so
+        // the stack visibly reshuffles, not just the dragged card moving.
+        setters.forEach((s, j) => {
+          if (j === i || !s) return;
+          const dir = j < i ? -1 : 1;
+          s.x(dir * 14);
+          s.y(dir * 8);
+        });
+
+        function onPointerMove(ev: PointerEvent) {
+          const dx = ev.clientX - startX;
+          const dy = ev.clientY - startY;
+          setter!.x(dx);
+          setter!.y(dy);
+          setter!.rotateY(Math.max(-20, Math.min(20, dx * 0.07)));
+          setter!.rotateX(Math.max(-12, Math.min(12, -dy * 0.05)));
+        }
+
+        function endDrag(ev: PointerEvent) {
+          card!.removeEventListener("pointermove", onPointerMove);
+          card!.removeEventListener("pointerup", endDrag);
+          card!.removeEventListener("pointercancel", endDrag);
+          card!.releasePointerCapture(ev.pointerId);
+          draggingRef.current = null;
+          setHovered(null);
+          gsap.to(card, { x: 0, y: 0, rotateX: 0, rotateY: 0, duration: 0.7, ease: "elastic.out(1, 0.55)" });
+          setters.forEach((s, j) => {
+            if (j === i || !s) return;
+            s.x(0);
+            s.y(0);
+          });
+        }
+
+        card!.addEventListener("pointermove", onPointerMove);
+        card!.addEventListener("pointerup", endDrag, { once: true });
+        card!.addEventListener("pointercancel", endDrag, { once: true });
+      }
+
+      card.addEventListener("pointerdown", onPointerDown);
+      return () => card.removeEventListener("pointerdown", onPointerDown);
     });
 
     return () => {
@@ -128,6 +210,7 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
         card?.removeEventListener("mouseenter", enterHandlers[i]);
         card?.removeEventListener("mouseleave", leaveHandlers[i]);
       });
+      dragCleanups.forEach((cleanup) => cleanup());
       breathing.kill();
     };
   }, [collage, reducedMotion]);
@@ -145,7 +228,7 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
               cardRefs.current[i] = el;
             }}
             className={cn(
-              "absolute aspect-[4/5] overflow-hidden rounded-3xl bg-paper-raised transition-all duration-500 ease-out will-change-transform",
+              "absolute aspect-[4/5] touch-none overflow-hidden rounded-3xl bg-paper-raised transition-all duration-500 ease-out will-change-transform cursor-grab active:cursor-grabbing",
               isHovered ? "z-30 scale-110 rotate-0 shadow-[0_45px_90px_-20px_rgba(0,0,0,0.4)]" : rotate,
               !isHovered && "shadow-[0_35px_70px_-20px_rgba(0,0,0,0.28)]",
               isDimmed && "z-0 scale-90 opacity-25 blur-[3px] pointer-events-none",
@@ -159,6 +242,7 @@ export function HeroParallaxCollage({ collage }: { collage: CollageEntry[] }) {
               fill
               sizes="(min-width: 1024px) 30vw, 50vw"
               priority
+              draggable={false}
               className={cn("h-full w-full object-cover transition-transform duration-500", zoom && !isHovered && "scale-125")}
             />
           </div>

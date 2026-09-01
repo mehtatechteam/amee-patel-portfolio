@@ -36,6 +36,24 @@ const featuredClients = ["Medween", "Kenheal", "Lil'Aura", "Madburgs", "Globiome
 export function Hero() {
   return (
     <section id="home" className="relative overflow-hidden px-5 pt-20 pb-28 sm:px-8 sm:pt-28 sm:pb-32">
+      {/* Soft CMYK-derived gradient wash — replaces a flat off-white
+          backdrop with real color warmth (per the client's own liked
+          reference, a busy color-collage hero), while staying inside the
+          site's established "-soft" print-ink token family rather than
+          introducing new colors. Purely decorative/aria-hidden, sits
+          behind all real content at z-0. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(60% 55% at 15% 15%, var(--color-cyan-soft) 0%, transparent 60%), " +
+            "radial-gradient(55% 50% at 85% 10%, var(--color-magenta-soft) 0%, transparent 60%), " +
+            "radial-gradient(65% 60% at 75% 90%, var(--color-yellow-soft) 0%, transparent 62%), " +
+            "radial-gradient(50% 45% at 10% 85%, var(--color-accent-soft) 0%, transparent 60%), " +
+            "var(--color-paper)",
+        }}
+      />
       <RegistrationMark className="absolute top-6 left-6 hidden lg:block" />
       <RegistrationMark className="absolute right-6 bottom-10 hidden lg:block" />
       <InkTrailCanvas />
