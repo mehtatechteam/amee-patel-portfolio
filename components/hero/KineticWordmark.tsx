@@ -22,9 +22,16 @@ import { LOADING_SCREEN_DONE_EVENT } from "@/lib/loadingScreenEvent";
 export function KineticWordmark({
   lines,
   accentLine,
+  variant = "light",
 }: {
   lines: string[];
   accentLine?: number;
+  /** "dark" flips the base ink to paper-white and the CMY ghosts from
+   * multiply to screen blending (the equivalent trick against a dark
+   * backdrop — multiply crushes to black on anything but a light
+   * background). Everything else about the registration-snap/cursor-fringe
+   * behavior is identical. */
+  variant?: "light" | "dark";
 }) {
   const container = useRef<HTMLHeadingElement>(null);
   const reducedMotion = useReducedMotion();
@@ -336,7 +343,10 @@ export function KineticWordmark({
     <h1
       ref={container}
       id="hero-wordmark"
-      className="font-display text-[clamp(2.75rem,11vw,3.75rem)] font-semibold leading-[0.98] tracking-tight text-ink sm:text-6xl lg:text-[5rem]"
+      className={cn(
+        "font-display text-[clamp(2.75rem,11vw,3.75rem)] font-semibold leading-[0.98] tracking-tight sm:text-6xl lg:text-[5rem]",
+        variant === "dark" ? "text-paper" : "text-ink",
+      )}
     >
       {lines.map((line, li) => (
         <span key={li} className={cn("block overflow-hidden py-1", li === accentLine && "text-accent")}>
@@ -351,14 +361,30 @@ export function KineticWordmark({
                       execute — that gap was the actual cause of the
                       "garbled overlapping text" bug on slower mobile
                       loads. The desktop entrance explicitly brings them to
-                      opacity 1 itself once it's ready to animate them. */}
-                  <span aria-hidden data-ghost className="absolute inset-0 text-cyan opacity-0 [mix-blend-mode:multiply]">
+                      opacity 1 itself once it's ready to animate them.
+                      Blend mode flips multiply->screen in dark variant:
+                      multiply crushes to black against anything but a
+                      light backdrop, screen is the equivalent trick for a
+                      dark one (tints lighten instead of darken). */}
+                  <span
+                    aria-hidden
+                    data-ghost
+                    className={cn("absolute inset-0 text-cyan opacity-0", variant === "dark" ? "[mix-blend-mode:screen]" : "[mix-blend-mode:multiply]")}
+                  >
                     {word}
                   </span>
-                  <span aria-hidden data-ghost className="absolute inset-0 text-magenta opacity-0 [mix-blend-mode:multiply]">
+                  <span
+                    aria-hidden
+                    data-ghost
+                    className={cn("absolute inset-0 text-magenta opacity-0", variant === "dark" ? "[mix-blend-mode:screen]" : "[mix-blend-mode:multiply]")}
+                  >
                     {word}
                   </span>
-                  <span aria-hidden data-ghost className="absolute inset-0 text-yellow opacity-0 [mix-blend-mode:multiply]">
+                  <span
+                    aria-hidden
+                    data-ghost
+                    className={cn("absolute inset-0 text-yellow opacity-0", variant === "dark" ? "[mix-blend-mode:screen]" : "[mix-blend-mode:multiply]")}
+                  >
                     {word}
                   </span>
                 </>

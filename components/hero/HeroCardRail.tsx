@@ -2,8 +2,6 @@
 
 import { useRef } from "react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { portfolioItems } from "@/lib/constants/portfolio";
 import type { HeroArcHandle } from "./HeroArcScene";
 
@@ -30,34 +28,22 @@ const railItems = RAIL_SLUGS.map((slug) => portfolioItems.find((i) => i.slug ===
 
 /**
  * Full-bleed, freely-draggable arc of product shots — the hero's visual
- * centerpiece, rebuilding jesperlandberg.com's dark-void curved-card arc
- * in light mode on this codebase's own R3F stack (see HeroArcScene.tsx).
- * This component owns the DOM/pointer side: a plain drag surface over the
- * WebGL canvas translates pointer deltas into `nudge`/`release` calls on
- * the scene's imperative handle (the same pattern UnfoldingBox.tsx uses
- * for its drag-to-rotate, including the `preventDefault` fix for Chromium
- * arming native text-selection drag on an unprevented pointerdown).
+ * centerpiece and, as of this version, the hero *section's own
+ * background* (Hero.tsx overlays the headline/CTA on top of it, it's not
+ * a separate stacked block below the text). Rebuilds jesperlandberg.com's
+ * dark-void curved-card arc on this codebase's own R3F stack (see
+ * HeroArcScene.tsx). This component owns the DOM/pointer side: a plain
+ * drag surface over the WebGL canvas translates pointer deltas into
+ * `nudge`/`release` calls on the scene's imperative handle (the same
+ * pattern UnfoldingBox.tsx uses for its drag-to-rotate, including the
+ * `preventDefault` fix for Chromium arming native text-selection drag on
+ * an unprevented pointerdown). Only ever mounted when motion is allowed —
+ * Hero.tsx renders an entirely separate static layout under reduced
+ * motion instead of trying to make this overlay work with no animation.
  */
 export function HeroCardRail() {
   const surfaceRef = useRef<HTMLDivElement>(null);
   const handleRef = useRef<HeroArcHandle | null>(null);
-  const reducedMotion = useReducedMotion();
-
-  if (reducedMotion) {
-    return (
-      <div className="flex h-[46vh] gap-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] sm:h-[56vh] [&::-webkit-scrollbar]:hidden">
-        {railItems.map((item) => (
-          <div
-            key={item.slug}
-            className="relative h-full flex-none overflow-hidden rounded-3xl bg-paper-raised shadow-[0_25px_60px_-25px_rgba(0,0,0,0.35)]"
-            style={{ aspectRatio: `${item.width} / ${item.height}` }}
-          >
-            <Image src={item.src} alt={item.title} fill sizes="60vh" draggable={false} className="h-full w-full object-cover" />
-          </div>
-        ))}
-      </div>
-    );
-  }
 
   function onPointerDown(e: React.PointerEvent) {
     e.preventDefault();
@@ -108,7 +94,7 @@ export function HeroCardRail() {
   }
 
   return (
-    <div className="relative h-[46vh] w-full sm:h-[62vh]">
+    <div className="relative h-full w-full bg-ink">
       <HeroArcScene
         items={railItems}
         onHandleReady={(handle) => {
