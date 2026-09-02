@@ -1,13 +1,19 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { useGSAP } from "@gsap/react";
 import { useLenis } from "lenis/react";
-import { gsap, Flip } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useAssetPreloader } from "./useAssetPreloader";
 import { siteMeta } from "@/lib/constants/site-copy";
 import { LOADING_SCREEN_DONE_EVENT } from "@/lib/loadingScreenEvent";
+import type { ClothCurtainHandle } from "./ClothCurtainScene";
+
+const ClothCurtainScene = dynamic(() => import("./ClothCurtainScene").then((m) => m.ClothCurtainScene), {
+  ssr: false,
+});
 
 const SAFETY_TIMEOUT_MS = 6000;
 
@@ -15,9 +21,10 @@ const SAFETY_TIMEOUT_MS = 6000;
  * Gated on real asset preload (see useAssetPreloader), not a fake timer.
  * The percentage counter advances in mechanical "steps" rather than a
  * smooth tween — reads like a printer/plotter readout, matching Amee's
- * print-production identity. On completion, the mark visually shrinks
- * into the Nav's actual logo position (Flip.fit — see lib/gsap.ts) so the
- * handoff to the real page reads as one continuous motion, not a hard cut.
+ * print-production identity. On completion, the counter/label let go
+ * (scale + fade) a beat before the WebGL cloth curtain (ClothCurtainScene)
+ * lifts up and off-screen, revealing the real page underneath in one
+ * continuous motion rather than a hard cut.
  */
 export function LoadingScreen() {
   const { progress, ready } = useAssetPreloader();
@@ -31,6 +38,7 @@ export function LoadingScreen() {
   const markRef = useRef<HTMLDivElement>(null);
   const counterState = useRef({ value: 0 });
   const finishedRef = useRef(false);
+  const curtainHandleRef = useRef<ClothCurtainHandle | null>(null);
 
   // Hold scroll position while the loader is up.
   useEffect(() => {
@@ -64,29 +72,32 @@ export function LoadingScreen() {
       // overlay is actually gone, not when it starts clearing (an earlier
       // version fired this at the top of finish(), which meant dependent
       // animations could finish playing while still hidden behind the
-      // ~1.15s Flip+fade sequence below; confirmed via review that this
+      // curtain-wipe sequence below; confirmed via review that this
       // made the hero's entrance effectively invisible in practice).
       window.__loadingScreenDone = true;
       window.dispatchEvent(new Event(LOADING_SCREEN_DONE_EVENT));
     };
 
-    const logoTarget = document.getElementById("site-logo");
-
-    if (reducedMotion || !markRef.current || !overlayRef.current || !logoTarget) {
+    if (reducedMotion || !markRef.current || !overlayRef.current || !curtainHandleRef.current) {
       gsap.to(overlayRef.current, { autoAlpha: 0, duration: 0.3, onComplete: unlock });
       return;
     }
 
-    const fitTween = Flip.fit(markRef.current, logoTarget, {
-      duration: 0.75,
-      ease: "power3.inOut",
-      scale: true,
-    }) as gsap.core.Tween;
-
+    const curtainState = { progress: 0 };
     gsap
       .timeline({ onComplete: unlock })
-      .add(fitTween)
-      .to(overlayRef.current, { autoAlpha: 0, duration: 0.4, ease: "power2.out" }, "-=0.15");
+      .to(markRef.current, { scale: 0.85, autoAlpha: 0, duration: 0.35, ease: "power2.in" })
+      .to(
+        curtainState,
+        {
+          progress: 1,
+          duration: 0.9,
+          ease: "power4.inOut",
+          onUpdate: () => curtainHandleRef.current?.setProgress(curtainState.progress),
+        },
+        "-=0.05",
+      )
+      .set(overlayRef.current, { autoAlpha: 0 });
   }
 
   useEffect(() => {
@@ -103,20 +114,26 @@ export function LoadingScreen() {
   if (hidden) return null;
 
   return (
-    <div
-      ref={overlayRef}
-      role="status"
-      aria-busy={!ready}
-      aria-live="polite"
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-paper"
-    >
-      <div ref={markRef} className="font-display text-4xl font-semibold text-ink sm:text-5xl">
-        {siteMeta.name}
-        <span className="text-accent">.</span>
+    <div ref={overlayRef} role="status" aria-busy={!ready} aria-live="polite" className="fixed inset-0 z-[100] bg-paper">
+      {!reducedMotion && (
+        <div className="absolute inset-0">
+          <ClothCurtainScene
+            onReady={(handle) => {
+              curtainHandleRef.current = handle;
+            }}
+          />
+        </div>
+      )}
+      <div ref={markRef} className="absolute inset-0 flex flex-col items-center justify-center">
+        <p aria-hidden className="font-spec text-[20vw] leading-none font-normal tabular-nums text-ink sm:text-[10rem]">
+          {String(displayProgress).padStart(3, "0")}
+          <span className="text-accent">%</span>
+        </p>
+        <div className="mt-4 flex items-center gap-2 text-xs font-medium tracking-wider text-ink-faint uppercase">
+          <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
+          {siteMeta.name}
+        </div>
       </div>
-      <p aria-hidden className="mt-6 text-sm font-medium tabular-nums text-ink-faint">
-        {String(displayProgress).padStart(3, "0")}%
-      </p>
       <span className="sr-only">Loading site — {displayProgress}%</span>
     </div>
   );
