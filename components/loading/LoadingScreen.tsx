@@ -129,7 +129,7 @@ export function LoadingScreen() {
           {String(displayProgress).padStart(3, "0")}
           <span className="text-accent">%</span>
         </p>
-        <div className="mt-4 flex items-center gap-2 text-xs font-medium tracking-wider text-ink-faint uppercase">
+        <div className="mt-4 flex items-center gap-2 text-xs font-medium tracking-wider text-ink-soft uppercase">
           <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
           {siteMeta.name}
         </div>

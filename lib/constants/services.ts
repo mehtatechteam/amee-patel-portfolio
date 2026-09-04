@@ -23,7 +23,7 @@ export type ServiceGroup = {
 export const services: ServiceGroup[] = [
   {
     id: "packaging",
-    icon: "box",
+    icon: "dielineFold",
     accent: "accent",
     featured: true,
     title: "All Types of Packaging Design",
@@ -39,7 +39,7 @@ export const services: ServiceGroup[] = [
   },
   {
     id: "literature",
-    icon: "document",
+    icon: "trifold",
     accent: "cyan",
     title: "Brand Literature & Print Marketing",
     intro:
@@ -68,7 +68,7 @@ export const services: ServiceGroup[] = [
   },
   {
     id: "digital",
-    icon: "monitor",
+    icon: "halftone",
     accent: "magenta",
     title: "Digital & Social Media",
     intro: "Keep your online presence looking sharp, modern, and engaging.",
@@ -77,7 +77,7 @@ export const services: ServiceGroup[] = [
   },
   {
     id: "custom",
-    icon: "sparkle",
+    icon: "waxSeal",
     accent: "cyan",
     title: "Celebrations & Custom Design on Demand",
     intro: "",

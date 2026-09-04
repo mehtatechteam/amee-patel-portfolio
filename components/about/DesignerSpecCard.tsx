@@ -1,61 +1,77 @@
 import { CMYKSwatch } from "@/components/motifs/CMYKSwatch";
 import { RegistrationMark } from "@/components/motifs/RegistrationMark";
+import { CurvedLoop } from "@/components/motifs/CurvedLoop";
 import { Icon } from "@/lib/icons";
 
 const tools = ["CorelDRAW", "Photoshop", "Canva"];
 
 /**
  * "Designer's Desk" spec card — stands in for a real headshot (none
- * supplied yet, see docs/client-requirements.md). Styled as a tactile
- * studio reference sheet rather than an empty placeholder box. The
- * "SCFA" seal is a designed monogram badge, not a reproduction of Sheth
- * C.N. College of Fine Arts' actual crest — we don't have rights to that.
+ * supplied yet, see docs/client-requirements.md). Styled as a clean
+ * Swiss-precision studio spec sheet (the washi tape / punched-binder
+ * "scrapbook" treatment was removed per explicit user choice, to match
+ * the cleaner cards elsewhere on the site) rather than an empty
+ * placeholder box. The "SCFA" seal is a designed monogram badge, not a
+ * reproduction of Sheth C.N. College of Fine Arts' actual crest — we
+ * don't have rights to that.
  */
+// A small fanned stack of Pantone-style swatch chips peeking out from
+// A fanned stack of authentic prepress CMYK swatch chips peeking out from
+// behind the card — realistic print-shop tools on a designer's desk.
+function PantoneFan() {
+  const chips = [
+    { bg: "bg-[#00a3e0]", label: "CYAN", rotate: -18, text: "text-white" },
+    { bg: "bg-[#ec008c]", label: "MAGENTA", rotate: -8, text: "text-white" },
+    { bg: "bg-[#ffd100]", label: "YELLOW", rotate: 2, text: "text-ink" },
+    { bg: "bg-[#1d1d1f]", label: "BLACK", rotate: 12, text: "text-white" },
+  ];
+  return (
+    <div className="pointer-events-none absolute -bottom-5 left-7 -z-10 flex scale-90 sm:scale-100 origin-bottom-left items-end sm:-bottom-7 sm:-left-7" aria-hidden>
+      {chips.map((chip, i) => (
+        <div
+          key={i}
+          className={`flex flex-col justify-between h-16 w-9 sm:h-20 sm:w-11 rounded-sm border border-ink/20 bg-paper p-1 shadow-md ${chip.bg}`}
+          style={{ transform: `rotate(${chip.rotate}deg)`, transformOrigin: "bottom left", marginLeft: i === 0 ? 0 : -8 }}
+        >
+          <div className="flex-1" />
+          <div className="bg-paper/90 px-1 py-0.5 rounded-[1px]">
+            <span className="block font-spec text-[6px] sm:text-[7px] font-bold text-ink leading-none">
+              {chip.label}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function DesignerSpecCard() {
   return (
-    <div className="sticky top-24 flex w-full max-w-sm">
-      {/*
-       * Spiral-notebook binding along the left edge — a column of punched
-       * rings, not the plain repeating-dash ruler ticks this used to be.
-       * The dashes read as a half-hearted stand-in for "spiral binding"
-       * rather than the real thing; actual rings (two concentric circles —
-       * outer as the punched hole, a thin inner ring as the coil catching
-       * the light) sell the "Studio Spec Sheet as a real notebook page"
-       * conceit properly. Built as one repeating SVG background (not N
-       * individual DOM nodes) so the ring count scales with the card's
-       * height for free.
-       */}
-      <div
-        className="hidden w-5 shrink-0 sm:block"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='28' viewBox='0 0 20 28'%3E%3Ccircle cx='10' cy='14' r='5' fill='none' stroke='%2386868b' stroke-width='1.25'/%3E%3Ccircle cx='10' cy='14' r='1.6' fill='none' stroke='%2386868b' stroke-width='1' stroke-opacity='0.55'/%3E%3C/svg%3E\")",
-          backgroundPosition: "left center",
-          backgroundSize: "20px 28px",
-          backgroundRepeat: "repeat-y",
-        }}
-        aria-hidden
-      />
+    <div className="relative sticky top-24 flex w-full max-w-sm">
+      <PantoneFan />
 
       <div className="relative flex-1 rounded-[2rem] border-2 border-ink bg-paper-raised p-7">
         <RegistrationMark className="absolute top-5 right-5" />
 
-        <p className="font-spec text-[10px] tracking-widest text-ink-faint uppercase">
+        <p className="font-spec text-[10px] tracking-widest text-ink-soft uppercase">
           Amee J. Patel · Studio Spec Sheet
         </p>
 
         <div className="mt-6 flex items-center justify-between">
-          <div className="flex h-16 w-16 -rotate-3 items-center justify-center rounded-full border-2 border-dashed border-ink/40">
-            <span className="font-spec text-[9px] leading-tight font-normal tracking-wide text-ink-soft uppercase">
-              SCFA
-              <br />
-              Alum
-            </span>
+          <div className="relative flex h-24 w-24 items-center justify-center">
+            <CurvedLoop text="AMEE J. PATEL · SINCE 2012" size={96} className="absolute inset-0" />
+            <div className="flex h-16 w-16 -rotate-3 items-center justify-center rounded-full border-2 border-dashed border-ink/40 bg-paper-raised">
+              <span className="font-spec text-[9px] leading-tight font-normal tracking-wide text-ink-soft uppercase">
+                SCFA
+                <br />
+                Alum
+              </span>
+            </div>
           </div>
           <CMYKSwatch size="md" />
         </div>
 
-        <p className="mt-6 text-xs font-semibold tracking-wide text-ink-faint uppercase">Tool Kit</p>
+        <p className="mt-6 text-xs font-semibold tracking-wide text-ink-soft uppercase">Tool Kit</p>
         <div className="mt-2.5 flex flex-wrap gap-2">
           {tools.map((tool) => (
             <span
@@ -69,7 +85,7 @@ export function DesignerSpecCard() {
 
         <div className="mt-8 flex items-baseline justify-between border-t border-line pt-6">
           <span className="font-display text-3xl font-semibold text-ink">10+</span>
-          <span className="max-w-[8rem] text-right font-spec text-[10px] tracking-wide text-ink-faint uppercase">
+          <span className="max-w-[8rem] text-right font-spec text-[10px] tracking-wide text-ink-soft uppercase">
             Years — Print-Ready Every Time
           </span>
         </div>

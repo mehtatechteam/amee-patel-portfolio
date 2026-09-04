@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
@@ -11,6 +11,8 @@ import { whatsappLink } from "@/lib/utils";
 import { Icon } from "@/lib/icons";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionIndex } from "@/components/motifs/SectionIndex";
+import { CornerBrackets } from "@/components/motifs/CornerBrackets";
+import { DielineDiagram } from "./DielineDiagram";
 
 const pharmaCaseStudies = portfolioItems.filter((item) => item.tags.includes("Pharmaceutical"));
 
@@ -18,6 +20,7 @@ export function PharmaSpecializationSection() {
   const sequenceRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
+  const [view, setView] = useState<"rendered" | "dieline">("rendered");
 
   // Scoped to this section only (per the build plan — not a site-wide motion
   // rework). Every card fades/rises up as it individually scrolls into
@@ -119,12 +122,18 @@ export function PharmaSpecializationSection() {
   );
 
   return (
-    <section id="pharma" className="scroll-mt-24 bg-paper-raised px-5 py-28 sm:scroll-mt-28 sm:px-8 sm:py-36">
+    <section id="pharma" className="relative scroll-mt-28 bg-paper-raised px-5 py-16 sm:scroll-mt-28 sm:px-8 sm:py-20">
       <div className="mx-auto max-w-7xl">
         <div ref={sequenceRef}>
           <Reveal>
-            <SectionIndex index="03" label="PHARMA" meta={pharma.eyebrow.toUpperCase()} />
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <SectionIndex index="03" label="PHARMA" meta={pharma.eyebrow.toUpperCase()} showNumeral={false} />
+            {/* justify-between here used to make sense when a docked 3D
+                phone occupied the section's right side; with that
+                removed, pinning the CTA to the far edge just left a
+                large empty gap on wide screens. justify-start + an
+                explicit gap keeps the button a natural distance from
+                the text instead. */}
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-start lg:gap-12">
               <div className="max-w-2xl">
                 <div className="inline-flex items-center gap-2 rounded-full bg-paper px-3.5 py-1.5 text-ink shadow-sm border border-line">
                   <Icon name="capsule" width={16} height={16} className="text-accent" />
@@ -161,16 +170,43 @@ export function PharmaSpecializationSection() {
             ))}
           </Reveal>
 
-          {/* Case study cards — animated directly (not via Reveal) so the
-              per-breakpoint scroll-reveal above owns these elements
-              without fighting Reveal over the same autoAlpha/y transform. */}
-          {/* items-start: see the matching note in PortfolioGrid.tsx — without
-              it, a short/no-description "wide"-aspect card (e.g. Globiomed)
-              sharing a row with a taller "portrait"-aspect card gets
-              stretched to match, and the empty space lands entirely in its
-              text body before the footer row. */}
-          <div ref={gridRef} className="mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {pharmaCaseStudies.map((item) => (
+          {/* Rendered / Dieline toggle — the dieline view is one generic
+              illustrative diagram (DielineDiagram), not six per-product
+              accurate schematics with invented specs for each real named
+              product (see that component's own comment for why). */}
+          <div className="mt-10 flex justify-center">
+            <div className="inline-flex items-center rounded-full border border-ink/10 bg-paper p-1 text-xs font-semibold">
+              {(["rendered", "dieline"] as const).map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => setView(v)}
+                  aria-pressed={view === v}
+                  className={`rounded-full px-4 py-2 capitalize transition-colors ${
+                    view === v ? "bg-ink text-paper" : "text-ink-soft hover:text-ink"
+                  }`}
+                >
+                  {v === "rendered" ? "Rendered Boxes" : "Dieline View"}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {view === "dieline" ? (
+            <div key="dieline" className="mt-8 animate-[labelFade_0.4s_ease]">
+              <DielineDiagram />
+            </div>
+          ) : (
+            /* Case study cards — animated directly (not via Reveal) so the
+                per-breakpoint scroll-reveal above owns these elements
+                without fighting Reveal over the same autoAlpha/y transform. */
+            /* items-start: see the matching note in PortfolioGrid.tsx — without
+                it, a short/no-description "wide"-aspect card (e.g. Globiomed)
+                sharing a row with a taller "portrait"-aspect card gets
+                stretched to match, and the empty space lands entirely in its
+                text body before the footer row. */
+            <div key="rendered" ref={gridRef} className="mt-8 grid items-start gap-6 animate-[labelFade_0.4s_ease] sm:grid-cols-2 lg:grid-cols-3">
+              {pharmaCaseStudies.map((item) => (
               <div
                 key={item.slug}
                 // `h-full` (100% of the grid area) used to fight the
@@ -179,21 +215,29 @@ export function PharmaSpecializationSection() {
                 // so it silently reproduced the exact dead-space bug
                 // items-start was added to fix. Dropped: the card should
                 // simply size to its own content.
-                className="group relative flex flex-col overflow-hidden rounded-3xl border border-line bg-paper shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                className="group relative flex flex-col overflow-hidden rounded-3xl border border-line bg-paper shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_34px_-16px_rgba(29,29,31,0.3)]"
               >
-                <div className={`relative w-full overflow-hidden bg-paper-raised ${item.cardAspect === "wide" ? "aspect-4/3" : "aspect-4/5"}`}>
+                <CornerBrackets className="pointer-events-none absolute inset-0 z-10" />
+                {/* Unified aspect ratio across every card (was a per-item
+                    wide/portrait split) so titles/tags/footers all land on
+                    the same horizontal baseline across a row. */}
+                <div className="relative aspect-4/3 w-full overflow-hidden bg-paper-raised">
+                  {/* object-contain — object-cover was cropping the tops/
+                      bottoms off real cartons (confirmed via screenshot),
+                      severe on a section whose whole point is showing the
+                      full physical packaging. */}
                   <Image
                     src={item.src}
                     alt={`${item.title} — ${item.tags.join(", ")}`}
                     fill
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                    className="object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                   />
                 </div>
                 <div className="flex flex-1 flex-col justify-between p-6">
                   <div>
                     <p className="font-display text-lg font-semibold text-ink">{item.title}</p>
-                    <p className="mt-1.5 text-xs text-ink-faint">{item.tags.join(" · ")}</p>
+                    <p className="mt-1.5 text-xs text-ink-soft">{item.tags.join(" · ")}</p>
                     {item.description ? (
                       <p className="mt-3 text-sm leading-relaxed text-ink-soft">{item.description}</p>
                     ) : null}
@@ -201,8 +245,9 @@ export function PharmaSpecializationSection() {
                   <p className="mt-4 border-t border-line/60 pt-3 text-xs font-semibold text-accent">{item.client}</p>
                 </div>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

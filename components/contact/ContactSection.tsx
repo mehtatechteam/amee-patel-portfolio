@@ -50,7 +50,7 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="scroll-mt-24 px-5 py-28 sm:scroll-mt-28 sm:px-8 sm:py-36">
+    <section id="contact" className="relative scroll-mt-28 px-5 py-16 sm:scroll-mt-28 sm:px-8 sm:py-20">
       <Reveal className="relative mx-auto max-w-4xl overflow-hidden rounded-[2.5rem] bg-ink px-10 py-16 text-center text-paper sm:px-16 sm:py-20">
         <div
           className="pointer-events-none absolute inset-0"
@@ -77,8 +77,8 @@ export function ContactSection() {
         </p>
 
         <div className="relative mt-9">
-          <p className="font-spec text-[11px] tracking-wide text-paper/40 uppercase">
-            What can I help you design? <span className="normal-case text-paper/30">(optional)</span>
+          <p className="font-spec text-[11px] tracking-wide text-paper/60 uppercase">
+            What can I help you design? <span className="normal-case text-paper/45">(optional)</span>
           </p>
           <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
             {services.map((group) => {
@@ -128,7 +128,7 @@ export function ContactSection() {
       </Reveal>
 
       {/* Studio Location & Google Maps Section */}
-      <Reveal className="mx-auto mt-16 max-w-4xl" delay={0.15}>
+      <Reveal className="mx-auto mt-10 max-w-4xl" delay={0.15}>
         <div className="overflow-hidden rounded-[2.5rem] border border-line bg-paper p-8 sm:p-10 shadow-lg">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
             {/* Left: Address & Studio Details */}

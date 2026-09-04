@@ -30,13 +30,13 @@ export function Footer() {
           <p className="mt-1 text-xs text-paper/50">
             Available 100% Remotely Worldwide & Local Studio in Ahmedabad.
           </p>
-          <p className="mt-3 font-spec text-xs tracking-wide text-paper/40 uppercase">
+          <p className="mt-3 font-spec text-xs tracking-wide text-paper/60 uppercase">
             Ahmedabad, India · <LiveClock />
           </p>
         </div>
 
         <div>
-          <p className="text-xs font-semibold tracking-wide text-paper/40 uppercase">Design Studio</p>
+          <p className="text-xs font-semibold tracking-wide text-paper/60 uppercase">Design Studio</p>
           <div className="mt-3 text-xs leading-relaxed text-paper/70 flex flex-col gap-1">
             <p className="font-semibold text-paper/90">{siteMeta.officeAddress.line1}</p>
             <p>{siteMeta.officeAddress.line2}</p>
@@ -54,7 +54,7 @@ export function Footer() {
         </div>
 
         <div>
-          <p className="text-xs font-semibold tracking-wide text-paper/40 uppercase">Navigation</p>
+          <p className="text-xs font-semibold tracking-wide text-paper/60 uppercase">Navigation</p>
           <ul className="mt-3 flex flex-col gap-2 text-sm text-paper/70">
             {navLinks.map((link) => (
               <li key={link.href}>
@@ -67,7 +67,7 @@ export function Footer() {
         </div>
 
         <div>
-          <p className="text-xs font-semibold tracking-wide text-paper/40 uppercase">Direct Contact</p>
+          <p className="text-xs font-semibold tracking-wide text-paper/60 uppercase">Direct Contact</p>
           <ul className="mt-3 flex flex-col gap-2 text-sm text-paper/70">
             <li>
               <a
@@ -88,7 +88,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 border-t border-paper/10 px-5 py-6 sm:px-8">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 border-t border-paper/10 px-5 py-6 sm:px-8 sm:pr-24">
         <p className="text-xs text-paper/55">
           © {new Date().getFullYear()} {siteMeta.name}. All work shown remains the property of its
           respective brand owners.

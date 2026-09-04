@@ -6,9 +6,11 @@ import { useLenis } from "lenis/react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { usePointerType } from "@/hooks/usePointerType";
 import { whatsappLink } from "@/lib/utils";
 import { siteMeta } from "@/lib/constants/site-copy";
 import type { PortfolioItem } from "@/lib/constants/portfolio";
+import { DielineDiagram } from "@/components/pharma/DielineDiagram";
 
 const specChips = ["Print-Ready Vector / Raster", "Production Bleed & Dieline", "High-Resolution Output"];
 
@@ -31,18 +33,44 @@ export function ProjectModal({
 }) {
   const lenis = useLenis();
   const reducedMotion = useReducedMotion();
+  const { isFinePointer } = usePointerType();
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
+  const imageWrapRef = useRef<HTMLDivElement>(null);
   const [zoomed, setZoomed] = useState(false);
+  const [loupe, setLoupe] = useState<{ x: number; y: number } | null>(null);
+  const [finish, setFinish] = useState<"none" | "matte" | "spot-uv" | "foil">("none");
+  // "dieline" shows one generic, illustrative CAD blueprint (DielineDiagram
+  // — already used honestly elsewhere in this project), never a per-product
+  // schematic with invented real dimensions/board-stock for this specific
+  // item. See docs/client-requirements.md's anti-fabrication rule.
+  const [viewMode, setViewMode] = useState<"photo" | "dieline">("photo");
 
-  // Reset zoom when item changes — adjusted during render (React's recommended
+  // Prepress inspection loupe — a real magnifying glass over the actual
+  // photography (2.5x, tracking the cursor), not a claim about any
+  // specific print spec. Desktop-only (fine pointer) and only in the
+  // resting (non-zoomed) view, since the zoomed view already has its own
+  // pan/zoom interaction and the two would fight over mouse position.
+  const LOUPE_SIZE = 180;
+  const LOUPE_ZOOM = 2.5;
+  function onImageMouseMove(e: React.MouseEvent) {
+    if (!isFinePointer || zoomed || !imageWrapRef.current) return;
+    const rect = imageWrapRef.current.getBoundingClientRect();
+    setLoupe({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  }
+  function onImageMouseLeave() {
+    setLoupe(null);
+  }
+
+  // Reset zoom and viewMode when item changes — adjusted during render (React's recommended
   // pattern) instead of in an effect, to avoid a synchronous setState-in-effect
   // cascading render.
   const [prevItem, setPrevItem] = useState(item);
   if (item !== prevItem) {
     setPrevItem(item);
     setZoomed(false);
+    setViewMode("photo");
   }
 
   const currentIndex = items && item ? items.findIndex((i) => i.slug === item.slug) : -1;
@@ -179,29 +207,32 @@ export function ProjectModal({
       >
         {/* Top Control Bar */}
         <div className="absolute top-4 right-4 z-30 flex items-center gap-2">
-          {/* Zoom toggle */}
-          <button
-            type="button"
-            aria-label={zoomed ? "Zoom out" : "Zoom in"}
-            onClick={() => setZoomed(!zoomed)}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-paper/90 text-ink shadow-md backdrop-blur transition-all hover:bg-ink hover:text-paper"
-            title={zoomed ? "Zoom out" : "Zoom in"}
-          >
-            {zoomed ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                <line x1="8" y1="11" x2="14" y2="11" />
-              </svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                <line x1="11" y1="8" x2="11" y2="14" />
-                <line x1="8" y1="11" x2="14" y2="11" />
-              </svg>
-            )}
-          </button>
+          {/* Zoom toggle — meaningless on the static dieline diagram, so
+              hidden in that mode rather than left active with no effect. */}
+          {viewMode === "photo" && (
+            <button
+              type="button"
+              aria-label={zoomed ? "Zoom out" : "Zoom in"}
+              onClick={() => setZoomed(!zoomed)}
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-paper/90 text-ink shadow-md backdrop-blur transition-all hover:bg-ink hover:text-paper"
+              title={zoomed ? "Zoom out" : "Zoom in"}
+            >
+              {zoomed ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  <line x1="8" y1="11" x2="14" y2="11" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  <line x1="11" y1="8" x2="11" y2="14" />
+                  <line x1="8" y1="11" x2="14" y2="11" />
+                </svg>
+              )}
+            </button>
+          )}
 
           {/* Close button */}
           <button
@@ -219,13 +250,41 @@ export function ProjectModal({
 
         {/* Image Preview Container */}
         <div className="relative flex min-h-[300px] sm:min-h-[420px] lg:min-h-[550px] items-center justify-center overflow-auto bg-paper-raised/80 p-4 sm:p-8">
+          {/* Studio Photo / Prepress Dieline toggle — the dieline is one
+              generic illustrative diagram shared across every item (same
+              component the Pharma section uses), never a per-product
+              schematic invented for this specific piece. */}
+          <div className="absolute top-4 left-4 z-30 inline-flex items-center gap-1 rounded-full border border-ink/10 bg-paper/90 p-1 text-xs font-semibold shadow-md backdrop-blur">
+            {(["photo", "dieline"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => setViewMode(v)}
+                aria-pressed={viewMode === v}
+                className={`rounded-full px-3 py-1.5 transition-colors ${
+                  viewMode === v ? "bg-ink text-paper" : "text-ink-soft hover:text-ink"
+                }`}
+              >
+                {v === "photo" ? "Studio Photo" : "Prepress Dieline"}
+              </button>
+            ))}
+          </div>
+
+          {viewMode === "dieline" ? (
+            <div className="w-full max-w-xl">
+              <DielineDiagram />
+            </div>
+          ) : (
           <div
-            className={`relative transition-all duration-300 ${
+            ref={imageWrapRef}
+            className={`spot-uv-light relative transition-all duration-300 ${
               zoomed
                 ? "h-[140%] w-[140%] cursor-zoom-out"
                 : "h-full w-full cursor-zoom-in"
             }`}
             onClick={() => setZoomed(!zoomed)}
+            onMouseMove={onImageMouseMove}
+            onMouseLeave={onImageMouseLeave}
           >
             <Image
               src={item.src}
@@ -233,9 +292,55 @@ export function ProjectModal({
               fill
               sizes="(min-width: 1024px) 60vw, 100vw"
               priority
-              className="object-contain drop-shadow-md transition-transform duration-300"
+              className={`object-contain drop-shadow-md transition-all duration-300 ${
+                finish === "matte" ? "saturate-[0.82] contrast-[0.94] brightness-[0.98]" : ""
+              }`}
             />
+
+            {/* Finish Preview overlays — an illustrative simulation of how
+                a print finish would read across this artwork, not a claim
+                that this specific product actually has this finish (see
+                the caption below the toggle). Pure CSS sheens on top of
+                the same real, unaltered photo underneath. */}
+            {finish === "spot-uv" && (
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background: "linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.55) 48%, rgba(255,255,255,0.55) 52%, transparent 70%)",
+                  mixBlendMode: "overlay",
+                }}
+              />
+            )}
+            {finish === "foil" && (
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background: "linear-gradient(120deg, transparent 35%, rgba(212,175,55,0.65) 50%, transparent 65%)",
+                  mixBlendMode: "color-dodge",
+                }}
+              />
+            )}
+
+            {loupe && (
+              <div
+                aria-hidden
+                className="pointer-events-none absolute rounded-full border-2 border-ink/20 shadow-[0_8px_24px_rgba(0,0,0,0.25)]"
+                style={{
+                  left: loupe.x - LOUPE_SIZE / 2,
+                  top: loupe.y - LOUPE_SIZE / 2,
+                  width: LOUPE_SIZE,
+                  height: LOUPE_SIZE,
+                  backgroundImage: `url(${item.src})`,
+                  backgroundSize: `${LOUPE_ZOOM * 100}% ${LOUPE_ZOOM * 100}%`,
+                  backgroundPosition: `${-(loupe.x * LOUPE_ZOOM - LOUPE_SIZE / 2)}px ${-(loupe.y * LOUPE_ZOOM - LOUPE_SIZE / 2)}px`,
+                  backgroundRepeat: "no-repeat",
+                }}
+              />
+            )}
           </div>
+          )}
 
           {items && (
             <div className="absolute bottom-3 left-4 rounded-full bg-ink/70 px-3 py-1 text-xs font-medium text-paper backdrop-blur">
@@ -248,11 +353,12 @@ export function ProjectModal({
         <div className="flex flex-col justify-between overflow-y-auto p-6 sm:p-8 lg:p-10">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
+              <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-ink">
+                <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 {categoryLabel[item.category]}
               </span>
               {item.isFlagship && (
-                <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-[10px] font-bold text-accent">
+                <span className="rounded-full bg-ink px-2.5 py-0.5 text-[10px] font-bold text-paper">
                   FEATURED
                 </span>
               )}
@@ -262,7 +368,7 @@ export function ProjectModal({
               {item.title}
             </h3>
 
-            <p className="mt-2 text-sm text-ink-faint">Client / Brand: {item.client}</p>
+            <p className="mt-2 text-sm text-ink-soft">Client / Brand: {item.client}</p>
 
             <div className="mt-5 flex flex-wrap gap-1.5">
               {item.tags.map((tag) => (
@@ -273,20 +379,50 @@ export function ProjectModal({
             </div>
 
             <div className="mt-6 border-t border-line pt-5">
-              <p className="font-spec text-[11px] font-normal tracking-wider text-ink-faint uppercase">
+              <p className="font-spec text-[11px] font-normal tracking-wider text-ink-soft uppercase">
                 Production Standards
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {specChips.map((spec) => (
                   <span
                     key={spec}
-                    className="rounded-full border border-ink/15 bg-paper px-3 py-1 font-spec text-[10px] tracking-wide text-ink-faint uppercase"
+                    className="rounded-full border border-ink/15 bg-paper px-3 py-1 font-spec text-[10px] tracking-wide text-ink-soft uppercase"
                   >
                     {spec}
                   </span>
                 ))}
               </div>
+
             </div>
+
+            {/* Finish Preview — an illustrative CSS simulation of common
+                print finishes, applied on top of this real photo. Labeled
+                explicitly as a preview, not a claim that this particular
+                product was actually finished this way (that's unconfirmed
+                per product — see docs/client-requirements.md). Hidden in
+                dieline mode since it has no real photo to apply to. */}
+            {viewMode === "photo" && (
+            <div className="mt-6 border-t border-line pt-5">
+              <p className="font-spec text-[11px] font-normal tracking-wider text-ink-soft uppercase">
+                Finish Preview <span className="normal-case text-ink-soft">(illustrative)</span>
+              </p>
+              <div className="mt-3 inline-flex flex-wrap items-center gap-1 rounded-full border border-ink/10 bg-paper-raised p-1 text-xs font-semibold">
+                {(["none", "matte", "spot-uv", "foil"] as const).map((f) => (
+                  <button
+                    key={f}
+                    type="button"
+                    onClick={() => setFinish(f)}
+                    aria-pressed={finish === f}
+                    className={`rounded-full px-3 py-1.5 capitalize transition-colors ${
+                      finish === f ? "bg-ink text-paper" : "text-ink-soft hover:text-ink"
+                    }`}
+                  >
+                    {f === "none" ? "Raw" : f === "spot-uv" ? "Spot UV" : f}
+                  </button>
+                ))}
+              </div>
+            </div>
+            )}
           </div>
 
           {/* Action CTAs */}

@@ -7,6 +7,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { SectionIndex } from "@/components/motifs/SectionIndex";
 import { StampBadge } from "@/components/motifs/StampBadge";
 import { WriteReviewModal } from "@/components/testimonials/WriteReviewModal";
+import { TestimonialCarousel } from "@/components/testimonials/TestimonialCarousel";
 import { Icon } from "@/lib/icons";
 
 const cardExtras = [
@@ -16,7 +17,7 @@ const cardExtras = [
 ] as const;
 
 const cardClass =
-  "flex flex-col justify-between rounded-3xl border border-line bg-paper p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-25px_rgba(0,0,0,0.25)]";
+  "flex flex-col justify-between rounded-3xl border border-line bg-paper p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_34px_-16px_rgba(29,29,31,0.3)]";
 
 export function WhyPartnerSection() {
   const [expertise, printReady, approachable] = whyPartner.items;
@@ -60,7 +61,7 @@ export function WhyPartnerSection() {
   };
 
   return (
-    <section id="trust" className="scroll-mt-24 bg-paper-raised px-5 py-28 sm:scroll-mt-28 sm:px-8 sm:py-36">
+    <section id="trust" className="relative scroll-mt-28 bg-paper-raised px-5 py-16 sm:scroll-mt-28 sm:px-8 sm:py-20">
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <SectionIndex index="06" label="TRUST" meta="WHY PARTNER WITH ME" />
@@ -70,7 +71,13 @@ export function WhyPartnerSection() {
         </Reveal>
 
         {/* 3 Pillar Cards */}
-        <Reveal className="mt-16 grid gap-6 sm:grid-cols-3" delay={0.1}>
+        {/* items-start: same fix as ServicesSection/PortfolioGrid — without
+            it, grid's default stretch forces all 3 pillar cards to match
+            the tallest one, and each card's `justify-between` flex then
+            stretches a big empty gap before its footer, worst on the
+            middle "Print-Ready Guarantee" card which has the least body
+            content. */}
+        <Reveal className="mt-10 grid items-start gap-6 sm:grid-cols-3" delay={0.1}>
           <div className={cardClass}>
             <div>
               <div className="flex items-start justify-between gap-3">
@@ -80,7 +87,7 @@ export function WhyPartnerSection() {
               <h3 className="mt-5 font-display text-lg font-semibold text-ink">{expertise.title}</h3>
               <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">{expertise.body}</p>
             </div>
-            <p className="mt-6 border-t border-line/60 pt-4 font-spec text-xs text-ink-faint">
+            <p className="mt-6 border-t border-line/60 pt-4 font-spec text-xs text-ink-soft">
               {cardExtras[0].footer}
             </p>
           </div>
@@ -94,12 +101,12 @@ export function WhyPartnerSection() {
               <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">{printReady.body}</p>
             </div>
             <div className="mt-6 border-t border-line/60 pt-4">
-              <p className="font-spec text-[11px] tracking-wide text-ink-faint uppercase">Included in every file</p>
+              <p className="font-spec text-[11px] tracking-wide text-ink-soft uppercase">Included in every file</p>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {cardExtras[1].tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full bg-paper-raised px-2.5 py-1 font-spec text-[10px] font-medium text-ink-faint uppercase"
+                    className="rounded-full bg-paper-raised px-2.5 py-1 font-spec text-[10px] font-medium text-ink-soft uppercase"
                   >
                     {tag}
                   </span>
@@ -130,13 +137,13 @@ export function WhyPartnerSection() {
         </Reveal>
 
         {/* Client Reviews & Testimonials Corner */}
-        <div className="mt-28 border-t border-line/70 pt-20">
+        <div className="mt-16 border-t border-line/70 pt-12">
           <Reveal>
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 font-spec text-[11px] font-normal tracking-wide text-amber-700 uppercase">
-                    <span className="text-amber-500">★</span> 5.0 Google Rating · Verified Studio
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-ink/15 bg-paper px-3 py-1 font-spec text-[11px] font-normal tracking-wide text-ink uppercase">
+                    <span className="text-accent">★</span> 5.0 Google Rating · Verified Studio
                   </span>
                 </div>
                 <h3 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
@@ -170,62 +177,13 @@ export function WhyPartnerSection() {
             </div>
           </Reveal>
 
-          {/* Testimonial Cards Grid */}
-          <Reveal className="mt-12 grid gap-6 md:grid-cols-2" delay={0.15}>
-            {reviewList.map((t) => (
-              <div
-                key={t.id}
-                className="group relative flex flex-col justify-between rounded-3xl border border-line bg-paper p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:p-8"
-              >
-                <div>
-                  {/* Top Bar: Stars + Source / Project Chip */}
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1 text-amber-500" aria-label={`${t.rating} out of 5 stars`}>
-                        {[...Array(t.rating)].map((_, idx) => (
-                          <svg key={idx} width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                          </svg>
-                        ))}
-                      </div>
-                      <span className="font-display text-xs font-bold text-ink">{t.rating}.0</span>
-                    </div>
-
-                    <div className="flex items-center gap-1.5">
-                      <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 font-spec text-[11px] font-normal tracking-wide text-emerald-700 uppercase">
-                        ✓ {t.source}
-                      </span>
-                      <span className="rounded-full bg-paper-raised px-2.5 py-0.5 font-spec text-[11px] font-normal tracking-wide text-ink-faint uppercase">
-                        {t.project}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Quote */}
-                  <blockquote className="mt-5 text-[15px] leading-relaxed text-ink-soft">
-                    &ldquo;{t.content}&rdquo;
-                  </blockquote>
-                </div>
-
-                {/* Client Profile Footer */}
-                <div className="mt-7 flex items-center justify-between border-t border-line/60 pt-5">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm ${t.avatarBg}`}
-                    >
-                      {t.initials}
-                    </div>
-                    <div>
-                      <p className="font-display text-sm font-bold text-ink">{t.name}</p>
-                      <p className="text-xs text-ink-soft">
-                        {t.role} · <span className="font-semibold text-ink">{t.company}</span>
-                      </p>
-                    </div>
-                  </div>
-                  <span className="font-spec text-[10px] text-ink-faint">{t.date}</span>
-                </div>
-              </div>
-            ))}
+          {/* Testimonial Carousel — swaps the previous static 2-col grid
+              (all reviews stacked, growing with every submission) for the
+              same drag/snap/dot carousel language as the hero poster and
+              portfolio: one review at a time, a fixed footprint regardless
+              of how many reviews exist. */}
+          <Reveal className="mt-8" delay={0.15}>
+            <TestimonialCarousel reviews={reviewList} />
           </Reveal>
         </div>
       </div>

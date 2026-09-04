@@ -134,6 +134,61 @@ export function IconWave(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function IconDielineFold(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 4h16v16H4z" strokeDasharray="2.5 2.5" />
+      <path d="M4 12h16M12 4v16" />
+    </svg>
+  );
+}
+
+export function IconTrifold(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M3 6v13l6.5-2.5V4L3 6Z" />
+      <path d="M9.5 4v12.5l5 2V6.5l-5-2.5Z" />
+      <path d="M14.5 6.5v14L21 18V5l-6.5 1.5Z" />
+    </svg>
+  );
+}
+
+export function IconPenAnchor(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 18C8 10 14 8 20 6" />
+      <rect x="2.5" y="16.5" width="3" height="3" />
+      <rect x="18.5" y="4.5" width="3" height="3" />
+      <path d="M10 12.5l3-2" />
+      <circle cx="10" cy="12.5" r="1.1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function IconHalftone(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="6" cy="6" r="2.4" fill="currentColor" stroke="none" />
+      <circle cx="13.5" cy="6" r="1.7" fill="currentColor" stroke="none" />
+      <circle cx="19.5" cy="6.5" r="0.9" fill="currentColor" stroke="none" />
+      <circle cx="6" cy="13.5" r="1.7" fill="currentColor" stroke="none" />
+      <circle cx="13.5" cy="13.5" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="19.5" cy="14" r="0.7" fill="currentColor" stroke="none" />
+      <circle cx="6.5" cy="19.5" r="0.9" fill="currentColor" stroke="none" />
+      <circle cx="13.5" cy="19.5" r="0.7" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function IconWaxSeal(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 3.5c.6 1.2 1.7 1.8 2.9 1.4.4 1.3 1.4 2 2.7 1.9.1 1.3.9 2.2 2.1 2.5-.6 1.2-.5 2.3.4 3.2-.9.9-1 2-.4 3.2-1.2.3-2 1.2-2.1 2.5-1.3-.1-2.3.6-2.7 1.9-1.2-.4-2.3.2-2.9 1.4-.6-1.2-1.7-1.8-2.9-1.4-.4-1.3-1.4-2-2.7-1.9-.1-1.3-.9-2.2-2.1-2.5.6-1.2.5-2.3-.4-3.2.9-.9 1-2 .4-3.2 1.2-.3 2-1.2 2.1-2.5 1.3.1 2.3-.6 2.7-1.9.6.4 1.7-.2 2.9-1.4Z" />
+      <path d="M9 12.5l2 2 4-4.5" />
+    </svg>
+  );
+}
+
 export const iconMap = {
   box: IconBox,
   document: IconDocument,
@@ -147,6 +202,11 @@ export const iconMap = {
   map: IconMap,
   calendar: IconCalendar,
   wave: IconWave,
+  dielineFold: IconDielineFold,
+  trifold: IconTrifold,
+  penAnchor: IconPenAnchor,
+  halftone: IconHalftone,
+  waxSeal: IconWaxSeal,
 } as const;
 
 export type IconName = keyof typeof iconMap;

@@ -3,21 +3,40 @@ import { Reveal } from "@/components/motion/Reveal";
 import { SectionIndex } from "@/components/motifs/SectionIndex";
 import { Icon } from "@/lib/icons";
 import { DesignerSpecCard } from "./DesignerSpecCard";
+import { ScrollReveal } from "@/components/motifs/ScrollReveal";
+import { OrbitImages } from "@/components/motifs/OrbitImages";
+import { LanyardGate } from "./LanyardGate";
 
 export function AboutSection() {
   return (
-    <section id="about" className="scroll-mt-24 px-5 py-28 sm:scroll-mt-28 sm:px-8 sm:py-36">
+    <section id="about" className="relative scroll-mt-28 px-5 py-16 sm:scroll-mt-28 sm:px-8 sm:py-20">
       <div className="mx-auto max-w-7xl">
         <SectionIndex index="01" label="ABOUT" meta="THE DESIGNER" />
       </div>
 
       <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[1fr_1.2fr]">
         <Reveal className="relative">
+          {/* Hangs apart from the spec card itself (own physics canvas,
+              own draggable ID card) rather than crowding it — lg: and up
+              only, same breakpoint discipline as the other decorative
+              extras this section reserves for wider screens. A bare
+              thread trailing into empty space read as a random floating
+              object with no visible mount point — this pushpin gives the
+              ribbon a real anchor to hang from, same "give the motif a
+              home" fix as OrbitImages' caption above. */}
+          <div className="pointer-events-none absolute -top-6 -right-6 z-10 hidden lg:block">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="mx-auto text-ink/60" aria-hidden>
+              <circle cx="12" cy="9" r="6" fill="currentColor" />
+              <path d="M12 15v7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+            <LanyardGate className="-mt-1 [&>div]:pointer-events-auto" />
+          </div>
           <DesignerSpecCard />
         </Reveal>
 
         <Reveal delay={0.1}>
-          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
+          <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-ink">
+            <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
             {about.heading}
           </span>
           <h2 className="mt-4 flex flex-wrap items-center gap-3 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
@@ -31,7 +50,7 @@ export function AboutSection() {
 
           <div className="mt-7 flex flex-col gap-4 text-[17px] leading-relaxed text-ink-soft">
             {about.paragraphs.map((p, i) => (
-              <p key={i}>{p}</p>
+              <ScrollReveal key={i}>{p}</ScrollReveal>
             ))}
           </div>
 
@@ -40,13 +59,29 @@ export function AboutSection() {
           <dl className="mt-12 flex flex-col gap-4 border-t border-ink/[0.06] pt-8">
             {about.credentials.map((c) => (
               <div key={c.label} className="flex flex-col gap-1 sm:flex-row sm:gap-6">
-                <dt className="w-32 shrink-0 text-xs font-semibold uppercase tracking-wide text-ink-faint">
+                <dt className="w-32 shrink-0 text-xs font-semibold uppercase tracking-wide text-ink-soft">
                   {c.label}
                 </dt>
                 <dd className="text-sm text-ink-soft">{c.value}</dd>
               </div>
             ))}
           </dl>
+
+          {/* Placed inline in the text column's own flow, not floated in
+              the outer section margin — a fixed-width absolute badge out
+              there only had room to clear the content at very wide
+              (2xl+) viewports; at the common ~1440px desktop width the
+              margin is too narrow and it either collided with the text
+              or (as gated) never rendered at all. Inline guarantees it's
+              visible at every width the two-column layout itself uses. */}
+          <div className="mt-10 hidden items-center gap-4 border-t border-ink/[0.06] pt-8 sm:flex">
+            <OrbitImages size={104} duration={22} className="shrink-0" />
+            <p className="font-spec text-[10px] tracking-widest text-ink-soft uppercase">
+              A Few Specimens
+              <br />
+              From the Archive
+            </p>
+          </div>
         </Reveal>
       </div>
     </section>

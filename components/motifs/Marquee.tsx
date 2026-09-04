@@ -21,6 +21,29 @@ export function Marquee({ items }: { items: string[] }) {
     </div>
   );
 
+  // A second, thinner track of press-calibration ink dashes — same CMYK
+  // sequence as PressColorBar/CMYKSwatch elsewhere, scrolling the opposite
+  // direction at the same speed for a "dual-track calibration ribbon"
+  // feel. Purely decorative generic ink swatches, not a claim about any
+  // specific real press run.
+  const inks = [
+    { name: "C", className: "bg-cyan" },
+    { name: "M", className: "bg-magenta" },
+    { name: "Y", className: "bg-yellow" },
+    { name: "K", className: "bg-ink" },
+  ];
+  const calibrationTrack = (
+    <div className="flex shrink-0 items-center gap-6 pr-6" aria-hidden>
+      {Array.from({ length: 10 }).map((_, i) => (
+        <div key={i} className="flex items-center gap-1.5">
+          {inks.map((ink) => (
+            <span key={ink.name} className={`h-2 w-4 rounded-[1px] ${ink.className}`} />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+
   // Purely decorative — the same information (services, experience,
   // guarantees) already exists as real copy elsewhere on the page, so the
   // whole ticker is hidden from assistive tech rather than read twice.
@@ -38,6 +61,12 @@ export function Marquee({ items }: { items: string[] }) {
         <div className="flex w-max animate-marquee">
           {track}
           {track}
+        </div>
+      </div>
+      <div className="overflow-hidden border-t border-line/60 bg-paper py-1.5" aria-hidden="true">
+        <div className="flex w-max animate-marquee" style={{ animationDirection: "reverse", animationDuration: "22s" }}>
+          {calibrationTrack}
+          {calibrationTrack}
         </div>
       </div>
       <InkBleedRule id="marquee-bottom" seed={13} className="absolute inset-x-0 bottom-0 z-10 translate-y-1/2 text-ink/20" />

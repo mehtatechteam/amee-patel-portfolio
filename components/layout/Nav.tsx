@@ -1,9 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { siteMeta } from "@/lib/constants/site-copy";
 import { cn } from "@/lib/utils";
+import { AvailabilityBadge } from "@/components/motifs/AvailabilityBadge";
+import { LiveClock } from "@/components/motifs/LiveClock";
+import { gsap } from "@/lib/gsap";
 
 const links = [
   { href: "#home", id: "home", label: "HOME" },
@@ -16,10 +19,77 @@ const links = [
   { href: "#contact", id: "contact", label: "CONTACT" },
 ];
 
+/**
+ * One pill of the nav capsule — a circle scales in from wherever the
+ * pointer entered (GSAP, already the codebase's animation library) and
+ * the label swaps to the inverse color while it's filled. The active
+ * section gets a persistent filled state instead, independent of hover.
+ */
+function NavPill({
+  href,
+  label,
+  isActive,
+  onNavigate,
+  linkRef,
+}: {
+  href: string;
+  label: string;
+  isActive: boolean;
+  onNavigate?: () => void;
+  linkRef?: (el: HTMLAnchorElement | null) => void;
+}) {
+  const fillRef = useRef<HTMLSpanElement>(null);
+
+  // clip-path (not a scaled absolutely-positioned circle) so the fill is
+  // guaranteed to stay within the pill's own rounded-rect bounds at any
+  // size — a fixed-size circle span relying on the pill's own
+  // overflow-hidden to crop it produced a visibly uneven/bled edge where
+  // the circle's curve met the pill's corner radius.
+  function pointerPercent(e: React.MouseEvent<HTMLAnchorElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    return {
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    };
+  }
+  function onEnter(e: React.MouseEvent<HTMLAnchorElement>) {
+    const { x, y } = pointerPercent(e);
+    gsap.set(fillRef.current, { clipPath: `circle(0% at ${x}% ${y}%)` });
+    gsap.to(fillRef.current, { clipPath: `circle(140% at ${x}% ${y}%)`, duration: 0.5, ease: "power2.out" });
+  }
+  function onLeave(e: React.MouseEvent<HTMLAnchorElement>) {
+    const { x, y } = pointerPercent(e);
+    gsap.to(fillRef.current, { clipPath: `circle(0% at ${x}% ${y}%)`, duration: 0.4, ease: "power2.in" });
+  }
+
+  return (
+    <Link
+      ref={linkRef}
+      href={href}
+      onClick={onNavigate}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      className={cn(
+        "group relative isolate overflow-hidden rounded-full px-4 py-2 font-body text-xs font-semibold tracking-wider uppercase transition-colors duration-300 xl:px-5",
+        isActive ? "bg-ink text-paper" : "text-ink-soft",
+      )}
+    >
+      <span
+        ref={fillRef}
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0 bg-ink"
+        style={{ clipPath: "circle(0% at 50% 50%)" }}
+      />
+      <span className={cn("relative z-10", !isActive && "group-hover:text-paper")}>{label}</span>
+    </Link>
+  );
+}
+
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
 
   useEffect(() => {
     const onScroll = () => {
@@ -61,32 +131,33 @@ export function Nav() {
         <Link
           id="site-logo"
           href="#home"
-          className="font-display text-xl font-bold tracking-tight text-ink flex items-center gap-1.5"
+          className="flex shrink-0 items-center gap-1.5 font-display text-xl font-bold tracking-tight whitespace-nowrap text-ink"
         >
           <span>{siteMeta.name}</span>
           <span className="h-2 w-2 rounded-full bg-accent" />
         </Link>
 
-        {/* Desktop Navigation Links matching exact order requested */}
-        <nav className="hidden items-center gap-7 lg:flex lg:gap-9">
-          {links.map((link) => {
-            const isActive = activeSection === link.id;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "font-body text-xs lg:text-sm font-semibold tracking-wider transition-colors uppercase",
-                  isActive ? "text-accent font-bold" : "text-ink-soft hover:text-accent"
-                )}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+        {/* Pill-capsule nav — each link is its own pill with a
+            pointer-tracked circle-fill hover (see NavPill above). */}
+        <nav className="hidden shrink-0 items-center gap-1 rounded-full border border-ink/10 bg-paper-raised p-1 lg:flex">
+          {links.map((link) => (
+            <NavPill
+              key={link.href}
+              href={link.href}
+              label={link.label}
+              isActive={activeSection === link.id}
+              linkRef={(el) => {
+                linkRefs.current[link.id] = el;
+              }}
+            />
+          ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-3">
+          <span className="hidden shrink-0 items-center gap-1.5 font-spec text-[11px] whitespace-nowrap text-ink-soft uppercase tracking-wide 2xl:inline-flex">
+            Ahmedabad · <LiveClock />
+          </span>
+          <AvailabilityBadge className="hidden shrink-0 bg-paper-raised text-ink-soft whitespace-nowrap 2xl:inline-flex" />
           <Link
             href="#contact"
             className="hidden rounded-full bg-ink px-5 py-2.5 font-body text-xs lg:text-sm font-semibold uppercase tracking-wider text-paper transition-transform hover:-translate-y-0.5 hover:bg-accent sm:inline-block"

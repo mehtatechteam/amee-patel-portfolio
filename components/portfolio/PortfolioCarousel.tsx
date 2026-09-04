@@ -143,56 +143,72 @@ export function PortfolioCarousel({
 
   return (
     <div className="relative">
-      <div
-        ref={trackRef}
-        tabIndex={0}
-        aria-label="Portfolio projects carousel"
-        aria-roledescription="carousel"
-        onKeyDown={onKeyDown}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerLeave={endDrag}
-        onClickCapture={onClickCapture}
-        className="flex items-start snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-6 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        style={{ paddingLeft: EDGE_PAD, paddingRight: EDGE_PAD }}
-      >
-        {items.map((item, i) => (
-          <PortfolioCard
-            key={item.slug}
-            item={item}
-            index={i}
-            onOpen={onOpen}
-            cardRef={(el) => {
-              cardRefs.current[i] = el;
-            }}
-          />
-        ))}
-      </div>
+      {/* This inner wrapper (not the outer div) is the positioning
+          context for the prev/next buttons and their scrims — it's sized
+          to the track alone, not the indicators row below it, so the
+          buttons center vertically on the cards rather than on the whole
+          carousel block. */}
+      <div className="relative">
+        <div
+          ref={trackRef}
+          tabIndex={0}
+          aria-label="Portfolio projects carousel"
+          aria-roledescription="carousel"
+          onKeyDown={onKeyDown}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerLeave={endDrag}
+          onClickCapture={onClickCapture}
+          className="flex items-start snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-6 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          style={{ paddingLeft: EDGE_PAD, paddingRight: EDGE_PAD }}
+        >
+          {items.map((item, i) => (
+            <PortfolioCard
+              key={item.slug}
+              item={item}
+              index={i}
+              onOpen={onOpen}
+              cardRef={(el) => {
+                cardRefs.current[i] = el;
+              }}
+            />
+          ))}
+        </div>
 
-      {/* Prev / Next buttons */}
-      <button
-        type="button"
-        aria-label="Previous project"
-        disabled={activeIndex === 0}
-        onClick={() => scrollToIndex(targetIndexRef.current - 1)}
-        className="absolute left-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-paper/95 text-ink shadow-xl backdrop-blur transition-all hover:scale-110 hover:bg-ink hover:text-paper disabled:opacity-0 sm:flex sm:left-4"
-      >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
-      <button
-        type="button"
-        aria-label="Next project"
-        disabled={activeIndex === items.length - 1}
-        onClick={() => scrollToIndex(targetIndexRef.current + 1)}
-        className="absolute right-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-paper/95 text-ink shadow-xl backdrop-blur transition-all hover:scale-110 hover:bg-ink hover:text-paper disabled:opacity-0 sm:flex sm:right-4"
-      >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
+        {/* Edge scrims — a peeking card's own artwork sits directly under
+            where the prev/next buttons float (the track always scrolls
+            some card right up to the viewport edge), so without this the
+            buttons visibly overlap a real product photo. Fading the edge
+            to the page background first makes the button read as sitting
+            on its own control strip rather than clipping content. */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-[5] hidden w-28 bg-gradient-to-r from-paper via-paper/70 to-transparent sm:block" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-[5] hidden w-28 bg-gradient-to-l from-paper via-paper/70 to-transparent sm:block" />
+
+        {/* Prev / Next buttons */}
+        <button
+          type="button"
+          aria-label="Previous project"
+          disabled={activeIndex === 0}
+          onClick={() => scrollToIndex(targetIndexRef.current - 1)}
+          className="absolute left-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-paper/95 text-ink shadow-xl backdrop-blur transition-all hover:scale-110 hover:bg-ink hover:text-paper disabled:opacity-0 sm:flex sm:left-4"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          aria-label="Next project"
+          disabled={activeIndex === items.length - 1}
+          onClick={() => scrollToIndex(targetIndexRef.current + 1)}
+          className="absolute right-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-paper/95 text-ink shadow-xl backdrop-blur transition-all hover:scale-110 hover:bg-ink hover:text-paper disabled:opacity-0 sm:flex sm:right-4"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
 
       {/* Indicators */}
       <div className="mt-8 flex items-center justify-center px-5 sm:px-8">
@@ -204,11 +220,15 @@ export function PortfolioCarousel({
               aria-label={`Go to project ${i + 1} of ${items.length}`}
               aria-current={i === activeIndex}
               onClick={() => scrollToIndex(i)}
-              className={cn(
-                "h-2 rounded-full transition-all duration-300",
-                i === activeIndex ? "w-8 bg-ink" : "w-2 bg-ink/15 hover:bg-ink/35",
-              )}
-            />
+              className="group flex items-center justify-center p-2.5"
+            >
+              <span
+                className={cn(
+                  "block h-2 rounded-full transition-all duration-300",
+                  i === activeIndex ? "w-8 bg-ink" : "w-2 bg-ink/15 group-hover:bg-ink/35",
+                )}
+              />
+            </button>
           ))}
         </div>
       </div>

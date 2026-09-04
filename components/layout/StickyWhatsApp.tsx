@@ -10,7 +10,7 @@ export function StickyWhatsApp() {
   return (
     <aside
       aria-label="Quick contact"
-      className="fixed right-5 bottom-5 z-50 flex items-center gap-3 sm:right-7 sm:bottom-7"
+      className="fixed right-4 bottom-4 z-50 flex items-center gap-3 sm:right-7 sm:bottom-7"
     >
       {/* Tooltip text pill */}
       <div
@@ -34,7 +34,7 @@ export function StickyWhatsApp() {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         aria-label="Chat directly on WhatsApp"
-        className="group relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_10px_25px_-5px_rgba(37,211,102,0.5)] transition-all duration-300 hover:scale-110 hover:shadow-[0_15px_30px_-5px_rgba(37,211,102,0.7)] active:scale-95"
+        className="group relative flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_10px_25px_-5px_rgba(37,211,102,0.5)] transition-all duration-300 hover:scale-110 hover:shadow-[0_15px_30px_-5px_rgba(37,211,102,0.7)] active:scale-95 sm:h-14 sm:w-14"
       >
         {/* Pulsing ring */}
         <span className="absolute -inset-1 rounded-full bg-[#25D366]/40 opacity-75 animate-ping duration-1000 group-hover:hidden" />
