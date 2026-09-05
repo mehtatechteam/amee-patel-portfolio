@@ -11,6 +11,7 @@ import { whatsappLink } from "@/lib/utils";
 import { siteMeta } from "@/lib/constants/site-copy";
 import type { PortfolioItem } from "@/lib/constants/portfolio";
 import { DielineDiagram } from "@/components/pharma/DielineDiagram";
+import { Product3DBox } from "./Product3DBox";
 
 const specChips = ["Print-Ready Vector / Raster", "Production Bleed & Dieline", "High-Resolution Output"];
 
@@ -45,7 +46,7 @@ export function ProjectModal({
   // — already used honestly elsewhere in this project), never a per-product
   // schematic with invented real dimensions/board-stock for this specific
   // item. See docs/client-requirements.md's anti-fabrication rule.
-  const [viewMode, setViewMode] = useState<"photo" | "dieline">("photo");
+  const [viewMode, setViewMode] = useState<"photo" | "box" | "dieline">("photo");
 
   // Prepress inspection loupe — a real magnifying glass over the actual
   // photography (2.5x, tracking the cursor), not a claim about any
@@ -250,12 +251,16 @@ export function ProjectModal({
 
         {/* Image Preview Container */}
         <div className="relative flex min-h-[300px] sm:min-h-[420px] lg:min-h-[550px] items-center justify-center overflow-auto bg-paper-raised/80 p-4 sm:p-8">
-          {/* Studio Photo / Prepress Dieline toggle — the dieline is one
-              generic illustrative diagram shared across every item (same
+          {/* Studio Photo / 3D Box / Prepress Dieline toggle. The 3D Box
+              is the real, unaltered photo on the front face of a real
+              3D-transformed box (same technique already shipped in the
+              Hero's "Folded Carton" mode) — not an AI-guessed model of
+              faces no source photo shows. The dieline is one generic
+              illustrative diagram shared across every item (same
               component the Pharma section uses), never a per-product
               schematic invented for this specific piece. */}
           <div className="absolute top-4 left-4 z-30 inline-flex items-center gap-1 rounded-full border border-ink/10 bg-paper/90 p-1 text-xs font-semibold shadow-md backdrop-blur">
-            {(["photo", "dieline"] as const).map((v) => (
+            {(["photo", "box", "dieline"] as const).map((v) => (
               <button
                 key={v}
                 type="button"
@@ -265,7 +270,7 @@ export function ProjectModal({
                   viewMode === v ? "bg-ink text-paper" : "text-ink-soft hover:text-ink"
                 }`}
               >
-                {v === "photo" ? "Studio Photo" : "Prepress Dieline"}
+                {v === "photo" ? "Studio Photo" : v === "box" ? "3D Box" : "Prepress Dieline"}
               </button>
             ))}
           </div>
@@ -274,6 +279,8 @@ export function ProjectModal({
             <div className="w-full max-w-xl">
               <DielineDiagram />
             </div>
+          ) : viewMode === "box" ? (
+            <Product3DBox src={item.src} title={item.title} />
           ) : (
           <div
             ref={imageWrapRef}

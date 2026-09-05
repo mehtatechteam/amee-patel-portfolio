@@ -10,7 +10,7 @@
  */
 export function DielineDiagram() {
   return (
-    <div className="rounded-3xl border border-line bg-paper p-6 sm:p-10 shadow-xs">
+    <div className="rounded-3xl border border-line bg-paper p-6 shadow-sm sm:p-10">
       <div className="mb-4 flex items-center justify-between border-b border-line pb-3">
         <div className="flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-accent" />
@@ -19,26 +19,33 @@ export function DielineDiagram() {
           </span>
         </div>
         <span className="font-spec text-[10px] text-ink-soft tracking-wider uppercase">
-          Standard Straight-Tuck Carton (STE)
+          Standard Straight-Tuck Carton (STE) · Scale 1:1
         </span>
       </div>
 
-      <div className="relative overflow-hidden rounded-2xl border border-line bg-[#fdfcf9] p-4 sm:p-6">
+      <div className="relative overflow-hidden rounded-2xl border border-line bg-[#fdfcf9] p-4 shadow-inner sm:p-6">
         <svg
           viewBox="0 0 460 280"
           className="mx-auto w-full max-w-xl select-none"
           role="img"
           aria-label="High-precision illustrative carton dieline blueprint"
         >
-          {/* Subtle Drafting Grid */}
           <defs>
             <pattern id="cad-grid" width="20" height="20" patternUnits="userSpaceOnUse">
               <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#ebe8e0" strokeWidth="0.75" />
             </pattern>
+            {/* Adhesive cross-hatch for the glue tab — a real prepress
+                convention marking where adhesive is applied, not a
+                per-product spec. */}
+            <pattern id="glue-hatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="6" stroke="#ef4444" strokeWidth="0.6" opacity="0.35" />
+            </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#cad-grid)" />
 
-          {/* Bleed boundary (cyan dotted, offset by 3mm) */}
+          {/* Bleed boundary (cyan dotted, offset by 3mm) with corner crop
+              ticks at all four corners — previously only the right edge
+              had registration circles, which read as unfinished. */}
           <rect
             x="32"
             y="16"
@@ -49,20 +56,29 @@ export function DielineDiagram() {
             strokeWidth="1.2"
             strokeDasharray="2 3"
           />
+          {[
+            [32, 16],
+            [378, 16],
+            [32, 254],
+            [378, 254],
+          ].map(([cx, cy], i) => (
+            <g key={i} stroke="#1d1d1f" strokeWidth="0.8" opacity="0.55">
+              <line x1={cx - 6} y1={cy} x2={cx + 6} y2={cy} />
+              <line x1={cx} y1={cy - 6} x2={cx} y2={cy + 6} />
+            </g>
+          ))}
 
           {/* Glue tab (left edge) */}
-          <path d="M 40 50 L 25 65 L 25 185 L 40 200 Z" fill="#f4f1ea" stroke="#ef4444" strokeWidth="1.5" />
+          <path d="M 40 50 L 25 65 L 25 185 L 40 200 Z" fill="url(#glue-hatch)" stroke="#ef4444" strokeWidth="1.5" />
           <line x1="40" y1="50" x2="40" y2="200" stroke="#10b981" strokeWidth="1.5" strokeDasharray="4 3" />
 
-          {/* Main 4 Carton Panels: Side, Front, Side, Back */}
-          {/* Panel 1: Left Side (75mm x 150mm) */}
-          <rect x="40" y="50" width="75" height="150" fill="none" stroke="#ef4444" strokeWidth="1.5" />
-          {/* Panel 2: Front Face (95mm x 150mm) */}
-          <rect x="115" y="50" width="95" height="150" fill="rgba(245, 71, 28, 0.02)" stroke="#ef4444" strokeWidth="1.5" />
-          {/* Panel 3: Right Side (75mm x 150mm) */}
-          <rect x="210" y="50" width="75" height="150" fill="none" stroke="#ef4444" strokeWidth="1.5" />
-          {/* Panel 4: Back Face (95mm x 150mm) */}
-          <rect x="285" y="50" width="85" height="150" fill="none" stroke="#ef4444" strokeWidth="1.5" />
+          {/* Main 4 Carton Panels: Side, Front, Side, Back — faint
+              alternating tints so the four panels read as distinct
+              surfaces at a glance, not just four identical outlines. */}
+          <rect x="40" y="50" width="75" height="150" fill="#1d1d1f" fillOpacity="0.02" stroke="#ef4444" strokeWidth="1.5" />
+          <rect x="115" y="50" width="95" height="150" fill="rgba(245, 71, 28, 0.035)" stroke="#ef4444" strokeWidth="1.5" />
+          <rect x="210" y="50" width="75" height="150" fill="#1d1d1f" fillOpacity="0.02" stroke="#ef4444" strokeWidth="1.5" />
+          <rect x="285" y="50" width="85" height="150" fill="#1d1d1f" fillOpacity="0.045" stroke="#ef4444" strokeWidth="1.5" />
 
           {/* Crease/Score fold lines (dashed green) */}
           <line x1="115" y1="50" x2="115" y2="200" stroke="#10b981" strokeWidth="1.5" strokeDasharray="4 3" />
@@ -74,16 +90,16 @@ export function DielineDiagram() {
           <line x1="40" y1="200" x2="370" y2="200" stroke="#10b981" strokeWidth="1.5" strokeDasharray="4 3" />
 
           {/* Top Main Tuck Flap (over Front Panel) */}
-          <path d="M 115 50 L 125 22 Q 162.5 18 200 22 L 210 50 Z" fill="none" stroke="#ef4444" strokeWidth="1.5" />
+          <path d="M 115 50 L 125 22 Q 162.5 18 200 22 L 210 50 Z" fill="#fdfcf9" stroke="#ef4444" strokeWidth="1.5" />
           {/* Top Dust Flaps (Side Panels) */}
-          <path d="M 40 50 L 50 32 L 105 32 L 115 50 Z" fill="none" stroke="#ef4444" strokeWidth="1.2" />
-          <path d="M 210 50 L 220 32 L 275 32 L 285 50 Z" fill="none" stroke="#ef4444" strokeWidth="1.2" />
+          <path d="M 40 50 L 50 32 L 105 32 L 115 50 Z" fill="#fdfcf9" stroke="#ef4444" strokeWidth="1.2" />
+          <path d="M 210 50 L 220 32 L 275 32 L 285 50 Z" fill="#fdfcf9" stroke="#ef4444" strokeWidth="1.2" />
 
           {/* Bottom Main Tuck Flap */}
-          <path d="M 115 200 L 125 228 Q 162.5 232 200 228 L 210 200 Z" fill="none" stroke="#ef4444" strokeWidth="1.5" />
+          <path d="M 115 200 L 125 228 Q 162.5 232 200 228 L 210 200 Z" fill="#fdfcf9" stroke="#ef4444" strokeWidth="1.5" />
           {/* Bottom Dust Flaps */}
-          <path d="M 40 200 L 50 218 L 105 218 L 115 200 Z" fill="none" stroke="#ef4444" strokeWidth="1.2" />
-          <path d="M 210 200 L 220 218 L 275 218 L 285 200 Z" fill="none" stroke="#ef4444" strokeWidth="1.2" />
+          <path d="M 40 200 L 50 218 L 105 218 L 115 200 Z" fill="#fdfcf9" stroke="#ef4444" strokeWidth="1.2" />
+          <path d="M 210 200 L 220 218 L 275 218 L 285 200 Z" fill="#fdfcf9" stroke="#ef4444" strokeWidth="1.2" />
 
           {/* Dimension Guidelines & Arrows (Swiss Architectural Spec) */}
           {/* Width Dimension */}
