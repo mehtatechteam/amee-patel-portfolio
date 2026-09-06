@@ -17,7 +17,10 @@ export function useDominantColor(src: string) {
 
   useEffect(() => {
     if (cache.has(src)) {
-      setColor(cache.get(src)!);
+      const cached = cache.get(src)!;
+      queueMicrotask(() => {
+        setColor(cached);
+      });
       return;
     }
     let cancelled = false;

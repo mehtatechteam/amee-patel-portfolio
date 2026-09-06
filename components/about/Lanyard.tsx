@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/refs */
 "use client";
 
 import { createRef, Suspense, useMemo, useRef, type RefObject } from "react";
-import { Canvas, extend, useFrame, useThree, type ThreeElements, type ThreeEvent } from "@react-three/fiber";
+import { Canvas, extend, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
 import { Physics, RigidBody, useSphericalJoint, type RapierRigidBody } from "@react-three/rapier";
 import { RigidBodyType } from "@dimforge/rapier3d-compat";

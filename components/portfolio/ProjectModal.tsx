@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useLenis } from "lenis/react";
 import { useGSAP } from "@gsap/react";
@@ -12,6 +13,8 @@ import { siteMeta } from "@/lib/constants/site-copy";
 import type { PortfolioItem } from "@/lib/constants/portfolio";
 import { DielineDiagram } from "@/components/pharma/DielineDiagram";
 import { Product3DBox } from "./Product3DBox";
+
+const emptySubscribe = () => () => {};
 
 const specChips = ["Print-Ready Vector / Raster", "Production Bleed & Dieline", "High-Resolution Output"];
 
@@ -26,11 +29,13 @@ export function ProjectModal({
   items,
   onClose,
   onSelect,
+  initialViewMode = "photo",
 }: {
   item: PortfolioItem | null;
   items?: PortfolioItem[];
   onClose: () => void;
   onSelect?: (item: PortfolioItem) => void;
+  initialViewMode?: "photo" | "box" | "dieline";
 }) {
   const lenis = useLenis();
   const reducedMotion = useReducedMotion();
@@ -46,7 +51,8 @@ export function ProjectModal({
   // — already used honestly elsewhere in this project), never a per-product
   // schematic with invented real dimensions/board-stock for this specific
   // item. See docs/client-requirements.md's anti-fabrication rule.
-  const [viewMode, setViewMode] = useState<"photo" | "box" | "dieline">("photo");
+  const [viewMode, setViewMode] = useState<"photo" | "box" | "dieline">(initialViewMode);
+  const isMounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   // Prepress inspection loupe — a real magnifying glass over the actual
   // photography (2.5x, tracking the cursor), not a claim about any
@@ -64,14 +70,12 @@ export function ProjectModal({
     setLoupe(null);
   }
 
-  // Reset zoom and viewMode when item changes — adjusted during render (React's recommended
-  // pattern) instead of in an effect, to avoid a synchronous setState-in-effect
-  // cascading render.
+  // Reset zoom and viewMode when item changes
   const [prevItem, setPrevItem] = useState(item);
   if (item !== prevItem) {
     setPrevItem(item);
     setZoomed(false);
-    setViewMode("photo");
+    setViewMode(initialViewMode);
   }
 
   const currentIndex = items && item ? items.findIndex((i) => i.slug === item.slug) : -1;
@@ -155,11 +159,11 @@ export function ProjectModal({
     { dependencies: [item], scope: dialogRef },
   );
 
-  if (!item) return null;
+  if (!isMounted || !item) return null;
 
   const message = `Hi Amee, I saw "${item.title}" on your portfolio and I'd like to discuss a similar ${categoryLabel[item.category].toLowerCase()} project.`;
 
-  return (
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
@@ -270,7 +274,7 @@ export function ProjectModal({
                   viewMode === v ? "bg-ink text-paper" : "text-ink-soft hover:text-ink"
                 }`}
               >
-                {v === "photo" ? "Studio Photo" : v === "box" ? "3D Box" : "Prepress Dieline"}
+                {v === "photo" ? "Studio Photo" : v === "box" ? "3D Studio Inspector" : "Prepress Dieline"}
               </button>
             ))}
           </div>
@@ -458,6 +462,7 @@ export function ProjectModal({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
