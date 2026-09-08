@@ -11,6 +11,8 @@ export type PortfolioItem = {
   height: number;
   /** Optional 2-3 sentence "what it needed → what was designed" narrative — sourced from docs/client-requirements.md, no invented outcomes/stats */
   description?: string;
+  /** Real production dieline extracted directly from the client's own CorelDRAW (.cdr) source file — only set for slugs independently opened and verified, never generated/guessed. Absent = ProjectModal falls back to the generic illustrative diagram. */
+  dielineSrc?: string;
   /** Curated for the flagship / featured showcase */
   isFlagship?: boolean;
   /** Portrait (default) vs wide — set "wide" for landscape source photos */
@@ -103,6 +105,7 @@ export const portfolioItems: PortfolioItem[] = [
     width: 1024,
     height: 1024,
     isFlagship: true,
+    dielineSrc: "/portfolio/dielines/medween-pharma-box.png",
     description:
       "A pharma bottle carton for Medween needed to present accurate, compliant product labeling within a compact bottle-box dieline. It was finished to the same print-ready standard — exact bleeds and color profiles — used across the rest of the packaging practice.",
   },
@@ -137,6 +140,7 @@ export const portfolioItems: PortfolioItem[] = [
     width: 1402,
     height: 1122,
     isFlagship: true,
+    dielineSrc: "/portfolio/dielines/madburgs-burger-box.png",
   },
   {
     slug: "aqua-water-filter",
@@ -158,6 +162,7 @@ export const portfolioItems: PortfolioItem[] = [
     src: "/portfolio/packaging/siriza-herbal-soap-box.png",
     width: 1264,
     height: 842,
+    dielineSrc: "/portfolio/dielines/siriza-herbal-soap.png",
   },
   {
     slug: "jalaram-gota",
@@ -168,6 +173,7 @@ export const portfolioItems: PortfolioItem[] = [
     src: "/portfolio/packaging/jalaram-gota-food-box.png",
     width: 1206,
     height: 880,
+    dielineSrc: "/portfolio/dielines/jalaram-gota.png",
   },
   {
     slug: "tsd-world-cable",
@@ -179,6 +185,7 @@ export const portfolioItems: PortfolioItem[] = [
     width: 1536,
     height: 1024,
     cardAspect: "wide",
+    dielineSrc: "/portfolio/dielines/tsd-world-cable.png",
   },
   {
     slug: "peptidesdepot-research-powder",
@@ -203,6 +210,28 @@ export const portfolioItems: PortfolioItem[] = [
     width: 1541,
     height: 1021,
     cardAspect: "wide",
+    dielineSrc: "/portfolio/dielines/taj-wood-paint-tin.png",
+  },
+  {
+    slug: "kdm-gugal-dhoop-cup",
+    title: "KDM Pujan Samagri — Kapoor Gugal Sambrani Dhoop Cup Box",
+    client: "KDM Pujan Samagri",
+    category: "packaging",
+    tags: ["Devotional & Religious", "Box Design"],
+    src: "/portfolio/packaging/kdm-gugal-dhoop-cup-box.png",
+    width: 1122,
+    height: 1402,
+    dielineSrc: "/portfolio/dielines/kdm-gugal-dhoop-cup.png",
+  },
+  {
+    slug: "prince-pipes-puja-kit",
+    title: "Prince Pipes — Ganesh Chaturthi Puja Kit",
+    client: "Prince Pipes",
+    category: "packaging",
+    tags: ["Devotional & Religious", "Box Design", "Corporate Gifting"],
+    src: "/portfolio/packaging/prince-pipes-puja-kit-box.png",
+    width: 1114,
+    height: 1412,
   },
   {
     slug: "littlegrow-baby-cereal",

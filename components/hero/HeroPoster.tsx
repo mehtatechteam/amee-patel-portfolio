@@ -29,6 +29,7 @@ export function HeroPoster() {
 
   const stageRef = useRef<HTMLDivElement>(null);
   const cartonRef = useRef<HTMLDivElement>(null);
+  const sheenRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
   const { isFinePointer } = usePointerType();
 
@@ -45,16 +46,24 @@ export function HeroPoster() {
     setTiltY.current = gsap.quickTo(tilt.current, "rotY", { duration: 0.4, ease: "power2.out" });
 
     function renderLoop() {
-      if (!cartonRef.current) return;
       const s = tilt.current;
-      gsap.set(cartonRef.current, {
-        x: s.swipeX,
-        rotateX: s.rotX,
-        rotateY: s.rotY,
-        rotateZ: s.swipeRotZ,
-        transformPerspective: 1200,
-        transformStyle: "preserve-3d",
-      });
+      if (cartonRef.current) {
+        gsap.set(cartonRef.current, {
+          x: s.swipeX,
+          rotateX: s.rotX,
+          rotateY: s.rotY,
+          rotateZ: s.swipeRotZ,
+          transformPerspective: 1200,
+          transformStyle: "preserve-3d",
+        });
+      }
+      // Sheen position is read from the same tilt proxy every frame here —
+      // never read tilt.current directly during React render (breaks the
+      // "one shared proxy, one ticker-driven gsap.set()" rule already
+      // established for this file's other transform-writing systems).
+      if (sheenRef.current) {
+        gsap.set(sheenRef.current, { xPercent: (s.sheenX - 50) * 1.2, skewX: -20 });
+      }
     }
 
     gsap.ticker.add(renderLoop);
@@ -283,11 +292,9 @@ export function HeroPoster() {
                   {/* Spot-UV Finish Specular Sheen Layer */}
                   {spotUvActive && (
                     <div
+                      ref={sheenRef}
                       aria-hidden
                       className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-transparent via-white/35 to-transparent opacity-80 mix-blend-overlay transition-opacity duration-300"
-                      style={{
-                        transform: `translateX(${(tilt.current.sheenX - 50) * 1.2}%) skewX(-20deg)`,
-                      }}
                     />
                   )}
 

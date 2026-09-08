@@ -1,14 +1,53 @@
+import Image from "next/image";
+
 /**
- * One generic, illustrative carton dieline diagram — the universal
- * cut/crease/bleed color convention (red solid = cut, green dashed =
- * crease/score, cyan dotted = bleed), not a reproduction of any specific
- * real client's actual production file. Deliberately not mapped 1:1 to
- * any of the real named pharma products shown elsewhere in this section —
- * this project's own documented discipline (docs/client-requirements.md)
- * is to never present an unconfirmed technical spec as fact about a real
- * client's real product.
+ * Two modes:
+ * 1. `realSrc` provided — renders the item's actual production dieline,
+ *    extracted directly from the client's own CorelDRAW source file (see
+ *    docs/client-requirements.md's dated addendum on the .cdr extraction
+ *    pipeline). Only ever passed for slugs independently opened and
+ *    verified authentic, never guessed/generated.
+ * 2. No `realSrc` — falls back to one generic, illustrative carton
+ *    dieline diagram (the universal cut/crease/bleed color convention),
+ *    not a reproduction of any specific real client's file. This is the
+ *    default for any product without a confirmed real source, per this
+ *    project's standing anti-fabrication discipline: never present an
+ *    unconfirmed technical spec as fact about a real client's product.
  */
-export function DielineDiagram() {
+export function DielineDiagram({ realSrc, productTitle }: { realSrc?: string; productTitle?: string }) {
+  if (realSrc) {
+    return (
+      <div className="rounded-3xl border border-line bg-paper p-6 shadow-sm sm:p-10">
+        <div className="mb-4 flex items-center justify-between border-b border-line pb-3">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-accent" />
+            <span className="font-spec text-[11px] font-bold tracking-widest text-ink uppercase">
+              Actual Production Dieline
+            </span>
+          </div>
+          <span className="font-spec text-[10px] text-ink-soft tracking-wider uppercase">
+            Sourced From The Original Print File
+          </span>
+        </div>
+
+        <div className="relative overflow-hidden rounded-2xl border border-line bg-[#fdfcf9] p-3 shadow-inner sm:p-5">
+          <Image
+            src={realSrc}
+            alt={`${productTitle ?? "Product"} — actual production dieline sourced from the original print file`}
+            width={1600}
+            height={1200}
+            className="mx-auto h-auto w-full max-w-2xl select-none"
+          />
+        </div>
+
+        <p className="mx-auto mt-4 max-w-lg text-center text-xs leading-relaxed text-ink-soft">
+          This is the real prepress dieline {productTitle ? `${productTitle} was` : "this product was"} printed from —
+          pulled directly from the original production file, not a generic template.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="rounded-3xl border border-line bg-paper p-6 shadow-sm sm:p-10">
       <div className="mb-4 flex items-center justify-between border-b border-line pb-3">

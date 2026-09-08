@@ -137,3 +137,20 @@ Adds a 4th slide about the craft/process behind the work (vector drawing, layeri
 - **Description:** "From first sketch to final color separation, every curve, layer, and swatch is refined by hand before a single file reaches the printer." (Consistent with the existing "Print-Ready Guarantee" claim and the vector/dieline precision language used in slide 3 — no new claims.)
 - **Primary CTA:** "See My Process" → `#process`
 - **Secondary CTA:** "Get In Touch" → `#contact`
+
+## Addendum — 2026-09-08: real per-product dielines extracted from client `.cdr` source files
+
+Client (Amee, via the "Amee patel portfolio website" WhatsApp group with Gurav) sent 7 zip files, each containing exactly one real CorelDRAW (`.cdr`) production file — her actual print-ready source art, not a photo or a spec sheet. This environment has no CorelDRAW/Inkscape, so each was opened via `libcdr`'s `cdr2xhtml` (extracts the real vector geometry as embedded SVG) then rasterized with `rsvg-convert`/`resvg`. This is a lossless-in-content format conversion — no content was generated, edited, or guessed; every path, dimension, and line of text in the output PNGs is exactly what was in the client's own file.
+
+**Verified genuine (opened and visually inspected the actual rendered output, not just the filename) for all 7:**
+- `medween-pharma-box` — real FSSAI Licence No. 22126680000095, real marketer "TRUPHR VENTURES LLP, Punjab, India 145001", real dimensions (155.00mm × 55.00mm×2). Batch No./Mfg./Exp./MRP fields are blank template fields (per-batch info, correctly not filled in a reusable print file) — not fabricated placeholder text.
+- `madburgs-burger-box` — real MADBURGS logo, "Eat. Drip. Repeat.", "Made to Crave" tagline, Instagram handle.
+- `siriza-herbal-soap` — real "SIRIZA Premium Herbal Soap", manufacturer "Siriza Enterprises, New Anand Nagar, Pali (Raj) – 306401", real ingredients list, real customer-care email.
+- `jalaram-gota` — real "Jalaram Gota Instant Mix", manufacturer "Jalaram Gruh Udyog, Ahmedabad", real FSSAI licence field (blank template), real nutrition-facts table, Gujarati + English copy.
+- `tsd-world-cable` — real "TYPE C Braided Cable" spec sheet: marketed by VYAPKART (Ilkal, Karnataka), real MRP ₹699, cable length/weight/colour specs, `support@tsdworld.in` / `www.tsdworld.com`.
+- `taj-wood-paint-tin` — real "TAJ · Premium Quality" wood-finish tin label (embedded photo mispositioned by the extraction tool, vector text/icons render correctly — cosmetic conversion issue, not a content one).
+- `kdm-gugal-dhoop-cup` — real "Kapoor Gugal Sambrani Dhoop Cup", manufacturer "Mahadev Enterprises, Balotra, Raj.", marketed by "KDM Group", real MRP ₹299, matches the WhatsApp-supplied product photos for the same item.
+
+These 7 real dielines are wired into `ProjectModal`'s "Prepress Dieline" tab via `portfolio.ts`'s `dielineSrc` field (`components/pharma/DielineDiagram.tsx` shows the real image when present, the existing generic illustrative diagram otherwise). **Do not remove `dielineSrc` from these 7 items on suspicion alone** — the FSSAI/licence numbers etc. visible in them are the client's own real regulatory data, independently verified by opening the source files above, not the fabricated-content pattern this document already warns about elsewhere. If re-verifying, re-open the actual `.cdr`/rendered PNG rather than pattern-matching on "real-looking regulatory number = suspicious."
+
+Two new portfolio items were also added from client-supplied photos (same WhatsApp thread, corroborated by a screenshot showing Amee sending them alongside the KDM Gugal `.cdr` zip) rather than a `.cdr` file: `kdm-gugal-dhoop-cup`'s main photo, and `prince-pipes-puja-kit` (client: Prince Pipes, Ganesh Chaturthi Puja Kit) — the latter has no `.cdr` source and correctly has no `dielineSrc`.

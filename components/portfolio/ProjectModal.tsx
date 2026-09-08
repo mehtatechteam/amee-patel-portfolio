@@ -47,10 +47,12 @@ export function ProjectModal({
   const [zoomed, setZoomed] = useState(false);
   const [loupe, setLoupe] = useState<{ x: number; y: number } | null>(null);
   const [finish, setFinish] = useState<"none" | "matte" | "spot-uv" | "foil">("none");
-  // "dieline" shows one generic, illustrative CAD blueprint (DielineDiagram
-  // — already used honestly elsewhere in this project), never a per-product
-  // schematic with invented real dimensions/board-stock for this specific
-  // item. See docs/client-requirements.md's anti-fabrication rule.
+  // "dieline" shows the item's real production dieline when one has been
+  // independently extracted and verified from the client's own source file
+  // (item.dielineSrc — see docs/client-requirements.md's addendum on the
+  // .cdr extraction pipeline), otherwise DielineDiagram falls back to one
+  // generic illustrative CAD blueprint. Never an invented per-product
+  // schematic. See docs/client-requirements.md's anti-fabrication rule.
   const [viewMode, setViewMode] = useState<"photo" | "box" | "dieline">(initialViewMode);
   const isMounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
@@ -281,7 +283,7 @@ export function ProjectModal({
 
           {viewMode === "dieline" ? (
             <div className="w-full max-w-xl">
-              <DielineDiagram />
+              <DielineDiagram realSrc={item.dielineSrc} productTitle={item.title} />
             </div>
           ) : viewMode === "box" ? (
             <Product3DBox src={item.src} title={item.title} />
