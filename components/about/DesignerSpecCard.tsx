@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { CMYKSwatch } from "@/components/motifs/CMYKSwatch";
-import { RegistrationMark } from "@/components/motifs/RegistrationMark";
 import { CurvedLoop } from "@/components/motifs/CurvedLoop";
 import { Icon, IconName } from "@/lib/icons";
 
@@ -64,7 +63,7 @@ export function DesignerSpecCard() {
       <PantoneFan />
 
       <div className="relative flex-1 overflow-hidden rounded-[2rem] border-2 border-ink">
-        <div className="relative aspect-[3/4] w-full">
+        <div className="relative aspect-[2/3] w-full">
           <Image
             src="/about/amee-headshot.jpg"
             alt="Amee J. Patel"
@@ -77,48 +76,53 @@ export function DesignerSpecCard() {
 
         {/* Studio seal — the same circular text-loop that used to wrap a
             small avatar now works as a corner stamp on the photo itself,
-            like a proof mark on a print sheet. */}
-        <div className="absolute top-4 left-4 flex h-16 w-16 items-center justify-center rounded-full bg-paper/85 shadow-sm backdrop-blur-sm">
+            like a proof mark on a print sheet. Moved down off the very top
+            edge so it doesn't crowd the card's rounded corner. The other
+            floating corner accent (a registration-mark crosshair) was cut
+            entirely -- redundant with the CMYK swatch already carrying the
+            same print-motif, and one less thing floating over her face. */}
+        <div className="absolute top-10 left-4 flex h-16 w-16 items-center justify-center rounded-full bg-paper/85 shadow-sm backdrop-blur-sm">
           <CurvedLoop text="AMEE J. PATEL · SINCE 2012" size={64} />
         </div>
-        <RegistrationMark className="absolute top-5 right-5 text-paper/90 drop-shadow-md" />
 
-        <div className="absolute inset-x-0 bottom-0 rounded-b-[1.6rem] border-t border-white/20 bg-paper/45 p-5 backdrop-blur-xl sm:p-6">
-          <div className="flex items-center justify-between">
-            <p className="font-spec text-[10px] tracking-widest text-ink-soft uppercase">
-              Amee J. Patel · Studio Spec Sheet
-            </p>
-            <CMYKSwatch size="sm" />
-          </div>
+        <div className="absolute inset-x-0 bottom-0 overflow-hidden rounded-b-[1.6rem]">
+          {/* A masked-gradient version of this (fading the blur radius
+              itself via mask-image) rendered a visible seam line across
+              the photo where the mask transitioned -- a real Chromium
+              rendering artifact when backdrop-filter is combined with a
+              mask, not something worth fighting. This gets the same
+              "gradually frosting" read from the color wash alone (a plain
+              gradient, no masking) under one uniform, artifact-free blur. */}
+          <div className="absolute inset-0 backdrop-blur-lg" />
+          <div className="absolute inset-0 bg-gradient-to-t from-paper/95 via-paper/65 via-50% to-paper/20" />
 
-          <p className="mt-4 text-xs font-semibold tracking-wide text-ink-soft uppercase">Tool Kit</p>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {tools.map((tool) => (
-              <span
-                key={tool.label}
-                className="inline-flex items-center gap-1.5 rounded-full border border-ink/15 bg-paper px-3 py-1.5 text-xs font-semibold text-ink"
-              >
-                <Icon name={tool.icon} className="shrink-0 text-ink-soft" />
-                {tool.label}
+          <div className="relative p-5 pt-7 sm:p-6 sm:pt-8">
+            <div className="flex items-center justify-between">
+              <p className="font-spec text-[10px] tracking-widest text-ink-soft uppercase">
+                Amee J. Patel · Studio Spec Sheet
+              </p>
+              <CMYKSwatch size="sm" />
+            </div>
+
+            <p className="mt-4 text-xs font-semibold tracking-wide text-ink-soft uppercase">Tool Kit</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {tools.map((tool) => (
+                <span
+                  key={tool.label}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-ink/15 bg-paper px-3 py-1.5 text-xs font-semibold text-ink"
+                >
+                  <Icon name={tool.icon} className="shrink-0 text-ink-soft" />
+                  {tool.label}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-5 flex items-baseline justify-between border-t border-line pt-4">
+              <span className="font-display text-3xl font-semibold text-ink">10+</span>
+              <span className="max-w-[8rem] text-right font-spec text-[10px] tracking-wide text-ink-soft uppercase">
+                Years — Print-Ready Every Time
               </span>
-            ))}
-          </div>
-
-          <div className="mt-5 flex items-baseline justify-between border-t border-line pt-4">
-            <span className="font-display text-3xl font-semibold text-ink">10+</span>
-            <span className="max-w-[8rem] text-right font-spec text-[10px] tracking-wide text-ink-soft uppercase">
-              Years — Print-Ready Every Time
-            </span>
-          </div>
-
-          <div className="mt-3 flex items-center justify-between rounded-xl border border-line/60 bg-paper px-3 py-2 text-[11px] text-ink-soft">
-            <span className="flex items-center gap-1 font-medium text-ink">
-              <Icon name="pin" width={13} height={13} className="shrink-0 text-accent" />
-              Ahmedabad Studio
-            </span>
-            <span className="rounded-full bg-emerald-50 px-2 py-0.5 font-spec text-[10px] font-normal tracking-wide text-emerald-700">
-              100% REMOTE
-            </span>
+            </div>
           </div>
         </div>
       </div>

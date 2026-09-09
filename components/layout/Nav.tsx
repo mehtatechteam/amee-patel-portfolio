@@ -5,7 +5,6 @@ import Link from "next/link";
 import { siteMeta } from "@/lib/constants/site-copy";
 import { cn } from "@/lib/utils";
 import { AvailabilityBadge } from "@/components/motifs/AvailabilityBadge";
-import { LiveClock } from "@/components/motifs/LiveClock";
 import { gsap } from "@/lib/gsap";
 
 const links = [
@@ -154,9 +153,6 @@ export function Nav() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-3">
-          <span className="hidden shrink-0 items-center gap-1.5 font-spec text-[11px] whitespace-nowrap text-ink-soft uppercase tracking-wide 2xl:inline-flex">
-            Ahmedabad · <LiveClock />
-          </span>
           <AvailabilityBadge className="hidden shrink-0 bg-paper-raised text-ink-soft whitespace-nowrap 2xl:inline-flex" />
           <Link
             href="#contact"
