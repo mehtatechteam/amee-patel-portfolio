@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -26,10 +26,25 @@ export function CurvedLoop({
 }) {
   const pathId = useId();
   const svgRef = useRef<SVGSVGElement>(null);
+  const measureRef = useRef<SVGTextElement>(null);
   const rotationRef = useRef(0);
   const draggingRef = useRef(false);
   const lastAngleRef = useRef(0);
   const radius = size / 2 - 10;
+  const unit = `${text} ✦ `;
+
+  // The path is a closed circle, so textPath content keeps wrapping around
+  // it past 360°. A fixed repeat count overlapped 3-4x for this text/size
+  // combo, garbling the loop. Measure the unit string's real rendered
+  // length and repeat just enough times to fill the circumference once.
+  const [repeatCount, setRepeatCount] = useState(1);
+  useLayoutEffect(() => {
+    const unitLength = measureRef.current?.getComputedTextLength();
+    if (unitLength) {
+      const circumference = 2 * Math.PI * radius;
+      setRepeatCount(Math.max(1, Math.round(circumference / unitLength)));
+    }
+  }, [unit, radius]);
 
   useEffect(() => {
     let raf: number;
@@ -75,7 +90,7 @@ export function CurvedLoop({
     draggingRef.current = false;
   }
 
-  const repeated = `${text} ✦ `.repeat(4);
+  const repeated = unit.repeat(repeatCount);
 
   return (
     <svg
@@ -95,6 +110,14 @@ export function CurvedLoop({
           d={`M ${size / 2 - radius},${size / 2} a ${radius},${radius} 0 1,1 ${radius * 2},0 a ${radius},${radius} 0 1,1 -${radius * 2},0`}
         />
       </defs>
+      <text
+        ref={measureRef}
+        className="font-spec text-[8.5px] tracking-widest uppercase"
+        style={{ visibility: "hidden" }}
+        aria-hidden
+      >
+        {unit}
+      </text>
       <text className="font-spec fill-ink-soft text-[8.5px] tracking-widest uppercase">
         <textPath href={`#${pathId}`} startOffset="0">
           {repeated}
