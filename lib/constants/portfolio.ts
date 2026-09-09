@@ -232,6 +232,7 @@ export const portfolioItems: PortfolioItem[] = [
     src: "/portfolio/packaging/prince-pipes-puja-kit-box.png",
     width: 1114,
     height: 1412,
+    dielineSrc: "/portfolio/dielines/prince-pipes-puja-kit.png",
   },
   {
     slug: "littlegrow-baby-cereal",
