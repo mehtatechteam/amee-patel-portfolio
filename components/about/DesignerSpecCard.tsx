@@ -76,11 +76,22 @@ export function DesignerSpecCard() {
 
         {/* Studio seal — the same circular text-loop that used to wrap a
             small avatar now works as a corner stamp on the photo itself,
-            like a proof mark on a print sheet. Pulled well down from the
-            top edge, clear of the rounded corner and out of the way of
-            her face. */}
-        <div className="absolute top-24 left-4 flex h-16 w-16 items-center justify-center rounded-full bg-paper/85 shadow-sm backdrop-blur-sm">
-          <CurvedLoop text="AMEE J. PATEL · SINCE 2012" size={64} />
+            like a proof mark on a print sheet. Back in the top-left
+            corner (a lower placement put it right over her hair once the
+            badge grew to 80px, reading as overlapping her rather than
+            sitting beside her) -- a modest inset from the rounded corner
+            is enough breathing room without drifting into the portrait.
+            Sized at 80px, not the 64px this started at: CurvedLoop fits
+            its text to the circle by measuring the string once and
+            picking a whole-number repeat count, so at 64px "AMEE J.
+            PATEL · SINCE 2012 ✦ " landed almost exactly one loop with
+            near-zero slack -- textPath layout doesn't measure pixel-
+            identical to the hidden measurement text it's based on, so the
+            tail end ("2012") got pushed into the seam and overlapped
+            itself into illegibility. 80px gives ~30% slack instead of
+            ~0%, which is what actually needed to change, not the text. */}
+        <div className="absolute top-5 left-5 flex h-20 w-20 items-center justify-center rounded-full bg-paper/85 shadow-sm backdrop-blur-sm">
+          <CurvedLoop text="AMEE J. PATEL · SINCE 2012" size={80} />
         </div>
 
         <div className="absolute inset-x-0 bottom-0 overflow-hidden rounded-b-[1.6rem]">
