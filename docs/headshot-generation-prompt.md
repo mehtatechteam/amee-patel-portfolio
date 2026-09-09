@@ -130,3 +130,40 @@ Preserve everything else from the base composition:
 
 Saved as `assets/client/amee-headshot-front-v4.jpg`.
 
+## v5 — attire reads as cheap, fix the fabric and tailoring specifically
+
+Feedback on v4 (skin tone now correct, confirmed): the blazer reads as cheap. "Cheap-looking" in an AI-generated garment is almost always one or both of: (1) a flat, slightly plasticky/synthetic-looking fabric sheen instead of real woven-cloth texture, and (2) a boxy, generic-fit cut instead of an actually tailored line (structured shoulder, clean lapel roll, fabric that drapes rather than sits stiff). Naming "charcoal-grey blazer" alone leaves the model to fill in that detail with its own default, which is what produced the cheap read — same lesson as the skin-tone rounds: describe the specific target, don't rely on the model inferring quality from a generic noun.
+
+Base image: `assets/client/amee-headshot-front-v4.jpg` (keep skin tone and everything else from v4 — this pass only targets the blazer).
+
+```
+Refine only the blazer in this headshot. Everything else — her face,
+skin tone, hair, expression, the off-white top underneath, the
+background, the lighting, the crop — must stay exactly as it is in the
+base image. Do not regenerate the person, only refine the garment.
+
+The current blazer reads as cheap: flat synthetic-looking fabric sheen,
+a boxy/generic cut with no real tailoring line. Replace it with a
+visibly premium, well-tailored blazer:
+
+Fabric: a fine wool or wool-blend suiting fabric with real woven texture
+visible up close (a subtle herringbone or twill weave, not a flat solid
+color-fill) — matte to soft-satin finish, never glossy or plastic-looking.
+Charcoal grey, same tone as the base image.
+
+Tailoring: structured, fitted shoulders (not sloped or boxy), a clean
+lapel that rolls naturally rather than sitting flat, visible but subtle
+stitching detail at the lapel edge and cuffs, and a fit that follows her
+shoulder line rather than hanging loose. This should read as a
+tailored, expensive garment — think an editorial business portrait, not
+a stock-photo polyester blazer.
+
+Drape: the fabric should fold and crease naturally with her pose (soft
+shadow in the folds), not sit stiff and flat like a rendered/plastic
+surface.
+
+Do not change the color, the off-white top underneath, or add any
+pattern, logo, pin, or accessory not already present.
+```
+
+Save as `assets/client/amee-headshot-front-v5.jpg` (keep v4 for comparison). Bring it back here — same as every round, I'll compare directly against v4 before anything changes in the component.

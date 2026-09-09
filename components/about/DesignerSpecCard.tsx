@@ -16,10 +16,11 @@ const tools: { label: string; icon: IconName }[] = [
  * on the site) rather than an empty placeholder box.
  *
  * Portrait: AI-generated from the client's own reference photos (see
- * docs/headshot-generation-prompt.md — round 4/"v4" prompt; round 1 drifted
+ * docs/headshot-generation-prompt.md — round 5/"v5" prompt; round 1 drifted
  * off her likeness, v2 fixed that but ran too dark/bronze, v3's tone fix
- * didn't actually take, v4's forceful correction did. Amee confirmed both
- * likeness and skin tone on this round). Full-bleed
+ * didn't actually take, v4's forceful correction did, v5 refined the
+ * blazer fabric/tailoring after v4's read as cheap. Amee confirmed
+ * likeness, skin tone, and attire on this round). Full-bleed
  * now (was a small circular avatar that cropped her face awkwardly) — the
  * card's own aspect ratio is tuned close to the source photo's, and
  * object-top keeps the crop coming off the bottom (shoulders/blazer)
