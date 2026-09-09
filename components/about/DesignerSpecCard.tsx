@@ -18,9 +18,15 @@ const tools: { label: string; icon: IconName }[] = [
  *
  * Portrait: AI-generated from the client's own reference photos (see
  * docs/headshot-generation-prompt.md — round 2/"v2" prompt, after round 1
- * drifted off her actual likeness). Pending Amee's own confirmation that
- * it reads as her before this ships live; swap /public/about/amee-headshot.jpg
- * if a different round gets approved instead.
+ * drifted off her actual likeness; Amee confirmed the likeness). Full-bleed
+ * now (was a small circular avatar that cropped her face awkwardly) — the
+ * card's own aspect ratio is tuned close to the source photo's, and
+ * object-top keeps the crop coming off the bottom (shoulders/blazer)
+ * rather than the top (face) when the two ratios don't match exactly.
+ * All the spec-sheet text lives in one frosted panel at the bottom instead
+ * of scattered chips over the photo — reads as a vellum/proof-sheet
+ * overlay (a real print-production device, not a decorative glass card),
+ * and keeps the photo itself uncluttered.
  */
 // A small fanned stack of Pantone-style swatch chips peeking out from
 // A fanned stack of authentic prepress CMYK swatch chips peeking out from
@@ -57,55 +63,63 @@ export function DesignerSpecCard() {
     <div className="relative sticky top-24 flex w-full max-w-sm">
       <PantoneFan />
 
-      <div className="relative flex-1 rounded-[2rem] border-2 border-ink bg-paper-raised p-7">
-        <RegistrationMark className="absolute top-5 right-5" />
+      <div className="relative flex-1 overflow-hidden rounded-[2rem] border-2 border-ink">
+        <div className="relative aspect-[3/4] w-full">
+          <Image
+            src="/about/amee-headshot.jpg"
+            alt="Amee J. Patel"
+            fill
+            priority
+            sizes="(min-width: 640px) 24rem, 100vw"
+            className="object-cover object-top"
+          />
+        </div>
 
-        <p className="font-spec text-[10px] tracking-widest text-ink-soft uppercase">
-          Amee J. Patel · Studio Spec Sheet
-        </p>
+        {/* Studio seal — the same circular text-loop that used to wrap a
+            small avatar now works as a corner stamp on the photo itself,
+            like a proof mark on a print sheet. */}
+        <div className="absolute top-4 left-4 flex h-16 w-16 items-center justify-center rounded-full bg-paper/85 shadow-sm backdrop-blur-sm">
+          <CurvedLoop text="AMEE J. PATEL · SINCE 2012" size={64} />
+        </div>
+        <RegistrationMark className="absolute top-5 right-5 text-paper/90 drop-shadow-md" />
 
-        <div className="mt-6 flex items-center justify-between">
-          <div className="relative flex h-24 w-24 items-center justify-center">
-            <CurvedLoop text="AMEE J. PATEL · SINCE 2012" size={96} className="absolute inset-0" />
-            <div className="h-16 w-16 overflow-hidden rounded-full border-2 border-ink/15 bg-paper-raised">
-              <Image
-                src="/about/amee-headshot.jpg"
-                alt="Amee J. Patel"
-                width={128}
-                height={128}
-                className="h-full w-full object-cover"
-              />
-            </div>
+        <div className="absolute inset-x-0 bottom-0 rounded-b-[1.6rem] border-t border-white/20 bg-paper/45 p-5 backdrop-blur-xl sm:p-6">
+          <div className="flex items-center justify-between">
+            <p className="font-spec text-[10px] tracking-widest text-ink-soft uppercase">
+              Amee J. Patel · Studio Spec Sheet
+            </p>
+            <CMYKSwatch size="sm" />
           </div>
-          <CMYKSwatch size="md" />
-        </div>
 
-        <p className="mt-6 text-xs font-semibold tracking-wide text-ink-soft uppercase">Tool Kit</p>
-        <div className="mt-2.5 flex flex-wrap gap-2">
-          {tools.map((tool) => (
-            <span
-              key={tool.label}
-              className="inline-flex items-center gap-1.5 rounded-full border border-ink/15 bg-paper px-3 py-1.5 text-xs font-semibold text-ink"
-            >
-              <Icon name={tool.icon} className="shrink-0 text-ink-soft" />
-              {tool.label}
+          <p className="mt-4 text-xs font-semibold tracking-wide text-ink-soft uppercase">Tool Kit</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {tools.map((tool) => (
+              <span
+                key={tool.label}
+                className="inline-flex items-center gap-1.5 rounded-full border border-ink/15 bg-paper px-3 py-1.5 text-xs font-semibold text-ink"
+              >
+                <Icon name={tool.icon} className="shrink-0 text-ink-soft" />
+                {tool.label}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-5 flex items-baseline justify-between border-t border-line pt-4">
+            <span className="font-display text-3xl font-semibold text-ink">10+</span>
+            <span className="max-w-[8rem] text-right font-spec text-[10px] tracking-wide text-ink-soft uppercase">
+              Years — Print-Ready Every Time
             </span>
-          ))}
-        </div>
+          </div>
 
-        <div className="mt-8 flex items-baseline justify-between border-t border-line pt-6">
-          <span className="font-display text-3xl font-semibold text-ink">10+</span>
-          <span className="max-w-[8rem] text-right font-spec text-[10px] tracking-wide text-ink-soft uppercase">
-            Years — Print-Ready Every Time
-          </span>
-        </div>
-
-        <div className="mt-4 rounded-xl bg-paper px-3 py-2 border border-line/60 flex items-center justify-between text-[11px] text-ink-soft">
-          <span className="flex items-center gap-1 font-medium text-ink">
-            <Icon name="pin" width={13} height={13} className="shrink-0 text-accent" />
-            Ahmedabad Studio
-          </span>
-          <span className="font-spec text-[10px] tracking-wide text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-normal">100% REMOTE</span>
+          <div className="mt-3 flex items-center justify-between rounded-xl border border-line/60 bg-paper px-3 py-2 text-[11px] text-ink-soft">
+            <span className="flex items-center gap-1 font-medium text-ink">
+              <Icon name="pin" width={13} height={13} className="shrink-0 text-accent" />
+              Ahmedabad Studio
+            </span>
+            <span className="rounded-full bg-emerald-50 px-2 py-0.5 font-spec text-[10px] font-normal tracking-wide text-emerald-700">
+              100% REMOTE
+            </span>
+          </div>
         </div>
       </div>
     </div>
