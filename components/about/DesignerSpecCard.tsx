@@ -63,7 +63,7 @@ export function DesignerSpecCard() {
       <PantoneFan />
 
       <div className="relative flex-1 overflow-hidden rounded-[2rem] border-2 border-ink">
-        <div className="relative aspect-[2/3] w-full">
+        <div className="relative aspect-[3/5] w-full">
           <Image
             src="/about/amee-headshot.jpg"
             alt="Amee J. Patel"
@@ -76,35 +76,62 @@ export function DesignerSpecCard() {
 
         {/* Studio seal — the same circular text-loop that used to wrap a
             small avatar now works as a corner stamp on the photo itself,
-            like a proof mark on a print sheet. Moved down off the very top
-            edge so it doesn't crowd the card's rounded corner. The other
-            floating corner accent (a registration-mark crosshair) was cut
-            entirely -- redundant with the CMYK swatch already carrying the
-            same print-motif, and one less thing floating over her face. */}
-        <div className="absolute top-10 left-4 flex h-16 w-16 items-center justify-center rounded-full bg-paper/85 shadow-sm backdrop-blur-sm">
+            like a proof mark on a print sheet. Pulled well down from the
+            top edge, clear of the rounded corner and out of the way of
+            her face. */}
+        <div className="absolute top-24 left-4 flex h-16 w-16 items-center justify-center rounded-full bg-paper/85 shadow-sm backdrop-blur-sm">
           <CurvedLoop text="AMEE J. PATEL · SINCE 2012" size={64} />
         </div>
 
         <div className="absolute inset-x-0 bottom-0 overflow-hidden rounded-b-[1.6rem]">
-          {/* A masked-gradient version of this (fading the blur radius
-              itself via mask-image) rendered a visible seam line across
-              the photo where the mask transitioned -- a real Chromium
-              rendering artifact when backdrop-filter is combined with a
-              mask, not something worth fighting. This gets the same
-              "gradually frosting" read from the color wash alone (a plain
-              gradient, no masking) under one uniform, artifact-free blur. */}
-          <div className="absolute inset-0 backdrop-blur-lg" />
+          {/* Real progressive (gaussian) blur, not a single masked layer.
+              One backdrop-blur layer masked by a gradient is what produced
+              the visible seam earlier -- the mask has one transition edge,
+              and the browser renders that edge as a hard discontinuity in
+              the blurred output even though the mask itself is soft. The
+              fix used elsewhere (iOS-style progressive blur) is to stack
+              several blur strengths, each masked to start a little later
+              than the last, so many soft, overlapping transitions replace
+              the one hard one -- no single edge is ever visible. */}
+          <div
+            className="absolute inset-0 backdrop-blur-[2px]"
+            style={{
+              maskImage: "linear-gradient(to bottom, transparent 0%, black 35%)",
+              WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 35%)",
+            }}
+          />
+          <div
+            className="absolute inset-0 backdrop-blur-[6px]"
+            style={{
+              maskImage: "linear-gradient(to bottom, transparent 15%, black 50%)",
+              WebkitMaskImage: "linear-gradient(to bottom, transparent 15%, black 50%)",
+            }}
+          />
+          <div
+            className="absolute inset-0 backdrop-blur-md"
+            style={{
+              maskImage: "linear-gradient(to bottom, transparent 30%, black 65%)",
+              WebkitMaskImage: "linear-gradient(to bottom, transparent 30%, black 65%)",
+            }}
+          />
+          <div
+            className="absolute inset-0 backdrop-blur-xl"
+            style={{
+              maskImage: "linear-gradient(to bottom, transparent 45%, black 80%)",
+              WebkitMaskImage: "linear-gradient(to bottom, transparent 45%, black 80%)",
+            }}
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-paper/95 via-paper/65 via-50% to-paper/20" />
 
-          <div className="relative p-5 pt-7 sm:p-6 sm:pt-8">
+          <div className="relative p-5 pt-8 sm:p-6 sm:pt-10">
             <div className="flex items-center justify-between">
-              <p className="font-spec text-[10px] tracking-widest text-ink-soft uppercase">
+              <p className="font-spec text-[10px] tracking-widest text-ink uppercase">
                 Amee J. Patel · Studio Spec Sheet
               </p>
               <CMYKSwatch size="sm" />
             </div>
 
-            <p className="mt-4 text-xs font-semibold tracking-wide text-ink-soft uppercase">Tool Kit</p>
+            <p className="mt-4 text-xs font-semibold tracking-wide text-ink uppercase">Tool Kit</p>
             <div className="mt-2 flex flex-wrap gap-2">
               {tools.map((tool) => (
                 <span
@@ -119,7 +146,7 @@ export function DesignerSpecCard() {
 
             <div className="mt-5 flex items-baseline justify-between border-t border-line pt-4">
               <span className="font-display text-3xl font-semibold text-ink">10+</span>
-              <span className="max-w-[8rem] text-right font-spec text-[10px] tracking-wide text-ink-soft uppercase">
+              <span className="max-w-[8rem] text-right font-spec text-[10px] tracking-wide text-ink uppercase">
                 Years — Print-Ready Every Time
               </span>
             </div>
