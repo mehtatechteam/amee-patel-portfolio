@@ -67,3 +67,66 @@ Run it twice, swapping only the bracketed `[FRONT: ... / SIDE: ...]` rotation li
 ## After generating
 
 Save the outputs as `assets/client/amee-headshot-front-v2.jpg` / `amee-headshot-side-v2.jpg` (keep the `-v2` suffix so round 1 stays around for comparison, don't overwrite it). Bring both back here — I'll look at them against the reference photos directly before anything gets wired into `DesignerSpecCard.tsx`. Don't rely on a self-generated review doc; a direct look at the images is the actual check.
+
+## v3 — quality refinement, not a re-roll
+
+"Photo not looking good" — the specific issue turned out to be **skin tone: the generated photo reads slightly darker than her actual skin tone** in the reference photos. Compare `assets/client/amee-headshot-ref-front.png`/`-ref-side.png` (real, correct tone) against `amee-headshot-front-v2.jpg` (generated, currently too dark) side by side before running this — that comparison is the actual target, not a vague "make it look better."
+
+Rather than regenerate from scratch — which risks losing the likeness Amee already confirmed on v2 — this is a **refinement pass**: keep everything about v2 (identity, wardrobe, pose, background) and correct the skin tone specifically, plus the same realism polish as before.
+
+Pass `assets/client/amee-headshot-front-v2.jpg` itself as the base image (image-to-image / refine, not text-to-image from scratch), plus the two original reference photos for identity *and skin-tone* grounding, if the tool supports multiple reference images with different roles.
+
+```
+Refine this headshot. Keep everything about the composition exactly
+as-is: the same person, the same pose, the same charcoal blazer over an
+off-white top, the same plain warm off-white background, the same
+framing. Do not change her face shape, features, or identity — this must
+still read as the same specific person as the base image.
+
+Skin tone — the main fix needed: the base image's skin tone is visibly
+darker than her real skin tone shown in the attached reference photos.
+Correct it to match the reference photos' actual warm tan tone exactly —
+do not darken, do not add an orange/bronze cast. Match the reference,
+not a generic "warm skin" default.
+
+Other realism fixes, same pass:
+
+Skin texture: replace any smoothed/airbrushed/plastic-looking texture
+with real skin detail — visible pores, natural tonal variation, a little
+asymmetry. Waxy-smooth skin is the single biggest tell that a headshot
+is AI-generated.
+
+Eyes: sharpen specifically. Clear, natural catchlight and crisp iris
+detail — soft/mushy eye rendering reads as artificial fast.
+
+Lighting: real dimensionality — a clear light direction with soft but
+visible falloff and shadow, not flat/shadowless studio lighting.
+
+Sharpness: increase overall micro-detail (hair strands, fabric weave,
+skin texture) without oversharpening into haloing or artifacts.
+
+Do not: change her pose, wardrobe, background, crop, or facial identity.
+This is a correction + polish pass, not a new generation.
+```
+
+Save the result as `assets/client/amee-headshot-front-v3.jpg` (don't overwrite v2 — same reasoning as before, keep the prior round around for comparison). Bring it back here before it goes anywhere near the component.
+
+## v4 — forceful skin-tone correction
+
+v3 maintained the deeper bronze tone due to visual conditioning from the v2 base image. For v4, the instruction explicitly forced a 3–4 shade lighter shift to directly match the light-to-medium warm wheatish tone of the original reference photos (`amee-headshot-ref-front.png` / `-ref-side.png`).
+
+```
+CRITICAL MANDATORY CORRECTION — SKIN TONE MUST BE SIGNIFICANTLY LIGHTER:
+The base headshot (third image) is far too dark and deeply bronze-tanned. That is incorrect.
+The first two attached reference photos show her true complexion: a noticeably lighter, fair-to-medium warm wheatish Indian skin tone (soft golden-beige / light warm undertones).
+You MUST lighten her facial, neck, and chest skin tone by 3 to 4 shades so it accurately reflects her real, lighter complexion from the reference photos. Do not generate dark or bronze skin. Her skin must be visibly lighter, luminous, and natural.
+
+Preserve everything else from the base composition:
+- Identity & Likeness: Keep her exact facial structure, bone shape, round face with full cheeks, dark brown eyes, and friendly natural smile.
+- Hair & Wardrobe: Keep the dark wavy hair falling past the shoulders, and the tailored solid charcoal-grey blazer over a plain off-white round-neck top.
+- Background & Lighting: Plain seamless studio paper backdrop in warm off-white (#fcfcfa). Soft, directional studio lighting with gentle falloff.
+- Realism: Realistic, sharp micro-detail — crisp iris with clear natural catchlight, authentic skin texture with visible pores and natural tone variations (avoid any waxy, airbrushed, or plastic AI look). High resolution editorial portrait.
+```
+
+Saved as `assets/client/amee-headshot-front-v4.jpg`.
+
