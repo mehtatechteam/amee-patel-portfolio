@@ -1,19 +1,26 @@
+import Image from "next/image";
 import { CMYKSwatch } from "@/components/motifs/CMYKSwatch";
 import { RegistrationMark } from "@/components/motifs/RegistrationMark";
 import { CurvedLoop } from "@/components/motifs/CurvedLoop";
-import { Icon } from "@/lib/icons";
+import { Icon, IconName } from "@/lib/icons";
 
-const tools = ["CorelDRAW", "Photoshop", "Canva"];
+const tools: { label: string; icon: IconName }[] = [
+  { label: "CorelDRAW", icon: "coreldraw" },
+  { label: "Photoshop", icon: "photoshop" },
+  { label: "Canva", icon: "canva" },
+];
 
 /**
- * "Designer's Desk" spec card — stands in for a real headshot (none
- * supplied yet, see docs/client-requirements.md). Styled as a clean
- * Swiss-precision studio spec sheet (the washi tape / punched-binder
- * "scrapbook" treatment was removed per explicit user choice, to match
- * the cleaner cards elsewhere on the site) rather than an empty
- * placeholder box. The "SCFA" seal is a designed monogram badge, not a
- * reproduction of Sheth C.N. College of Fine Arts' actual crest — we
- * don't have rights to that.
+ * "Designer's Desk" spec card. Styled as a clean Swiss-precision studio
+ * spec sheet (the washi tape / punched-binder "scrapbook" treatment was
+ * removed per explicit user choice, to match the cleaner cards elsewhere
+ * on the site) rather than an empty placeholder box.
+ *
+ * Portrait: AI-generated from the client's own reference photos (see
+ * docs/headshot-generation-prompt.md — round 2/"v2" prompt, after round 1
+ * drifted off her actual likeness). Pending Amee's own confirmation that
+ * it reads as her before this ships live; swap /public/about/amee-headshot.jpg
+ * if a different round gets approved instead.
  */
 // A small fanned stack of Pantone-style swatch chips peeking out from
 // A fanned stack of authentic prepress CMYK swatch chips peeking out from
@@ -60,12 +67,14 @@ export function DesignerSpecCard() {
         <div className="mt-6 flex items-center justify-between">
           <div className="relative flex h-24 w-24 items-center justify-center">
             <CurvedLoop text="AMEE J. PATEL · SINCE 2012" size={96} className="absolute inset-0" />
-            <div className="flex h-16 w-16 -rotate-3 items-center justify-center rounded-full border-2 border-dashed border-ink/40 bg-paper-raised">
-              <span className="font-spec text-[9px] leading-tight font-normal tracking-wide text-ink-soft uppercase">
-                SCFA
-                <br />
-                Alum
-              </span>
+            <div className="h-16 w-16 overflow-hidden rounded-full border-2 border-ink/15 bg-paper-raised">
+              <Image
+                src="/about/amee-headshot.jpg"
+                alt="Amee J. Patel"
+                width={128}
+                height={128}
+                className="h-full w-full object-cover"
+              />
             </div>
           </div>
           <CMYKSwatch size="md" />
@@ -75,10 +84,11 @@ export function DesignerSpecCard() {
         <div className="mt-2.5 flex flex-wrap gap-2">
           {tools.map((tool) => (
             <span
-              key={tool}
-              className="rounded-full border border-ink/15 bg-paper px-3 py-1.5 text-xs font-semibold text-ink"
+              key={tool.label}
+              className="inline-flex items-center gap-1.5 rounded-full border border-ink/15 bg-paper px-3 py-1.5 text-xs font-semibold text-ink"
             >
-              {tool}
+              <Icon name={tool.icon} className="shrink-0 text-ink-soft" />
+              {tool.label}
             </span>
           ))}
         </div>

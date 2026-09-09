@@ -42,13 +42,13 @@ const GRAIN_URL =
 
 export function Hero() {
   return (
-    <section id="home" className="relative overflow-hidden pt-12 pb-16 sm:pt-24 sm:pb-24">
+    <section id="home" className="relative overflow-hidden pb-16 sm:pb-24">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 opacity-[0.035]" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
       <PressColorBar className="flex h-1.5 w-full sm:h-2" />
       <InkTrailCanvas />
       <HeroAtelierProps />
 
-      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 pt-3 sm:gap-12 sm:px-8 sm:pt-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 pt-12 sm:gap-12 sm:px-8 sm:pt-24 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
         <div>
           <span className="inline-flex items-center gap-2.5 font-spec text-[11px] font-normal tracking-widest text-ink-soft uppercase sm:gap-3 sm:text-xs">
             <CMYKSwatch />
