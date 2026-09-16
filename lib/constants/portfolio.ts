@@ -225,16 +225,6 @@ export const portfolioItems: PortfolioItem[] = [
     height: 1371,
   },
   {
-    slug: "maru-botanics-multani-powder",
-    title: "Maru Botanics — Multani Powder Box",
-    client: "Maru Botanics",
-    category: "packaging",
-    tags: ["Ayurvedic & Herbal", "Box Design"],
-    src: "/portfolio/packaging/maru-botanics-multani-powder-box.webp",
-    width: 1206,
-    height: 1025,
-  },
-  {
     slug: "tsd-world-cable",
     title: "TSD World — Type-C Braided Cable",
     client: "TSD World",
@@ -245,6 +235,16 @@ export const portfolioItems: PortfolioItem[] = [
     height: 1024,
     cardAspect: "wide",
     dielineSrc: "/portfolio/dielines/tsd-world-cable.png",
+  },
+  {
+    slug: "plugd-usb-c-cable",
+    title: "Plugd — USB-C Silicone Braided Cable Box",
+    client: "Plugd",
+    category: "packaging",
+    tags: ["Electronics", "Box Design"],
+    src: "/portfolio/packaging/plugd-usb-c-cable-box.webp",
+    width: 1374,
+    height: 1145,
   },
   {
     slug: "peptidesdepot-research-powder",
@@ -326,6 +326,16 @@ export const portfolioItems: PortfolioItem[] = [
     width: 1600,
     height: 1075,
     isFlagship: true,
+  },
+  {
+    slug: "pep-love-logo",
+    title: "Pep Love — Clothing Brand Logo",
+    client: "Pep Love",
+    category: "logos",
+    tags: ["Branding", "Logo Design", "Apparel"],
+    src: "/portfolio/logos/pep-love-logo.webp",
+    width: 1161,
+    height: 1160,
   },
 ];
 
