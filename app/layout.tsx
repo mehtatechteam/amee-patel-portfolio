@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/portfolio/packaging/madburgs-burger-box.png",
+        url: "/portfolio/packaging/madburgs-burger-box.webp",
         width: 1402,
         height: 1122,
         alt: "Madburgs burger box packaging design by Amee Patel",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: ["/portfolio/packaging/madburgs-burger-box.png"],
+    images: ["/portfolio/packaging/madburgs-burger-box.webp"],
   },
 };
 

@@ -188,7 +188,7 @@ export function UnfoldingBox() {
             <div className="relative h-full w-full flex items-center justify-center">
               <div className="relative h-48 w-48 sm:h-56 sm:w-56">
                 <Image
-                  src="/portfolio/packaging/medween-pharma-box.png"
+                  src="/portfolio/packaging/medween-pharma-box.webp"
                   alt="Medween pharma bottle box, assembled"
                   fill
                   className="object-contain p-2 drop-shadow-xl"

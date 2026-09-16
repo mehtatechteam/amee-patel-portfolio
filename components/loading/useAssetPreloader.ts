@@ -9,9 +9,9 @@ import { useEffect, useState } from "react";
  * pointlessly slow; only first-paint-critical assets are awaited here.
  */
 const PRELOAD_IMAGES = [
-  "/portfolio/packaging/lilaura-car-freshener-lavender.png",
-  "/portfolio/packaging/madburgs-burger-box.png",
-  "/portfolio/packaging/medween-pharma-box.png",
+  "/portfolio/packaging/lilaura-car-freshener-lavender.webp",
+  "/portfolio/packaging/madburgs-burger-box.webp",
+  "/portfolio/packaging/medween-pharma-box.webp",
 ];
 
 export function useAssetPreloader() {
