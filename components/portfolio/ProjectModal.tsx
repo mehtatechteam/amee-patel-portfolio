@@ -375,13 +375,21 @@ export function ProjectModal({
                   FEATURED
                 </span>
               )}
+              {item.isConcept && (
+                <span className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold text-paper">
+                  CONCEPT PROJECT
+                </span>
+              )}
             </div>
 
             <h3 id="project-modal-title" className="mt-3 font-display text-2xl font-semibold text-ink sm:text-3xl">
               {item.title}
             </h3>
 
-            <p className="mt-2 text-sm text-ink-soft">Client / Brand: {item.client}</p>
+            <p className="mt-2 text-sm text-ink-soft">
+              Client / Brand: {item.client}
+              {item.isConcept ? " (self-directed concept, no live client brief)" : ""}
+            </p>
 
             <div className="mt-5 flex flex-wrap gap-1.5">
               {item.tags.map((tag) => (

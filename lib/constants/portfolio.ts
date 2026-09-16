@@ -17,6 +17,8 @@ export type PortfolioItem = {
   isFlagship?: boolean;
   /** Portrait (default) vs wide — set "wide" for landscape source photos */
   cardAspect?: "portrait" | "wide";
+  /** Self-directed concept piece — no live client brief. Surfaced as a "Concept Project" badge so it's never mistaken for paid client work. */
+  isConcept?: boolean;
 };
 
 export const portfolioItems: PortfolioItem[] = [
@@ -31,7 +33,7 @@ export const portfolioItems: PortfolioItem[] = [
     height: 1402,
     isFlagship: true,
     description:
-      "A pediatric paracetamol syrup carton needed dosage and usage information to read clearly at a glance, plus a friendlier, more approachable visual tone than a typical adult medicine box. The design keeps that label hierarchy simple and legible while working within the exact dieline and print-ready specs the format requires.",
+      "A friendly, easy-to-read carton for a children's paracetamol syrup. Dosage and usage stay clear at a glance, built to the exact dieline and print-ready specs the format calls for.",
   },
   {
     slug: "paracetamol-tablets-blue",
@@ -44,7 +46,7 @@ export const portfolioItems: PortfolioItem[] = [
     height: 1122,
     cardAspect: "wide",
     description:
-      "A 10x10 tablet strip carton needed to read clearly as a standard pharmaceutical pack — accurate strength and count labeling — built to the exact dieline the printer runs against. The blue wave graphic gives the pack a distinct shelf identity within an otherwise text-heavy, regulated layout.",
+      "A standard 10x10 tablet carton with clear strength and count labeling, built to the exact dieline the printer runs against. The blue wave graphic gives it a distinct look next to typical text-heavy medicine boxes.",
   },
   {
     slug: "shri-hanuman-realty-dholera",
@@ -103,7 +105,7 @@ export const portfolioItems: PortfolioItem[] = [
     title: "Lil'Aura — Lavender Car Freshener",
     client: "Lil'Aura",
     category: "packaging",
-    tags: ["Cosmetics", "Box Design"],
+    tags: ["Car Freshener", "Box Design"],
     src: "/portfolio/packaging/lilaura-car-freshener-lavender.webp",
     width: 1122,
     height: 1402,
@@ -114,7 +116,7 @@ export const portfolioItems: PortfolioItem[] = [
     title: "Lil'Aura — Oudh Wood Car Freshener",
     client: "Lil'Aura",
     category: "packaging",
-    tags: ["Cosmetics", "Box Design"],
+    tags: ["Car Freshener", "Box Design"],
     src: "/portfolio/packaging/lilaura-car-freshener-oudh-wood.webp",
     width: 1122,
     height: 1402,
@@ -147,7 +149,7 @@ export const portfolioItems: PortfolioItem[] = [
     title: "Siriza — Premium Herbal Soap Box",
     client: "Siriza",
     category: "packaging",
-    tags: ["Cosmetics", "Box Design"],
+    tags: ["Personal Care", "Box Design"],
     src: "/portfolio/packaging/siriza-herbal-soap-box.webp",
     width: 1264,
     height: 842,
@@ -160,8 +162,8 @@ export const portfolioItems: PortfolioItem[] = [
     category: "packaging",
     tags: ["Food & Snack", "Box Design"],
     src: "/portfolio/packaging/jalaram-gota-food-box.png",
-    width: 1206,
-    height: 880,
+    width: 1470,
+    height: 1070,
     dielineSrc: "/portfolio/dielines/jalaram-gota.png",
   },
   {

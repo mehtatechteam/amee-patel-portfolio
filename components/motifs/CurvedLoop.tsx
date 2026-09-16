@@ -93,12 +93,17 @@ export function CurvedLoop({
   const repeated = unit.repeat(repeatCount);
 
   return (
+    // touch-pan-y, not touch-none: this badge renders inside a `sticky`
+    // card (DesignerSpecCard), so it stays under the same spot on screen
+    // while that section scrolls. touch-none there ate any scroll gesture
+    // that happened to start on it — the exact bug ImageTrail's comment
+    // warns about — so vertical panning has to pass through untouched.
     <svg
       ref={svgRef}
       viewBox={`0 0 ${size} ${size}`}
       width={size}
       height={size}
-      className={cn("cursor-grab touch-none select-none active:cursor-grabbing", className)}
+      className={cn("cursor-grab touch-pan-y select-none active:cursor-grabbing", className)}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}

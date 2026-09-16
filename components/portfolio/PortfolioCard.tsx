@@ -97,6 +97,11 @@ export function PortfolioCard({
               Featured Specimen
             </span>
           )}
+          {item.isConcept && (
+            <span className="rounded-full bg-accent px-3 py-1 font-spec text-[10px] font-bold text-paper shadow-sm">
+              Concept Project
+            </span>
+          )}
           <span className="rounded-full bg-ink/75 px-2.5 py-0.5 font-spec text-[9px] font-medium text-paper backdrop-blur-xs">
             {item.category === "packaging" ? "Folding Carton" : item.category === "logos" ? "Brand Vector" : "Editorial Print"}
           </span>

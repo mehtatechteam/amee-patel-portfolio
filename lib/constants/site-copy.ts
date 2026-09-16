@@ -54,8 +54,8 @@ export const whyPartner = {
   heading: "Why Partner With Me?",
   items: [
     {
-      title: "10+ Years of Expertise",
-      body: "A decade of professional freelance and studio experience at your service.",
+      title: "Over a Decade of Expertise",
+      body: "Over a decade of professional freelance and studio experience at your service.",
     },
     {
       title: "Print-Ready Guarantee",
@@ -78,14 +78,16 @@ export const whyPartner = {
 
 // Sourced from docs/client-requirements.md → "Addendum — 2026-08-31:
 // Pharmaceutical & healthcare packaging repositioning". Derived from facts
-// already established elsewhere in that doc — no new claims, no
-// regulatory-body language (CDSCO/ISO/GMP) until Amee confirms she designs
-// to those standards, no fabricated testimonials or stats.
+// already established elsewhere in that doc — no new claims. Per the
+// 2026-09-09 addendum, Amee confirmed she does NOT design to CDSCO/ISO
+// 15378/GMP specifically (those certify the manufacturer/factory, not the
+// artwork) — regulatory-body language stays out permanently, not just
+// pending confirmation. No fabricated testimonials or stats.
 export const pharma = {
   eyebrow: "Specialization",
   heading: "Pharmaceutical & Healthcare Packaging",
   intro:
-    "Regulatory medicine boxes and clinical/wellness literature are where precision matters most — exact dielines, accurate label copy, and print files your manufacturer can run without a single back-and-forth. It's a specialty within my packaging practice, built on the same print-ready guarantee as everything else I design.",
+    "Pharmaceutical and healthcare packaging demands more precision than most categories — exact dielines, accurate label copy, and print files your manufacturer can run without back-and-forth. It's a specialization within my packaging practice, built on the same print-ready guarantee I bring to every project.",
   ctaLabel: "Discuss a pharma packaging project",
   whatsappMessage: "Hi Amee, I'd like to discuss a pharmaceutical/healthcare packaging project.",
   trustPoints: [
