@@ -41,7 +41,7 @@ export default function Home() {
         {/* 3.5. Pharmaceutical & Healthcare Packaging specialization */}
         <PharmaSpecializationSection />
 
-        {/* 4. Portfolio / Archive with new photos & Organic Amla Box */}
+        {/* 4. Portfolio / Archive */}
         <PortfolioSection />
 
         {/* 5. Process (From Brief to Print) */}

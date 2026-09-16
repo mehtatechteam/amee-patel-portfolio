@@ -30,21 +30,6 @@ export const testimonials: Testimonial[] = [
     initials: "RP",
   },
   {
-    id: "organic-amla",
-    name: "Dr. K. Sharma",
-    role: "Founder & Product Lead",
-    company: "Organic Amla Remedies",
-    project: "Herbal Box Packaging",
-    content:
-      "Finding a packaging designer who understands both premium organic aesthetics and strict dieline/label compliance was a challenge until we partnered with Amee. The herbal box design gave our product an immediate, standout shelf presence in retail stores.",
-    rating: 5,
-    date: "Jul 2026",
-    verified: true,
-    source: "Google Review",
-    avatarBg: "bg-emerald-600",
-    initials: "KS",
-  },
-  {
     id: "npmakeover",
     name: "Neha Patel",
     role: "Founder & Lead Artist",
