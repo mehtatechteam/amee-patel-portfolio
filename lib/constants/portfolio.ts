@@ -247,6 +247,16 @@ export const portfolioItems: PortfolioItem[] = [
     height: 1145,
   },
   {
+    slug: "plugd-usb-c-cable-nylon",
+    title: "Plugd — USB-C Nylon Braided Cable Box",
+    client: "Plugd",
+    category: "packaging",
+    tags: ["Electronics", "Box Design"],
+    src: "/portfolio/packaging/plugd-usb-c-cable-nylon-box.webp",
+    width: 1230,
+    height: 1278,
+  },
+  {
     slug: "peptidesdepot-research-powder",
     title: "PeptidesDepot — Research Powder Box",
     client: "PeptidesDepot",
