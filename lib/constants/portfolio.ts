@@ -21,17 +21,6 @@ export type PortfolioItem = {
 
 export const portfolioItems: PortfolioItem[] = [
   {
-    slug: "organic-amla-powder",
-    title: "Organic Amla Powder — Ayurvedic Herbal Box",
-    client: "Organic Amla",
-    category: "packaging",
-    tags: ["Ayurvedic & Herbal", "Box Design", "Retail Packaging"],
-    src: "/portfolio/packaging/organic-amla-powder-box.png",
-    width: 1024,
-    height: 1536,
-    isFlagship: true,
-  },
-  {
     slug: "paracetamol-syrup-pediatric",
     title: "Paracetamol Syrup — Pediatric Formula",
     client: "Pharmaceutical Range",
@@ -233,16 +222,6 @@ export const portfolioItems: PortfolioItem[] = [
     width: 1114,
     height: 1412,
     dielineSrc: "/portfolio/dielines/prince-pipes-puja-kit.png",
-  },
-  {
-    slug: "littlegrow-baby-cereal",
-    title: "LittleGrow — Baby Cereal Box",
-    client: "LittleGrow",
-    category: "packaging",
-    tags: ["Baby Products", "Box Design"],
-    src: "/portfolio/baby-products/littlegrow-baby-cereal-box.png",
-    width: 718,
-    height: 575,
   },
   {
     slug: "globiomed-pharma-book",

@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 // Real, already-shipped portfolio photos — not placeholders — picked for
 // visual variety (different categories) rather than any ranking.
 const ORBIT_SLUGS = [
-  "organic-amla-powder",
   "medween-pharma-box",
   "lilaura-lavender",
   "paracetamol-tablets-blue",

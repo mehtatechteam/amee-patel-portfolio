@@ -16,7 +16,6 @@ import { cn } from "@/lib/utils";
 // archive," picked the same way OrbitImages' selection was (visual
 // spread across categories, no ranking implied).
 const TRAIL_SLUGS = [
-  "organic-amla-powder",
   "medween-pharma-box",
   "lilaura-lavender",
   "kenheal-healthcare-wellness",
