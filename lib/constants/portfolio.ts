@@ -310,7 +310,7 @@ export const portfolioItems: PortfolioItem[] = [
     title: "Globiomed Life Science — Pharma Visual Book",
     client: "Globiomed",
     category: "brand-literature",
-    tags: ["Pharmaceutical", "Visual Book"],
+    tags: ["Pharmaceutical", "Visual Book", "Brand Literature"],
     src: "/portfolio/brochures-catalogs/globiomed-pharma-visual-book.webp",
     width: 1536,
     height: 1024,
