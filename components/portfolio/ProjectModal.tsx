@@ -265,18 +265,24 @@ export function ProjectModal({
               illustrative diagram shared across every item (same
               component the Pharma section uses), never a per-product
               schematic invented for this specific piece. */}
-          <div className="absolute top-4 left-4 z-30 inline-flex items-center gap-1 rounded-full border border-ink/10 bg-paper/90 p-1 text-xs font-semibold shadow-md backdrop-blur">
+          <div className="absolute top-4 left-4 z-30 inline-flex max-w-[calc(100%-5.5rem)] items-center gap-1 rounded-full border border-ink/10 bg-paper/90 p-1 text-[11px] font-semibold shadow-md backdrop-blur sm:max-w-none sm:text-xs">
             {(["photo", "box", "dieline"] as const).map((v) => (
               <button
                 key={v}
                 type="button"
                 onClick={() => setViewMode(v)}
                 aria-pressed={viewMode === v}
-                className={`rounded-full px-3 py-1.5 transition-colors ${
+                className={`shrink-0 whitespace-nowrap rounded-full px-2 py-1 transition-colors sm:px-3 sm:py-1.5 ${
                   viewMode === v ? "bg-ink text-paper" : "text-ink-soft hover:text-ink"
                 }`}
               >
-                {v === "photo" ? "Studio Photo" : v === "box" ? "3D Studio Inspector" : "Prepress Dieline"}
+                {/* Short labels below sm: the full text ("3D Studio Inspector")
+                    overflowed the modal's mobile width and collided with the
+                    zoom/close buttons in the top-right control bar. */}
+                <span className="sm:hidden">{v === "photo" ? "Photo" : v === "box" ? "3D View" : "Dieline"}</span>
+                <span className="hidden sm:inline">
+                  {v === "photo" ? "Studio Photo" : v === "box" ? "3D Studio Inspector" : "Prepress Dieline"}
+                </span>
               </button>
             ))}
           </div>
