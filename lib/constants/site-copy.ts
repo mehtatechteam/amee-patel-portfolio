@@ -45,7 +45,7 @@ export const about = {
   closing: "Let's team up and create something amazing for your business!",
   credentials: [
     { label: "Education", value: "Commercial Fine Arts w/ Multimedia — Sheth C.N. College of Fine Arts" },
-    { label: "Tools", value: "CorelDRAW · Photoshop · Canva" },
+    { label: "Tools", value: "CorelDRAW · Photoshop" },
     { label: "Experience", value: "2001–2012 Parth Offset · 2012–Present Freelance" },
   ],
 };

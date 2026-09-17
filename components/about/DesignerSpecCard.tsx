@@ -6,7 +6,6 @@ import { Icon, IconName } from "@/lib/icons";
 const tools: { label: string; icon: IconName }[] = [
   { label: "CorelDRAW", icon: "coreldraw" },
   { label: "Photoshop", icon: "photoshop" },
-  { label: "Canva", icon: "canva" },
 ];
 
 /**

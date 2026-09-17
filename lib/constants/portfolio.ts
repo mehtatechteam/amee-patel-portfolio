@@ -33,7 +33,7 @@ export const portfolioItems: PortfolioItem[] = [
     height: 1402,
     isFlagship: true,
     description:
-      "A friendly, easy-to-read carton for a children's paracetamol syrup. Dosage and usage stay clear at a glance, built to the exact dieline and print-ready specs the format calls for.",
+      "A clear, friendly carton for a children's paracetamol syrup — dosage and usage read at a glance. Built to exact dieline and print-ready specs.",
   },
   {
     slug: "paracetamol-tablets-blue",
@@ -46,7 +46,7 @@ export const portfolioItems: PortfolioItem[] = [
     height: 1122,
     cardAspect: "wide",
     description:
-      "A standard 10x10 tablet carton with clear strength and count labeling, built to the exact dieline the printer runs against. The blue wave graphic gives it a distinct look next to typical text-heavy medicine boxes.",
+      "A 10x10 tablet carton with clear strength and count labeling, built to the exact printer dieline. The blue wave graphic sets it apart from typical text-heavy medicine boxes.",
   },
   {
     slug: "shri-hanuman-realty-dholera",
@@ -72,7 +72,7 @@ export const portfolioItems: PortfolioItem[] = [
     isFlagship: true,
     cardAspect: "wide",
     description:
-      "Kenheal Healthcare needed a full-booklet visual book — cover through inner pages — that presents its clinical nutrition and wellness brand with a consistent, professional layout. It follows the same company-literature format used for other technical/medical literature in this practice.",
+      "A full visual book for Kenheal Healthcare — cover through inner pages — presenting its clinical nutrition and wellness brand with a clean, consistent layout.",
   },
   {
     slug: "npmakeover-bridal-catalog",
@@ -98,7 +98,7 @@ export const portfolioItems: PortfolioItem[] = [
     isFlagship: true,
     dielineSrc: "/portfolio/dielines/medween-pharma-box.png",
     description:
-      "A pharma bottle carton for Medween needed to present accurate, compliant product labeling within a compact bottle-box dieline. It was finished to the same print-ready standard — exact bleeds and color profiles — used across the rest of the packaging practice.",
+      "A compact bottle-box carton for Medween with accurate, compliant product labeling. Finished print-ready with exact bleed and color profiles.",
   },
   {
     slug: "lilaura-lavender",
@@ -240,8 +240,8 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     slug: "plugd-usb-c-cable",
-    title: "Plugd — USB-C Silicone Braided Cable Box",
-    client: "Plugd",
+    title: "Unplugd — USB-C Silicone Braided Cable Box",
+    client: "Unplugd",
     category: "packaging",
     tags: ["Electronics", "Box Design"],
     src: "/portfolio/packaging/plugd-usb-c-cable-box.webp",
@@ -250,8 +250,8 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     slug: "plugd-usb-c-cable-nylon",
-    title: "Plugd — USB-C Nylon Braided Cable Box",
-    client: "Plugd",
+    title: "Unplugd — USB-C Nylon Braided Cable Box",
+    client: "Unplugd",
     category: "packaging",
     tags: ["Electronics", "Box Design"],
     src: "/portfolio/packaging/plugd-usb-c-cable-nylon-box.webp",
@@ -269,7 +269,7 @@ export const portfolioItems: PortfolioItem[] = [
     height: 1024,
     cardAspect: "wide",
     description:
-      "A research powder carton for PeptidesDepot needed clear product identification suited to a laboratory/research-use product, distinct in tone from a retail medicine box. It was built to the same precise dieline and print-ready file standard as the rest of the packaging work.",
+      "A research powder carton for PeptidesDepot with clear, lab-appropriate product identification — distinct in tone from a retail medicine box. Built to precise dieline and print-ready standards.",
   },
   {
     slug: "taj-wood-paint-tin",
@@ -310,7 +310,7 @@ export const portfolioItems: PortfolioItem[] = [
     title: "Globiomed Life Science — Pharma Visual Book",
     client: "Globiomed",
     category: "brand-literature",
-    tags: ["Pharmaceutical", "Brochure"],
+    tags: ["Pharmaceutical", "Visual Book"],
     src: "/portfolio/brochures-catalogs/globiomed-pharma-visual-book.webp",
     width: 1536,
     height: 1024,
@@ -329,17 +329,6 @@ export const portfolioItems: PortfolioItem[] = [
     cardAspect: "wide",
   },
   {
-    slug: "logo-design-grid",
-    title: "Logo Design — Selected Marks",
-    client: "Various clients",
-    category: "logos",
-    tags: ["Branding", "Logo Design"],
-    src: "/portfolio/logos/logo-design-grid.png",
-    width: 1600,
-    height: 1075,
-    isFlagship: true,
-  },
-  {
     slug: "pep-love-logo",
     title: "Pep Love — Clothing Brand Logo",
     client: "Pep Love",
@@ -348,6 +337,26 @@ export const portfolioItems: PortfolioItem[] = [
     src: "/portfolio/logos/pep-love-logo.webp",
     width: 1161,
     height: 1160,
+  },
+  {
+    slug: "ekam-by-seri-logo",
+    title: "Ekam by Seri — Brand Logo",
+    client: "Ekam by Seri",
+    category: "logos",
+    tags: ["Branding", "Logo Design"],
+    src: "/portfolio/logos/ekam-by-seri-logo.webp",
+    width: 1572,
+    height: 1110,
+  },
+  {
+    slug: "maru-botanics-multani-powder",
+    title: "Maru Botanics — Multani Powder Box",
+    client: "Maru Botanics",
+    category: "packaging",
+    tags: ["Ayurvedic & Herbal", "Box Design"],
+    src: "/portfolio/packaging/maru-botanics-multani-powder-box.webp",
+    width: 1148,
+    height: 1371,
   },
 ];
 

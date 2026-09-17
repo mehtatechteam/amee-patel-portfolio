@@ -229,7 +229,7 @@ export function UnfoldingBox() {
 
           <div className="mt-3 flex flex-wrap gap-2">
             <span className="rounded-full border border-line bg-paper px-3 py-1 font-spec text-[11px] font-medium text-ink-soft">
-              Exact Bleeds (3mm)
+              Exact Bleed (3mm)
             </span>
             <span className="rounded-full border border-line bg-paper px-3 py-1 font-spec text-[11px] font-medium text-ink-soft">
               Score & Crease Mapped

@@ -12,7 +12,7 @@ import { Icon } from "@/lib/icons";
 
 const cardExtras = [
   { badge: "Est. 2001", footer: "Parth Offset (2001–2012) · Freelance (2012–Present)" },
-  { badge: "Print-Ready", tags: ["Exact Bleeds", "Exact Dimensions", "Color Profiles"] },
+  { badge: "Print-Ready", tags: ["Exact Bleed", "Exact Dimensions", "Color Profiles"] },
   { badge: "Direct & Friendly" },
 ] as const;
 

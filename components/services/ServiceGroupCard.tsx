@@ -82,7 +82,7 @@ export function ServiceGroupCard({
       <div className="mt-6 flex items-center justify-between border-t border-line/70 pt-3">
         <span className="font-spec text-[10px] tracking-wider text-ink-soft uppercase">Delivery Standard</span>
         <span className="font-spec text-[10px] tracking-wide text-ink-soft uppercase">
-          100% Print-Ready · Exact Bleeds
+          {group.id === "digital" ? "100% Digital Optimized · High Resolution" : "100% Print-Ready · Exact Bleed"}
         </span>
       </div>
     </article>
