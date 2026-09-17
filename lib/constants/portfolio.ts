@@ -315,6 +315,8 @@ export const portfolioItems: PortfolioItem[] = [
     width: 1536,
     height: 1024,
     cardAspect: "wide",
+    description:
+      "A full visual book for Globiomed Life Science — cover through inner pages — presenting its pharmaceutical brand with a clean, consistent layout, built to the same print-ready standard as the rest of the literature work.",
   },
   {
     slug: "prio-technology-logo",
