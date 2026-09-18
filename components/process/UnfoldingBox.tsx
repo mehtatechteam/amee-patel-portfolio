@@ -16,7 +16,7 @@ const FOLDING_STAGES = [
     step: "02",
     title: "2. Score & Crease Matrix",
     badge: "Paperboard Engineering",
-    desc: "Precision scoring compresses the paperboard fibers so cartons fold crisp without cracking ink surfaces.",
+    desc: "Precision scoring compresses the paperboard fibers so cartons fold crisply without cracking ink surfaces.",
     detail: "Calculated bend allowances for SBS 300–350 GSM board stocks.",
   },
   {
