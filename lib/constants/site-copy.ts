@@ -59,7 +59,7 @@ export const whyPartner = {
     },
     {
       title: "Print-Ready Guarantee",
-      body: "Zero headache for your printer. Every file is delivered with exact dimensions, bleeds, and color profiles.",
+      body: "Zero headache for your printer. Every file is delivered with exact dimensions, bleed, and color profiles.",
     },
     {
       title: "Creative & Approachable",
@@ -91,7 +91,7 @@ export const pharma = {
   ctaLabel: "Discuss a pharma packaging project",
   whatsappMessage: "Hi Amee, I'd like to discuss a pharmaceutical/healthcare packaging project.",
   trustPoints: [
-    "Exact dielines & bleeds",
+    "Exact dielines & bleed",
     "Accurate, print-checked label copy",
     "Print-ready files your manufacturer can run as-is",
   ],

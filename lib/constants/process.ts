@@ -22,6 +22,6 @@ export const processSteps = [
   {
     index: "04",
     title: "Print-Ready Delivery",
-    body: "Final files with exact dimensions, bleeds, and color profiles — zero headache for your printer.",
+    body: "Final files with exact dimensions, bleed, and color profiles — zero headache for your printer.",
   },
 ];

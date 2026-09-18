@@ -21,7 +21,7 @@ export const testimonials: Testimonial[] = [
     company: "Shri Hanuman Realty",
     project: "Dholera Smart City Trifold Brochure",
     content:
-      "Amee designed our entire trifold sales brochure for the Dholera Smart City residential project. The layout hierarchy, print-ready bleeds, and color fidelity were flawless. Our sales team and property investors were genuinely impressed by the quality.",
+      "Amee designed our entire trifold sales brochure for the Dholera Smart City residential project. The layout hierarchy, print-ready bleed, and color fidelity were flawless. Our sales team and property investors were genuinely impressed by the quality.",
     rating: 5,
     date: "Aug 2026",
     verified: true,
