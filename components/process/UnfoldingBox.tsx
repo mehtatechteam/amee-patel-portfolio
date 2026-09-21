@@ -8,6 +8,7 @@ const FOLDING_STAGES = [
   {
     step: "01",
     title: "1. Flat CAD Dieline",
+    navLabel: "Dieline",
     badge: "Vector Drafting",
     desc: "Mathematical mapping of all 4 panels, glue tabs, and tuck closures with exact 3mm bleed bounds.",
     detail: "Cutting edge (solid red) + Score lines (dashed green) + Bleed margin (dotted cyan).",
@@ -15,6 +16,7 @@ const FOLDING_STAGES = [
   {
     step: "02",
     title: "2. Score & Crease Matrix",
+    navLabel: "Crease",
     badge: "Paperboard Engineering",
     desc: "Precision scoring compresses the paperboard fibers so cartons fold crisply without cracking ink surfaces.",
     detail: "Calculated bend allowances for SBS 300–350 GSM board stocks.",
@@ -22,6 +24,7 @@ const FOLDING_STAGES = [
   {
     step: "03",
     title: "3. Panel Fold & Glue Tab",
+    navLabel: "Fold",
     badge: "Prepress Geometry",
     desc: "The 4 panels form the square body while the glue tab seals the side seam with calibrated adhesive margins.",
     detail: "Straight-tuck alignment ensures automatic high-speed erecting on production lines.",
@@ -29,6 +32,7 @@ const FOLDING_STAGES = [
   {
     step: "04",
     title: "4. Assembled Retail Carton",
+    navLabel: "Carton",
     badge: "Shelf Perfection",
     desc: "Tuck flaps lock securely into place, creating a rigid, protective, and visually flawless commercial pack.",
     detail: "100% printer-ready vector artwork with accurate CMYK color separations.",
@@ -41,9 +45,9 @@ export function UnfoldingBox() {
   const current = FOLDING_STAGES[activeStage];
 
   return (
-    <div className="mt-12 rounded-3xl border border-line bg-paper-raised p-6 sm:p-10 shadow-xs">
+    <div className="mt-12 overflow-hidden rounded-[2rem] border border-line bg-paper-raised shadow-xs">
       {/* Header bar */}
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-line/80 pb-5">
+      <div className="border-b border-line/80 p-5 sm:p-7 lg:p-8">
         <div>
           <span className="font-spec text-[11px] font-bold tracking-widest text-accent uppercase">
             Interactive Production Lab
@@ -54,7 +58,7 @@ export function UnfoldingBox() {
         </div>
 
         {/* Stage selection buttons */}
-        <div className="flex flex-wrap items-center gap-1.5 rounded-full border border-ink/10 bg-paper p-1 shadow-xs">
+        <div className="mt-5 grid grid-cols-2 gap-2 lg:grid-cols-4">
           {FOLDING_STAGES.map((s, i) => (
             <button
               key={s.step}
@@ -62,26 +66,28 @@ export function UnfoldingBox() {
               onClick={() => setActiveStage(i)}
               aria-pressed={activeStage === i}
               className={cn(
-                "rounded-full px-3 py-1.5 font-spec text-xs font-semibold transition-all",
+                "group rounded-2xl border p-3 text-left transition-all duration-200 active:scale-[0.98]",
                 activeStage === i
-                  ? "bg-ink text-paper shadow-sm"
-                  : "text-ink-soft hover:text-ink hover:bg-paper-raised",
+                  ? "border-ink bg-ink text-paper shadow-[0_14px_28px_-20px_rgba(29,29,31,0.65)]"
+                  : "border-line bg-paper text-ink-soft hover:border-ink/25 hover:text-ink",
               )}
             >
-              Stage {s.step}
+              <span className="font-spec text-[10px] font-bold tracking-widest uppercase opacity-70">Stage {s.step}</span>
+              <span className="mt-1 block font-display text-base font-semibold tracking-tight">{s.navLabel}</span>
             </button>
           ))}
         </div>
       </div>
 
       {/* Main Display Area */}
-      <div className="grid items-center gap-8 lg:grid-cols-2">
+      <div className="grid gap-0 lg:grid-cols-[minmax(0,1.45fr)_minmax(20rem,0.75fr)]">
         {/* Visual Stage Container */}
-        <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl border border-line/80 bg-paper p-4 flex items-center justify-center">
+        <div className="relative flex min-h-[24rem] items-center justify-center overflow-hidden border-b border-line/80 bg-paper p-5 sm:min-h-[31rem] sm:p-8 lg:min-h-[34rem] lg:border-r lg:border-b-0">
+          <div aria-hidden className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(245,71,28,0.08),transparent_34%),linear-gradient(#efece6_1px,transparent_1px),linear-gradient(90deg,#efece6_1px,transparent_1px)] bg-[length:100%_100%,28px_28px,28px_28px] opacity-55" />
           {/* STAGE 1: Flat CAD Dieline */}
           {activeStage === 0 && (
-            <div className="h-full w-full p-2">
-              <svg viewBox="0 0 320 220" className="h-full w-full select-none" role="img" aria-label="Stage 1 Dieline">
+            <div className="relative z-10 w-full max-w-3xl">
+              <svg viewBox="0 0 320 220" className="aspect-[16/11] w-full select-none drop-shadow-sm" role="img" aria-label="Stage 1 Dieline">
                 <defs>
                   <pattern id="grid-stage-1" width="12" height="12" patternUnits="userSpaceOnUse">
                     <path d="M 12 0 L 0 0 0 12" fill="none" stroke="#ebe7db" strokeWidth="0.75" />
@@ -130,8 +136,8 @@ export function UnfoldingBox() {
 
           {/* STAGE 2: Score & Crease Matrix */}
           {activeStage === 1 && (
-            <div className="h-full w-full p-3 flex flex-col items-center justify-center">
-              <svg viewBox="0 0 300 200" className="h-full w-full select-none" role="img" aria-label="Stage 2 Score Matrix">
+            <div className="relative z-10 flex w-full max-w-3xl flex-col items-center justify-center">
+              <svg viewBox="0 0 300 200" className="aspect-[3/2] w-full select-none drop-shadow-sm" role="img" aria-label="Stage 2 Score Matrix">
                 {/* Visualizing micro-crease indentation on board fibers */}
                 <rect x="20" y="30" width="260" height="140" rx="8" fill="#f4f1ea" stroke="#d5d0c3" strokeWidth="1.5" />
 
@@ -158,9 +164,9 @@ export function UnfoldingBox() {
 
           {/* STAGE 3: Panel Fold & Glue Tab */}
           {activeStage === 2 && (
-            <div className="h-full w-full p-3 flex items-center justify-center">
+            <div className="relative z-10 flex h-full w-full items-center justify-center [perspective:900px]">
               <div
-                className="relative h-48 w-44 rounded-lg border-2 border-emerald-500/50 bg-[#ede9dd] p-3 shadow-lg"
+                className="relative h-72 w-64 rounded-xl border-2 border-emerald-500/50 bg-[#ede9dd] p-4 shadow-[0_28px_70px_-34px_rgba(29,29,31,0.55)] sm:h-80 sm:w-72"
                 style={{
                   transform: "rotateY(-25deg) rotateX(10deg)",
                   transformStyle: "preserve-3d",
@@ -185,14 +191,15 @@ export function UnfoldingBox() {
 
           {/* STAGE 4: Assembled Retail Carton */}
           {activeStage === 3 && (
-            <div className="relative h-full w-full flex items-center justify-center">
-              <div className="relative h-48 w-48 sm:h-56 sm:w-56">
+            <div className="relative z-10 flex h-full w-full items-center justify-center">
+              <div aria-hidden className="absolute bottom-[14%] h-16 w-[52%] rounded-full bg-ink/10 blur-2xl" />
+              <div className="relative h-[22rem] w-[92%] max-w-[34rem] sm:h-[30rem] lg:h-[31rem]">
                 <Image
                   src="/portfolio/packaging/medween-pharma-box.webp"
                   alt="Medween pharma bottle box, assembled"
                   fill
-                  className="object-contain p-2 drop-shadow-xl"
-                  sizes="(min-width: 1024px) 500px, 100vw"
+                  className="scale-[1.55] object-contain drop-shadow-[0_32px_55px_rgba(29,29,31,0.22)]"
+                  sizes="(min-width: 1024px) 560px, 90vw"
                 />
               </div>
             </div>
@@ -200,7 +207,7 @@ export function UnfoldingBox() {
         </div>
 
         {/* Narrative & Technical Callout */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col justify-center gap-3 p-5 sm:p-7 lg:p-8">
           <div className="flex items-center gap-2">
             <span className="rounded-full bg-accent/10 px-2.5 py-0.5 font-spec text-[10px] font-bold text-accent">
               {current.badge}
@@ -218,7 +225,7 @@ export function UnfoldingBox() {
             {current.desc}
           </p>
 
-          <div className="rounded-xl border border-line bg-paper p-3.5 mt-2">
+          <div className="mt-2 rounded-xl border border-line bg-paper p-3.5">
             <span className="block font-spec text-[10px] font-bold tracking-wider text-ink-soft uppercase">
               Prepress Verification
             </span>

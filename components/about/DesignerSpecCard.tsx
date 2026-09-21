@@ -26,41 +26,9 @@ const tools: { label: string; icon: IconName }[] = [
  * overlay (a real print-production device, not a decorative glass card),
  * and keeps the photo itself uncluttered.
  */
-// A small fanned stack of Pantone-style swatch chips peeking out from
-// A fanned stack of authentic prepress CMYK swatch chips peeking out from
-// behind the card — realistic print-shop tools on a designer's desk.
-function PantoneFan() {
-  const chips = [
-    { bg: "bg-[#00a3e0]", label: "CYAN", rotate: -18, text: "text-white" },
-    { bg: "bg-[#ec008c]", label: "MAGENTA", rotate: -8, text: "text-white" },
-    { bg: "bg-[#ffd100]", label: "YELLOW", rotate: 2, text: "text-ink" },
-    { bg: "bg-[#1d1d1f]", label: "BLACK", rotate: 12, text: "text-white" },
-  ];
-  return (
-    <div className="pointer-events-none absolute -bottom-5 left-7 -z-10 flex scale-90 sm:scale-100 origin-bottom-left items-end sm:-bottom-7 sm:-left-7" aria-hidden>
-      {chips.map((chip, i) => (
-        <div
-          key={i}
-          className={`flex flex-col justify-between h-16 w-9 sm:h-20 sm:w-11 rounded-sm border border-ink/20 bg-paper p-1 shadow-md ${chip.bg}`}
-          style={{ transform: `rotate(${chip.rotate}deg)`, transformOrigin: "bottom left", marginLeft: i === 0 ? 0 : -8 }}
-        >
-          <div className="flex-1" />
-          <div className="bg-paper/90 px-1 py-0.5 rounded-[1px]">
-            <span className="block font-spec text-[6px] sm:text-[7px] font-bold text-ink leading-none">
-              {chip.label}
-            </span>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export function DesignerSpecCard() {
   return (
     <div className="relative sticky top-24 flex w-full max-w-sm">
-      <PantoneFan />
-
       <div className="relative flex-1 overflow-hidden rounded-[2rem] border-2 border-ink">
         <div className="relative aspect-[3/5] w-full">
           <Image

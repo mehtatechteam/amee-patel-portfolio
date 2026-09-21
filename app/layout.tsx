@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, Archivo, Space_Mono } from "next/font/google";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { LoadingScreen } from "@/components/loading/LoadingScreen";
-import { DesignCursor } from "@/components/motion/DesignCursor";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -71,7 +70,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-paper text-ink font-body">
         <SmoothScrollProvider>
           <LoadingScreen />
-          <DesignCursor />
           {children}
         </SmoothScrollProvider>
       </body>

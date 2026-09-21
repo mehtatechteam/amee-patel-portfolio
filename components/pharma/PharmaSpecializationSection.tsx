@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
@@ -12,7 +12,6 @@ import { Icon } from "@/lib/icons";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionIndex } from "@/components/motifs/SectionIndex";
 import { CornerBrackets } from "@/components/motifs/CornerBrackets";
-import { DielineDiagram } from "./DielineDiagram";
 
 const pharmaCaseStudies = portfolioItems.filter((item) => item.tags.includes("Pharmaceutical"));
 
@@ -20,7 +19,6 @@ export function PharmaSpecializationSection() {
   const sequenceRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
-  const [view, setView] = useState<"rendered" | "dieline">("rendered");
 
   // Scoped to this section only (per the build plan — not a site-wide motion
   // rework). Every card fades/rises up as it individually scrolls into
@@ -170,43 +168,16 @@ export function PharmaSpecializationSection() {
             ))}
           </Reveal>
 
-          {/* Rendered / Dieline toggle — the dieline view is one generic
-              illustrative diagram (DielineDiagram), not six per-product
-              accurate schematics with invented specs for each real named
-              product (see that component's own comment for why). */}
-          <div className="mt-10 flex justify-center">
-            <div className="inline-flex items-center rounded-full border border-ink/10 bg-paper p-1 text-xs font-semibold">
-              {(["rendered", "dieline"] as const).map((v) => (
-                <button
-                  key={v}
-                  type="button"
-                  onClick={() => setView(v)}
-                  aria-pressed={view === v}
-                  className={`rounded-full px-4 py-2 capitalize transition-colors ${
-                    view === v ? "bg-ink text-paper" : "text-ink-soft hover:text-ink"
-                  }`}
-                >
-                  {v === "rendered" ? "Rendered Boxes" : "Dieline View"}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {view === "dieline" ? (
-            <div key="dieline" className="mt-8 animate-[labelFade_0.4s_ease]">
-              <DielineDiagram />
-            </div>
-          ) : (
-            /* Case study cards — animated directly (not via Reveal) so the
-                per-breakpoint scroll-reveal above owns these elements
-                without fighting Reveal over the same autoAlpha/y transform. */
-            /* items-start: see the matching note in PortfolioGrid.tsx — without
-                it, a short/no-description "wide"-aspect card (e.g. Globiomed)
-                sharing a row with a taller "portrait"-aspect card gets
-                stretched to match, and the empty space lands entirely in its
-                text body before the footer row. */
-            <div key="rendered" ref={gridRef} className="mt-8 grid items-start gap-6 animate-[labelFade_0.4s_ease] sm:grid-cols-2 lg:grid-cols-3">
-              {pharmaCaseStudies.map((item) => (
+          {/* Case study cards — animated directly (not via Reveal) so the
+              per-breakpoint scroll-reveal above owns these elements
+              without fighting Reveal over the same autoAlpha/y transform. */}
+          {/* items-start: see the matching note in PortfolioGrid.tsx — without
+              it, a short/no-description "wide"-aspect card (e.g. Globiomed)
+              sharing a row with a taller "portrait"-aspect card gets
+              stretched to match, and the empty space lands entirely in its
+              text body before the footer row. */}
+          <div ref={gridRef} className="mt-10 grid items-start gap-6 animate-[labelFade_0.4s_ease] sm:grid-cols-2 lg:grid-cols-3">
+            {pharmaCaseStudies.map((item) => (
               <div
                 key={item.slug}
                 // `h-full` (100% of the grid area) used to fight the
@@ -245,9 +216,8 @@ export function PharmaSpecializationSection() {
                   <p className="mt-4 border-t border-line/60 pt-3 text-xs font-semibold text-accent">{item.client}</p>
                 </div>
               </div>
-              ))}
-            </div>
-          )}
+            ))}
+          </div>
         </div>
       </div>
     </section>

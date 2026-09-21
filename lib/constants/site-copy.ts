@@ -38,9 +38,7 @@ export const about = {
   heading: "About Me",
   greeting: "Hi, I'm Amee Patel — Your Go-To Creative Graphic Designer! 👋",
   paragraphs: [
-    "I am a passionate, independent graphic designer based in India, working with clients locally and remotely all over the world. With over a decade of hands-on experience under my belt, my mission is simple: to make your brand look unforgettable and ensure your print materials turn out absolutely flawless.",
-    "My journey started in design studios handling complex print and visual communication layouts, and today, I run my own freelancing practice. Over the years, I've specialized in the technical, high-precision world of packaging — designing everything from regulatory pharmaceutical boxes to eye-catching retail food packs and luxury boxes.",
-    "I don't believe in stiff corporate jargon. I love keeping things friendly, collaborative, and simple. Whether you need a standout logo, scroll-stopping social media graphics, or a production-ready package layout that your printer will love, I am here to bring your ideas to life on time and with top-tier quality.",
+    "I am an independent graphic designer based in India, creating sharp, print-ready packaging, brand identity, brochures, catalogs, and social media graphics. With over a decade of studio and freelance experience, I keep the process friendly, precise, and production-ready.",
   ],
   closing: "Let's team up and create something amazing for your business!",
   credentials: [

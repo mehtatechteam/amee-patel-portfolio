@@ -19,11 +19,9 @@ function pillLabel(item: string) {
 
 export function ServiceGroupCard({
   group,
-  index,
   className,
 }: {
   group: ServiceGroup;
-  index: number;
   className?: string;
 }) {
   const accent = accentStyles[group.accent];
@@ -37,17 +35,6 @@ export function ServiceGroupCard({
         className,
       )}
     >
-      {/* An atelier job-jacket folder tab poking above the card's top-left corner */}
-      <span
-        className={cn(
-          "absolute -top-3.5 left-6 inline-flex items-center gap-1.5 rounded-t-md border border-b-0 bg-paper-raised px-3 py-1 font-spec text-[10px] font-semibold tracking-widest uppercase transition-transform duration-200 group-hover:-translate-y-0.5 shadow-2xs",
-          accent.badge,
-        )}
-      >
-        <span className="h-1.5 w-1.5 rounded-full bg-current opacity-75" />
-        {`TAB // ${String(index).padStart(2, "0")}`}
-      </span>
-
       <div className="flex items-center gap-2.5">
         <div
           className={cn(

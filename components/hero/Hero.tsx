@@ -5,7 +5,6 @@ import { KineticWordmark } from "./KineticWordmark";
 import { HeroPoster } from "./HeroPoster";
 import { RegistrationMark } from "@/components/motifs/RegistrationMark";
 import { CMYKSwatch } from "@/components/motifs/CMYKSwatch";
-import { InkTrailCanvas } from "./InkTrailCanvas";
 import { HeroAtelierProps } from "./HeroAtelierProps";
 import { ShinyText } from "@/components/motifs/ShinyText";
 
@@ -45,10 +44,9 @@ export function Hero() {
     <section id="home" className="relative overflow-hidden pb-16 sm:pb-24">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 opacity-[0.035]" style={{ backgroundImage: `url("${GRAIN_URL}")` }} />
       <PressColorBar className="flex h-1.5 w-full sm:h-2" />
-      <InkTrailCanvas />
       <HeroAtelierProps />
 
-      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 pt-12 sm:gap-12 sm:px-8 sm:pt-24 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 pt-8 sm:gap-12 sm:px-8 sm:pt-14 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
         <div>
           <span className="inline-flex items-center gap-2.5 font-spec text-[11px] font-normal tracking-widest text-ink-soft uppercase sm:gap-3 sm:text-xs">
             <CMYKSwatch />

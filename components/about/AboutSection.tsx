@@ -3,8 +3,6 @@ import { Reveal } from "@/components/motion/Reveal";
 import { SectionIndex } from "@/components/motifs/SectionIndex";
 import { Icon } from "@/lib/icons";
 import { DesignerSpecCard } from "./DesignerSpecCard";
-import { ScrollReveal } from "@/components/motifs/ScrollReveal";
-import { OrbitImages } from "@/components/motifs/OrbitImages";
 import { LanyardGate } from "./LanyardGate";
 
 export function AboutSection() {
@@ -22,8 +20,7 @@ export function AboutSection() {
               extras this section reserves for wider screens. A bare
               thread trailing into empty space read as a random floating
               object with no visible mount point — this pushpin gives the
-              ribbon a real anchor to hang from, same "give the motif a
-              home" fix as OrbitImages' caption above. */}
+              ribbon a real anchor to hang from. */}
           <div className="pointer-events-none absolute -top-6 -right-6 z-10 hidden lg:block">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="mx-auto text-ink/60" aria-hidden>
               <circle cx="12" cy="9" r="6" fill="currentColor" />
@@ -50,7 +47,7 @@ export function AboutSection() {
 
           <div className="mt-7 flex flex-col gap-4 text-[17px] leading-relaxed text-ink-soft">
             {about.paragraphs.map((p, i) => (
-              <ScrollReveal key={i}>{p}</ScrollReveal>
+              <p key={i}>{p}</p>
             ))}
           </div>
 
@@ -67,21 +64,6 @@ export function AboutSection() {
             ))}
           </dl>
 
-          {/* Placed inline in the text column's own flow, not floated in
-              the outer section margin — a fixed-width absolute badge out
-              there only had room to clear the content at very wide
-              (2xl+) viewports; at the common ~1440px desktop width the
-              margin is too narrow and it either collided with the text
-              or (as gated) never rendered at all. Inline guarantees it's
-              visible at every width the two-column layout itself uses. */}
-          <div className="mt-10 hidden items-center gap-4 border-t border-ink/[0.06] pt-8 sm:flex">
-            <OrbitImages size={104} duration={22} className="shrink-0" />
-            <p className="font-spec text-[10px] tracking-widest text-ink-soft uppercase">
-              A Few Specimens
-              <br />
-              From the Archive
-            </p>
-          </div>
         </Reveal>
       </div>
     </section>

@@ -22,8 +22,8 @@ export function ServicesSection() {
             2-col-span card. Same root cause, same fix, as the documented
             one in PortfolioGrid.tsx. */}
         <Reveal className="grid items-start gap-5 md:grid-cols-2 lg:grid-cols-3" delay={0.1}>
-          {services.map((group, i) => (
-            <ServiceGroupCard key={group.id} group={group} index={i + 1} />
+          {services.map((group) => (
+            <ServiceGroupCard key={group.id} group={group} />
           ))}
         </Reveal>
       </div>
