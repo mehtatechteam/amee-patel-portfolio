@@ -50,7 +50,7 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="relative scroll-mt-28 px-5 py-16 sm:scroll-mt-28 sm:px-8 sm:py-20">
+    <section id="contact" className="relative scroll-mt-28 px-5 py-8 sm:scroll-mt-28 sm:px-8 sm:py-10">
       <Reveal className="relative mx-auto max-w-4xl overflow-hidden rounded-[2.5rem] bg-ink px-10 py-16 text-center text-paper sm:px-16 sm:py-20">
         <div
           className="pointer-events-none absolute inset-0"

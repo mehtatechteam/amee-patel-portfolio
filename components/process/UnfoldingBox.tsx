@@ -198,7 +198,7 @@ export function UnfoldingBox() {
                   src="/portfolio/packaging/medween-pharma-box.webp"
                   alt="Medween pharma bottle box, assembled"
                   fill
-                  className="object-contain drop-shadow-[0_32px_55px_rgba(29,29,31,0.22)]"
+                  className="object-contain mix-blend-multiply [mask-image:radial-gradient(closest-side,#000_78%,transparent_100%)]"
                   sizes="(min-width: 1024px) 420px, 70vw"
                 />
               </div>

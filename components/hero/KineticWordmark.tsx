@@ -41,21 +41,6 @@ export function KineticWordmark({
       // (where the flourish is least noticed anyway) and keep only the
       // cheap drift there.
       const allowBlur = window.matchMedia("(min-width: 1024px)").matches;
-      // The CMYK registration-snap entrance (three stacked colored ghost
-      // duplicates fanning out then converging) is a lg+/fine-pointer
-      // flourish. On narrow viewports it was measured to paint a genuinely
-      // broken first frame: before this effect's own gsap.set() has run,
-      // the ghosts sit at their unstyled default (x/y 0, fully opaque,
-      // mix-blend-multiply) directly on top of the real word — three
-      // overlapping colored duplicates for however long JS takes to catch
-      // up, which reads as garbled/illegible text on slower mobile CPUs
-      // for a second or more. Ghosts now default to `opacity-0` in the
-      // JSX (a CSS class, present before any JS runs) specifically to
-      // prevent that; this flag additionally skips ever touching ghosts
-      // on narrow viewports at all and instead just fades the real
-      // heading in — "render the settled state first" rather than
-      // animate raw stacked layers into it.
-      const allowGhostEntrance = window.matchMedia("(min-width: 1024px)").matches;
 
       gsap.fromTo(
         words,
@@ -109,7 +94,10 @@ export function KineticWordmark({
       id="hero-wordmark"
       className={cn(
         "font-display text-[clamp(2.75rem,11vw,3.75rem)] font-semibold leading-[0.98] tracking-tight sm:text-6xl lg:text-[5rem]",
-        variant === "dark" ? "text-paper" : "      {lines.map((line, li) => (
+        variant === "dark" ? "text-paper" : "text-ink",
+      )}
+    >
+      {lines.map((line, li) => (
         <span key={li} className={cn("block overflow-hidden py-1", li === accentLine && "text-accent")}>
           {line.split(" ").map((word, wi) => (
             <span key={wi} data-word className="relative inline-block whitespace-nowrap will-change-transform">
@@ -117,8 +105,6 @@ export function KineticWordmark({
               {wi < line.split(" ").length - 1 ? " " : ""}
             </span>
           ))}
-        </span>
-      ))}))}
         </span>
       ))}
     </h1>

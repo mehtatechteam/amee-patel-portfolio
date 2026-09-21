@@ -23,7 +23,7 @@ export function PortfolioSection() {
   }, [active]);
 
   return (
-    <section id="portfolio" className="relative scroll-mt-28 overflow-hidden py-16 sm:scroll-mt-28 sm:py-20">
+    <section id="portfolio" className="relative scroll-mt-28 overflow-hidden py-8 sm:scroll-mt-28 sm:py-10">
       {/* Anchor for backwards compatibility */}
       <div id="work" className="sr-only" />
 

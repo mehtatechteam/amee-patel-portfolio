@@ -7,7 +7,7 @@ import { DesignerSpecCard } from "./DesignerSpecCard";
 
 export function AboutSection() {
   return (
-    <section id="about" className="relative scroll-mt-28 px-5 py-16 sm:scroll-mt-28 sm:px-8 sm:py-20">
+    <section id="about" className="relative scroll-mt-28 px-5 py-8 sm:scroll-mt-28 sm:px-8 sm:py-10">
       <div className="mx-auto max-w-7xl">
         <SectionIndex index="01" label="ABOUT" meta="THE DESIGNER" />
       </div>

@@ -61,7 +61,7 @@ export function WhyPartnerSection() {
   };
 
   return (
-    <section id="trust" className="relative scroll-mt-28 bg-paper-raised px-5 py-16 sm:scroll-mt-28 sm:px-8 sm:py-20">
+    <section id="trust" className="relative scroll-mt-28 bg-paper-raised px-5 py-8 sm:scroll-mt-28 sm:px-8 sm:py-10">
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <SectionIndex index="06" label="TRUST" meta="WHY PARTNER WITH ME" />

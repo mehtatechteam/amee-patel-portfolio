@@ -6,7 +6,7 @@ import { UnfoldingBox } from "./UnfoldingBox";
 
 export function ProcessSection() {
   return (
-    <section id="process" className="relative scroll-mt-28 px-5 py-16 sm:scroll-mt-28 sm:px-8 sm:py-20">
+    <section id="process" className="relative scroll-mt-28 px-5 py-8 sm:scroll-mt-28 sm:px-8 sm:py-10">
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <SectionIndex index="05" label="PROCESS" meta="FROM BRIEF TO PRINT" />

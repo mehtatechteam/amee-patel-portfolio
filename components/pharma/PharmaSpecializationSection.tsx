@@ -120,7 +120,7 @@ export function PharmaSpecializationSection() {
   );
 
   return (
-    <section id="pharma" className="relative scroll-mt-28 bg-paper-raised px-5 py-16 sm:scroll-mt-28 sm:px-8 sm:py-20">
+    <section id="pharma" className="relative scroll-mt-28 bg-paper-raised px-5 py-8 sm:scroll-mt-28 sm:px-8 sm:py-10">
       <div className="mx-auto max-w-7xl">
         <div ref={sequenceRef}>
           <Reveal>
