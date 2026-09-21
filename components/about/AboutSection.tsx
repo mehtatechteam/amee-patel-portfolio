@@ -3,7 +3,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { SectionIndex } from "@/components/motifs/SectionIndex";
 import { Icon } from "@/lib/icons";
 import { DesignerSpecCard } from "./DesignerSpecCard";
-import { LanyardGate } from "./LanyardGate";
+
 
 export function AboutSection() {
   return (
@@ -14,20 +14,6 @@ export function AboutSection() {
 
       <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[1fr_1.2fr]">
         <Reveal className="relative">
-          {/* Hangs apart from the spec card itself (own physics canvas,
-              own draggable ID card) rather than crowding it — lg: and up
-              only, same breakpoint discipline as the other decorative
-              extras this section reserves for wider screens. A bare
-              thread trailing into empty space read as a random floating
-              object with no visible mount point — this pushpin gives the
-              ribbon a real anchor to hang from. */}
-          <div className="pointer-events-none absolute -top-6 -right-6 z-10 hidden lg:block">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="mx-auto text-ink/60" aria-hidden>
-              <circle cx="12" cy="9" r="6" fill="currentColor" />
-              <path d="M12 15v7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-            <LanyardGate className="-mt-1 [&>div]:pointer-events-auto" />
-          </div>
           <DesignerSpecCard />
         </Reveal>
 

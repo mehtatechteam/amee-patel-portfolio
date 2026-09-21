@@ -193,13 +193,13 @@ export function UnfoldingBox() {
           {activeStage === 3 && (
             <div className="relative z-10 flex h-full w-full items-center justify-center">
               <div aria-hidden className="absolute bottom-[14%] h-16 w-[52%] rounded-full bg-ink/10 blur-2xl" />
-              <div className="relative h-[22rem] w-[92%] max-w-[34rem] sm:h-[30rem] lg:h-[31rem]">
+              <div className="relative h-[22rem] w-[72%] max-w-[26rem] sm:h-[28rem] sm:w-[65%] lg:h-[30rem]">
                 <Image
                   src="/portfolio/packaging/medween-pharma-box.webp"
                   alt="Medween pharma bottle box, assembled"
                   fill
-                  className="scale-[1.55] object-contain drop-shadow-[0_32px_55px_rgba(29,29,31,0.22)]"
-                  sizes="(min-width: 1024px) 560px, 90vw"
+                  className="object-contain drop-shadow-[0_32px_55px_rgba(29,29,31,0.22)]"
+                  sizes="(min-width: 1024px) 420px, 70vw"
                 />
               </div>
             </div>

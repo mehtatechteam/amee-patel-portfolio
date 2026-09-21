@@ -78,74 +78,14 @@ export function KineticWordmark({
         },
       );
 
-      // Registration-snap entrance: three CMYK ghost duplicates of each
-      // word start offset like misaligned print plates, hold for a beat,
-      // then snap into perfect register before crossfading into the real
-      // ink-black text underneath — a literal print-production metaphor.
-      // Synced to LOADING_SCREEN_DONE_EVENT (dispatched from
-      // LoadingScreen.tsx once its overlay is actually gone, not when it
-      // starts clearing) rather than a fixed delay — a hardcoded guess
-      // drifts out of sync with real preload time, and firing on "starts
-      // clearing" rather than "actually gone" let this play out mostly
-      // hidden behind the overlay's own ~1.15s Flip+fade sequence.
-      //
-      // Also: reads matchMedia synchronously here (not the reducedMotion
-      // hook's state) specifically to hide realWords — the hook's SSR-safe
-      // default is `false` for one render even on a reduced-motion machine,
-      // and depending on that state to gate a "hide the real heading" set
-      // risks a real machine briefly showing a blank heading before the
-      // state/cleanup catches up. A direct synchronous check has no such
-      // race; it's safe here because this whole callback only ever runs
-      // client-side (never during SSR), so it can't cause a hydration
-      // mismatch the way reading it in render/lazy state would.
-      const ghosts = container.current.querySelectorAll<HTMLElement>("[data-ghost]");
+      // Simple fade+rise entrance for all screen sizes — no ghost plates.
+      // Reads matchMedia synchronously here (not the reducedMotion hook's
+      // state) to avoid an SSR-safe `false` default causing a race where
+      // the heading is briefly hidden on a reduced-motion machine.
       const realWords = container.current.querySelectorAll<HTMLElement>("[data-word-real]");
       const prefersReducedNow = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      if (ghosts.length && !prefersReducedNow && allowGhostEntrance) {
-        // Offsets large enough to unmistakably read as separate colored
-        // plates (not a blur/jank) — an earlier 2-4px version was too
-        // subtle to register as "misaligned print plates" at all.
-        const offsets: [number, number][] = [
-          [-11, 8],
-          [11, -8],
-          [-6, -11],
-        ];
-        // Ghosts default to `opacity-0` in the JSX (see the pre-JS FOUC
-        // note above) — explicitly bring them to opacity 1 here as part
-        // of laying out their starting offset, since autoAlpha further
-        // down needs to animate *from* actually-visible.
-        gsap.set(ghosts, {
-          x: (i) => offsets[i % 3][0],
-          y: (i) => offsets[i % 3][1],
-          opacity: 1,
-        });
-        gsap.set(realWords, { autoAlpha: 0 });
-
-        const entrance = gsap
-          .timeline({ paused: true })
-          // Hold the misaligned state for a beat before snapping — an
-          // earlier version went straight into the snap, which resolved
-          // before a viewer's eye had actually landed on the hero (review
-          // confirmed the "before" state was never actually witnessed).
-          .to({}, { duration: 0.55 })
-          .to(ghosts, { x: 0, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.03 })
-          .to(ghosts, { autoAlpha: 0, duration: 0.3, ease: "power1.out" }, "-=0.1")
-          .to(realWords, { autoAlpha: 1, duration: 0.3, ease: "power1.out" }, "<");
-
-        if (window.__loadingScreenDone) {
-          entrance.play();
-        } else {
-          const onLoadingDone = () => entrance.play();
-          window.addEventListener(LOADING_SCREEN_DONE_EVENT, onLoadingDone, { once: true });
-          return () => window.removeEventListener(LOADING_SCREEN_DONE_EVENT, onLoadingDone);
-        }
-      } else if (!prefersReducedNow) {
-        // Below lg (and anywhere reduced motion isn't forced): skip the
-        // ghost stack entirely — it never even gets an offset, so there's
-        // nothing to flash. Real words get a plain, cheap fade+rise
-        // instead, still timed off the loading screen so it doesn't play
-        // underneath the overlay.
+      if (!prefersReducedNow) {
         gsap.set(realWords, { autoAlpha: 0, y: 14 });
         const simpleEntrance = gsap
           .timeline({ paused: true })
@@ -169,54 +109,16 @@ export function KineticWordmark({
       id="hero-wordmark"
       className={cn(
         "font-display text-[clamp(2.75rem,11vw,3.75rem)] font-semibold leading-[0.98] tracking-tight sm:text-6xl lg:text-[5rem]",
-        variant === "dark" ? "text-paper" : "text-ink",
-      )}
-    >
-      {lines.map((line, li) => (
+        variant === "dark" ? "text-paper" : "      {lines.map((line, li) => (
         <span key={li} className={cn("block overflow-hidden py-1", li === accentLine && "text-accent")}>
           {line.split(" ").map((word, wi) => (
             <span key={wi} data-word className="relative inline-block whitespace-nowrap will-change-transform">
-              {!reducedMotion && (
-                <>
-                  {/* opacity-0 by default (a CSS class, present in the very
-                      first paint before any JS runs) so the three colored
-                      duplicates never sit fully-opaque on top of the real
-                      word during the gap before this component's effects
-                      execute — that gap was the actual cause of the
-                      "garbled overlapping text" bug on slower mobile
-                      loads. The desktop entrance explicitly brings them to
-                      opacity 1 itself once it's ready to animate them.
-                      Blend mode flips multiply->screen in dark variant:
-                      multiply crushes to black against anything but a
-                      light backdrop, screen is the equivalent trick for a
-                      dark one (tints lighten instead of darken). */}
-                  <span
-                    aria-hidden
-                    data-ghost
-                    className={cn("absolute inset-0 text-cyan opacity-0", variant === "dark" ? "[mix-blend-mode:screen]" : "[mix-blend-mode:multiply]")}
-                  >
-                    {word}
-                  </span>
-                  <span
-                    aria-hidden
-                    data-ghost
-                    className={cn("absolute inset-0 text-magenta opacity-0", variant === "dark" ? "[mix-blend-mode:screen]" : "[mix-blend-mode:multiply]")}
-                  >
-                    {word}
-                  </span>
-                  <span
-                    aria-hidden
-                    data-ghost
-                    className={cn("absolute inset-0 text-yellow opacity-0", variant === "dark" ? "[mix-blend-mode:screen]" : "[mix-blend-mode:multiply]")}
-                  >
-                    {word}
-                  </span>
-                </>
-              )}
               <span data-word-real>{word}</span>
-              {wi < line.split(" ").length - 1 ? " " : ""}
+              {wi < line.split(" ").length - 1 ? " " : ""}
             </span>
           ))}
+        </span>
+      ))}))}
         </span>
       ))}
     </h1>
