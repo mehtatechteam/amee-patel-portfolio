@@ -134,12 +134,16 @@ export function ContactSection() {
             {/* Left: Address & Studio Details */}
             <div className="lg:col-span-6 flex flex-col justify-between h-full">
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 font-spec text-[10px] font-normal tracking-wide text-accent uppercase">
+                {/* flex-wrap — on narrow phones the two badges no longer
+                    fit on one row; letting the row wrap keeps each pill a
+                    single line (stacked) instead of forcing one to wrap
+                    its own text mid-pill, which was uneven side by side. */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 font-spec text-[10px] font-normal tracking-wide text-accent uppercase">
                     <Icon name="pin" width={11} height={11} className="shrink-0" />
                     Design Studio · Ahmedabad
                   </span>
-                  <span className="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 font-spec text-[11px] font-normal tracking-wide text-emerald-700 uppercase">
+                  <span className="inline-flex shrink-0 items-center rounded-full bg-emerald-50 px-2.5 py-0.5 font-spec text-[11px] font-normal tracking-wide text-emerald-700 uppercase">
                     Remote Worldwide
                   </span>
                 </div>

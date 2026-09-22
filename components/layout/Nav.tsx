@@ -98,7 +98,12 @@ export function Nav() {
         .map((l) => document.getElementById(l.id))
         .filter((el): el is HTMLElement => el !== null);
 
-      const scrollPos = window.scrollY + 200;
+      // Was +200 — a section with a lot of internal scroll distance (e.g.
+      // Portfolio's carousel) could stay highlighted noticeably after the
+      // next section's actual content was on screen. Tightened to roughly
+      // the sticky nav's own height, matching how far a section needs to
+      // scroll past its top before it's actually the one in view.
+      const scrollPos = window.scrollY + 96;
       for (let i = sectionElements.length - 1; i >= 0; i--) {
         const el = sectionElements[i];
         if (el.offsetTop <= scrollPos) {

@@ -324,7 +324,7 @@ export const portfolioItems: PortfolioItem[] = [
     client: "Prio Technology",
     category: "logos",
     tags: ["Branding", "Logo Design", "Brand Identity"],
-    src: "/portfolio/logos/prio-technology-logo.png",
+    src: "/portfolio/logos/prio-technology-logo.webp",
     width: 1600,
     height: 1128,
     isFlagship: true,

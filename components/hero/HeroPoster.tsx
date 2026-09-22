@@ -278,7 +278,11 @@ export function HeroPoster() {
                     alt={currentItem.title}
                     fill
                     sizes="(min-width: 640px) 21rem, 85vw"
-                    priority
+                    // Only the specimen shown on first paint should be
+                    // eager/high-priority — every later rotation swaps
+                    // `currentItem` post-mount and shouldn't keep
+                    // competing for LCP-grade priority.
+                    priority={index === 0}
                     draggable={false}
                     className="h-full w-full object-contain p-2"
                   />
@@ -377,7 +381,7 @@ export function HeroPoster() {
                   alt={currentItem.title}
                   fill
                   sizes="(min-width: 640px) 18rem, 80vw"
-                  priority
+                  priority={index === 0}
                   draggable={false}
                   className="h-full w-full object-contain p-2"
                 />

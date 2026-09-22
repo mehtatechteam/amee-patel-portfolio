@@ -55,7 +55,11 @@ export function PortfolioCard({
           alt={`${item.title} — ${item.tags.join(", ")}`}
           fill
           sizes="(min-width: 1280px) 580px, (min-width: 1024px) 520px, (min-width: 640px) 440px, 85vw"
-          priority={index < 3}
+          // Portfolio is the 5th section down the page — never above the
+          // fold, so nothing here should compete with the real LCP
+          // candidates (hero image, headshot) for eager high-priority
+          // fetch, regardless of card index.
+          loading="lazy"
           className="object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-[1.04] sm:p-6"
         />
 

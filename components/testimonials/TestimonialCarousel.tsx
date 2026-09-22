@@ -163,7 +163,7 @@ export function TestimonialCarousel({ reviews }: { reviews: Testimonial[] }) {
                     Trifold Brochure") without shifting where the quote
                     starts relative to shorter-tag cards in the same row —
                     previously the quote's top edge varied per card. */}
-                <div className="flex min-h-[52px] flex-wrap items-center justify-between gap-2">
+                <div className="flex min-h-16 flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1 text-amber-500" aria-label={`${t.rating} out of 5 stars`}>
                       {[...Array(t.rating)].map((_, idx) => (

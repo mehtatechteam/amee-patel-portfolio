@@ -66,7 +66,9 @@ export function ServiceGroupCard({
         ))}
       </div>
 
-      <div className="mt-6 flex items-center justify-between border-t border-line/70 pt-3">
+      {/* Stacked below sm — side-by-side at 390px squeezed both labels
+          into wrapping, cramped text per visual-critic feedback. */}
+      <div className="mt-6 flex flex-col items-start gap-1 border-t border-line/70 pt-3 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
         <span className="font-spec text-[10px] tracking-wider text-ink-soft uppercase">Delivery Standard</span>
         <span className="font-spec text-[10px] tracking-wide text-ink-soft uppercase">
           {group.id === "digital" ? "100% Digital Optimized · High Resolution" : "100% Print-Ready · Exact Bleed"}
