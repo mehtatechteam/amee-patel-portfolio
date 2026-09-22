@@ -49,7 +49,7 @@ export function HeroAtelierProps() {
         className="absolute bottom-24 left-4 hidden w-28 opacity-40 drop-shadow-[0_12px_24px_rgba(0,0,0,0.15)] lg:block lg:w-36"
         style={{ transform: "rotate(-18deg)" }}
       >
-        <Image src="/hero/fountain-pen.png" alt="" width={256} height={256} className="h-auto w-full select-none" />
+        <Image src="/hero/fountain-pen.webp" alt="" width={256} height={256} className="h-auto w-full select-none" />
       </div>
 
       {/* Pencil shavings resting near bottom-right — same clipping fix. */}
@@ -58,7 +58,7 @@ export function HeroAtelierProps() {
         className="absolute bottom-20 right-8 hidden w-20 opacity-35 drop-shadow-[0_8px_16px_rgba(0,0,0,0.12)] xl:block"
         style={{ transform: "rotate(14deg)" }}
       >
-        <Image src="/hero/pencil-shavings.png" alt="" width={256} height={256} className="h-auto w-full select-none" />
+        <Image src="/hero/pencil-shavings.webp" alt="" width={256} height={256} className="h-auto w-full select-none" />
       </div>
     </div>
   );

@@ -32,12 +32,16 @@ export function Marquee({ items }: { items: string[] }) {
     { name: "Y", className: "bg-yellow" },
     { name: "K", className: "bg-ink" },
   ];
+  // Kept sparse on purpose — per visual-critic feedback, a dense wall of
+  // ~13 repeated clusters read as noise rather than the "used sparingly"
+  // CMYK motif the rest of the site follows (a single small swatch next
+  // to an eyebrow label, not a full-width tiled band).
   const calibrationTrack = (
-    <div className="flex shrink-0 items-center gap-6 pr-6" aria-hidden>
-      {Array.from({ length: 10 }).map((_, i) => (
-        <div key={i} className="flex items-center gap-1.5">
+    <div className="flex shrink-0 items-center gap-20 pr-20" aria-hidden>
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} className="flex items-center gap-2">
           {inks.map((ink) => (
-            <span key={ink.name} className={`h-2 w-4 rounded-[1px] ${ink.className}`} />
+            <span key={ink.name} className={`h-2.5 w-5 rounded-[1px] ${ink.className}`} />
           ))}
         </div>
       ))}
@@ -64,7 +68,7 @@ export function Marquee({ items }: { items: string[] }) {
         </div>
       </div>
       <div className="overflow-hidden border-t border-line/60 bg-paper py-1.5" aria-hidden="true">
-        <div className="flex w-max animate-marquee" style={{ animationDirection: "reverse", animationDuration: "22s" }}>
+        <div className="flex w-max animate-marquee" style={{ animationDirection: "reverse", animationDuration: "34s" }}>
           {calibrationTrack}
           {calibrationTrack}
         </div>

@@ -80,12 +80,17 @@ export function WhyPartnerSection() {
         <Reveal className="mt-10 grid items-start gap-6 sm:grid-cols-3" delay={0.1}>
           <div className={cardClass}>
             <div>
+              {/* Heading sits at the same top offset as the other two
+                  cards (was previously pushed down by the "10+" stat
+                  rendered above it, breaking the row's heading baseline —
+                  the stat still gets prominent display, just below the
+                  body copy instead of above the heading). */}
               <div className="flex items-start justify-between gap-3">
-                <span className="font-display text-4xl font-semibold text-accent">{yearsStat.value}</span>
+                <h3 className="font-display text-lg font-semibold text-ink">{expertise.title}</h3>
                 <StampBadge label={cardExtras[0].badge} />
               </div>
-              <h3 className="mt-5 font-display text-lg font-semibold text-ink">{expertise.title}</h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">{expertise.body}</p>
+              <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">{expertise.body}</p>
+              <span className="mt-4 block font-display text-4xl font-semibold text-accent">{yearsStat.value}</span>
             </div>
             <p className="mt-6 border-t border-line/60 pt-4 font-spec text-xs text-ink-soft">
               {cardExtras[0].footer}

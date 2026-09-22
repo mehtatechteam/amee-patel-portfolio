@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { PortfolioItem } from "@/lib/constants/portfolio";
 import { PortfolioCard } from "./PortfolioCard";
 import { gsap } from "@/lib/gsap";
-import { cn } from "@/lib/utils";
 
 const EDGE_PAD = "max(1.25rem, calc((100vw - 80rem) / 2 + 1.25rem))";
 
@@ -210,26 +209,22 @@ export function PortfolioCarousel({
         </button>
       </div>
 
-      {/* Indicators */}
-      <div className="mt-8 flex items-center justify-center px-5 sm:px-8">
-        <div className="flex gap-1.5" role="group" aria-label="Carousel position">
-          {items.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              aria-label={`Go to project ${i + 1} of ${items.length}`}
-              aria-current={i === activeIndex}
-              onClick={() => scrollToIndex(i)}
-              className="group flex items-center justify-center p-2.5"
-            >
-              <span
-                className={cn(
-                  "block h-2 rounded-full transition-all duration-300",
-                  i === activeIndex ? "w-8 bg-ink" : "w-2 bg-ink/15 group-hover:bg-ink/35",
-                )}
-              />
-            </button>
-          ))}
+      {/* Position counter — a wall of one dot per specimen (up to 30+ with
+          no filter applied) read as noisy, undifferentiated clutter per
+          visual-critic feedback. A numbered counter in the site's existing
+          monospace eyebrow style, plus a single continuous progress line
+          (not one dot per item), scales cleanly to any item count and
+          matches the "[ 01 // SECTION ]" numbering convention used
+          elsewhere. Arrow buttons above remain the primary navigation. */}
+      <div className="mx-auto mt-8 flex max-w-xs items-center justify-center gap-4 px-5 sm:px-8">
+        <span className="shrink-0 font-spec text-xs tracking-widest text-ink-soft uppercase" aria-live="polite">
+          {String(activeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+        </span>
+        <div className="h-1 w-full min-w-24 overflow-hidden rounded-full bg-ink/10" role="progressbar" aria-valuenow={activeIndex + 1} aria-valuemin={1} aria-valuemax={items.length}>
+          <div
+            className="h-full rounded-full bg-ink transition-all duration-300"
+            style={{ width: `${((activeIndex + 1) / items.length) * 100}%` }}
+          />
         </div>
       </div>
     </div>

@@ -161,7 +161,7 @@ export const portfolioItems: PortfolioItem[] = [
     client: "Jalaram",
     category: "packaging",
     tags: ["Food & Snack", "Box Design"],
-    src: "/portfolio/packaging/jalaram-gota-food-box.png",
+    src: "/portfolio/packaging/jalaram-gota-food-box.webp",
     width: 1470,
     height: 1070,
     dielineSrc: "/portfolio/dielines/jalaram-gota.png",

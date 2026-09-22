@@ -45,25 +45,11 @@ export function PortfolioCard({
         }
       }}
       className={cn(
-        // The ambient glow (a real sampled color, via --glow) and the
-        // existing hover-lift shadow are separate shadow layers combined
-        // in one box-shadow list, not a replacement — `var(--glow,
-        // transparent)` degrades to invisible when no color has been
-        // sampled yet (first paint / a failed sample).
-        "group relative flex cursor-pointer flex-col overflow-hidden rounded-[2rem] bg-paper-raised text-left shadow-[0_20px_50px_-24px_var(--glow,transparent)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_70px_-20px_var(--glow,transparent),0_18px_34px_-16px_rgba(29,29,31,0.3)]",
-        // Sized up from the original 420/460px — packaging work was
-        // reading as "shrunk into small card frames" per a visual audit;
-        // more on-screen presence per project without a full layout
-        // rework.
+        "group relative flex cursor-pointer flex-col overflow-hidden text-left transition-all duration-300 hover:-translate-y-1",
         className || "w-[85vw] shrink-0 snap-center sm:w-[440px] lg:w-[520px] xl:w-[580px]",
       )}
     >
-      <div className={cn("spot-uv-light relative w-full overflow-hidden bg-paper-raised/50 border-b border-line/60", wide ? "aspect-4/3" : "aspect-4/5")}>
-        {/* object-contain, not cover — the previous crop cut the top and
-            bottom off real product cartons (e.g. Organic Amla Powder's
-            arch flourish and net-weight line), confirmed via screenshot.
-            The full physical box, exactly as photographed, stays visible;
-            the neutral card background shows through any letterboxing. */}
+      <div className={cn("spot-uv-light relative w-full overflow-hidden bg-paper-raised/50", wide ? "aspect-4/3" : "aspect-4/5")}>
         <Image
           src={item.src}
           alt={`${item.title} — ${item.tags.join(", ")}`}
@@ -71,12 +57,6 @@ export function PortfolioCard({
           sizes="(min-width: 1280px) 580px, (min-width: 1024px) 520px, (min-width: 640px) 440px, 85vw"
           priority={index < 3}
           className="object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-[1.04] sm:p-6"
-        />
-
-        {/* Tactile finish sheen sweep on hover */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         />
 
         {/* Hover quick preview badge */}
@@ -91,21 +71,13 @@ export function PortfolioCard({
           </span>
         </div>
 
-        <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-          {item.isFlagship && (
+        {item.isFlagship && (
+          <div className="absolute top-4 left-4">
             <span className="spot-uv-light rounded-full bg-paper/95 px-3 py-1 font-spec text-[10px] font-bold text-ink shadow-sm backdrop-blur">
-              Featured Specimen
+              Featured
             </span>
-          )}
-          {item.isConcept && (
-            <span className="rounded-full bg-accent px-3 py-1 font-spec text-[10px] font-bold text-paper shadow-sm">
-              Concept Project
-            </span>
-          )}
-          <span className="rounded-full bg-ink/75 px-2.5 py-0.5 font-spec text-[9px] font-medium text-paper backdrop-blur-xs">
-            {item.category === "packaging" ? "Folding Carton" : item.category === "logos" ? "Brand Vector" : "Editorial Print"}
-          </span>
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col justify-between p-6 sm:p-7">
@@ -120,6 +92,15 @@ export function PortfolioCard({
           <span className="inline-flex items-center gap-2">
             <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
             {item.client}
+            {/* Concept pieces are self-directed, with no real client brief
+                behind them — this stays visible on the grid card itself,
+                not just inside the detail modal, so nothing here reads as
+                real client work it isn't. */}
+            {item.isConcept && (
+              <span className="rounded-full bg-ink/8 px-2 py-0.5 font-spec text-[9px] font-semibold tracking-wide text-ink-soft uppercase">
+                Concept
+              </span>
+            )}
             {/* Reinforces "built from real ink separations" on hover —
                 the same CMYK motif used sitewide, not a fabricated
                 per-image color read. */}

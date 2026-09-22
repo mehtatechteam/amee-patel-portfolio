@@ -158,7 +158,12 @@ export function TestimonialCarousel({ reviews }: { reviews: Testimonial[] }) {
           >
             <div className="group relative flex h-full flex-col justify-between rounded-3xl border border-line bg-paper p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_34px_-16px_rgba(29,29,31,0.3)] sm:p-8">
               <div>
-                <div className="flex flex-wrap items-center justify-between gap-2">
+                {/* min-height reserves room for the tag row to wrap to two
+                    lines on longer project names (e.g. "Dholera Smart City
+                    Trifold Brochure") without shifting where the quote
+                    starts relative to shorter-tag cards in the same row —
+                    previously the quote's top edge varied per card. */}
+                <div className="flex min-h-[52px] flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1 text-amber-500" aria-label={`${t.rating} out of 5 stars`}>
                       {[...Array(t.rating)].map((_, idx) => (

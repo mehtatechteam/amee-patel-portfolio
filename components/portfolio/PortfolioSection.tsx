@@ -23,16 +23,16 @@ export function PortfolioSection() {
   }, [active]);
 
   return (
-    <section id="portfolio" className="relative scroll-mt-28 overflow-hidden py-8 sm:scroll-mt-28 sm:py-10">
+    <section id="portfolio" className="relative scroll-mt-28 overflow-hidden px-5 py-8 sm:scroll-mt-28 sm:px-8 sm:py-10">
       {/* Anchor for backwards compatibility */}
       <div id="work" className="sr-only" />
 
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <div className="mx-auto max-w-7xl">
         <SectionIndex index="04" label="PORTFOLIO" meta="PRINT & PACKAGING ARCHIVE" />
       </div>
 
       <Reveal>
-      <div className="mx-auto mb-8 flex max-w-7xl flex-wrap items-end justify-between gap-6 px-5 py-4 sm:px-8">
+      <div className="mx-auto mb-8 flex max-w-7xl flex-wrap items-end justify-between gap-6 py-4">
         <div className="max-w-2xl">
           <h2 className="font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
             Selected Works
@@ -110,7 +110,13 @@ export function PortfolioSection() {
           this wrapper, not per-card — the grid's own items-start layout
           gives cards uneven heights, so per-cell trim lines would need a
           structural rework this doesn't call for. */}
-      <div className="relative">
+      {/* -mx-5/-mx-8 cancels the section's own gutter (added above so the
+          "[ 04 // PORTFOLIO ]" header and headline align with every other
+          section) so the carousel/grid + press-sheet framing keep bleeding
+          exactly as wide as before this change — unrelated to the header
+          alignment fix, and not something the carousel's own EDGE_PAD math
+          should have to know about. */}
+      <div className="relative -mx-5 sm:-mx-8">
         <RegistrationMark className="absolute top-0 left-5 hidden h-5 w-5 -translate-y-1/2 text-ink/30 lg:block lg:left-8" />
         <RegistrationMark className="absolute top-0 right-5 hidden h-5 w-5 -translate-y-1/2 text-ink/30 lg:block lg:right-8" />
         <div className="mx-auto mb-8 flex max-w-7xl items-center justify-between border-b border-line px-5 pb-2.5 sm:px-8">

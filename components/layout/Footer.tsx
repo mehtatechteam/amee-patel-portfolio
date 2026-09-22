@@ -23,32 +23,46 @@ function BrushStrokes() {
       viewBox="0 0 480 320"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="pointer-events-none absolute inset-0 h-full w-full"
+      // -inset-x cancels the CTA band's own gutter (added so its headline
+      // aligns with every other section) so this background art keeps
+      // bleeding to the band's true edge, same as before that change.
+      className="pointer-events-none absolute -inset-x-5 inset-y-0 h-full sm:-inset-x-8"
       preserveAspectRatio="xMidYMid slice"
     >
+      {/* A soft gaussian blur turns these paths from flat, hard-edged
+          vector blobs into something closer to an actual brush/paint
+          sweep — per visual-critic feedback that the crisp circular
+          silhouettes and visible overlap seams read as placeholder-grade
+          rather than an intentional illustration. */}
+      <defs>
+        <filter id="footer-brush-soften" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="7" />
+        </filter>
+      </defs>
+      <g filter="url(#footer-brush-soften)">
       {/* Cyan broad diagonal sweep */}
       <path
         d="M 320 -10 Q 390 60 460 40 Q 500 30 510 80 Q 500 130 420 120 Q 340 110 310 50 Z"
         fill="#00a3e0"
-        opacity="0.82"
+        opacity="0.75"
       />
       {/* Magenta thick arc */}
       <path
         d="M 360 60 Q 440 30 490 90 Q 510 140 460 160 Q 400 175 360 130 Q 330 100 360 60 Z"
         fill="#ec008c"
-        opacity="0.78"
+        opacity="0.68"
       />
       {/* Yellow bold slash */}
       <path
         d="M 380 120 Q 450 90 490 150 Q 510 190 470 210 Q 420 228 390 185 Q 365 155 380 120 Z"
         fill="#ffd100"
-        opacity="0.90"
+        opacity="0.80"
       />
       {/* Black/ink bold anchor stroke */}
       <path
         d="M 410 170 Q 470 145 500 200 Q 516 235 488 258 Q 450 278 418 248 Q 388 218 410 170 Z"
         fill="#1d1d1f"
-        opacity="0.65"
+        opacity="0.55"
       />
       {/* Second cyan thin smear */}
       <path
@@ -56,6 +70,7 @@ function BrushStrokes() {
         fill="#00a3e0"
         opacity="0.55"
       />
+      </g>
     </svg>
   );
 }
@@ -64,7 +79,7 @@ export function Footer() {
   return (
     <footer>
       {/* ── Zone A: CTA Band ─────────────────────────────────────────── */}
-      <div className="relative overflow-hidden bg-ink py-16 sm:py-20 lg:py-24">
+      <div className="relative overflow-hidden bg-ink px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
         <BrushStrokes />
 
         {/* Italic handwriting tagline — top-right on desktop */}
@@ -76,7 +91,7 @@ export function Footer() {
           Good Design.<br />Better Brands.
         </p>
 
-        <div className="relative mx-auto max-w-7xl px-6 sm:px-12 lg:px-16">
+        <div className="relative mx-auto max-w-7xl">
           {/* Main CTA headline */}
           <p className="font-spec text-[11px] font-bold tracking-widest text-paper/70 uppercase">
             Turn your ideas into real products
@@ -138,8 +153,8 @@ export function Footer() {
       </div>
 
       {/* ── Zone B: Info Strip ───────────────────────────────────────── */}
-      <div className="bg-[#141414]">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 px-6 py-8 sm:px-12 lg:px-16">
+      <div className="bg-[#141414] px-5 sm:px-8">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 py-8">
           {/* Brand */}
           <div>
             <Link
@@ -197,8 +212,8 @@ export function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-paper/10">
-          <p className="mx-auto max-w-7xl px-6 py-4 text-[11px] text-paper/50 sm:px-12 lg:px-16">
+        <div className="-mx-5 border-t border-paper/10 px-5 sm:-mx-8 sm:px-8">
+          <p className="mx-auto max-w-7xl py-4 text-[11px] text-paper/50">
             © {new Date().getFullYear()} {siteMeta.name}. All work shown remains the property of its respective brand owners.
           </p>
         </div>

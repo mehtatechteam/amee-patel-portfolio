@@ -69,7 +69,7 @@ function NavPill({
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       className={cn(
-        "group relative isolate overflow-hidden rounded-full px-4 py-2 font-body text-xs font-semibold tracking-wider uppercase transition-colors duration-300 xl:px-5",
+        "group relative isolate overflow-hidden rounded-full px-4 py-2 font-body text-xs font-semibold tracking-wide uppercase transition-colors duration-300 xl:px-5",
         isActive ? "bg-ink text-paper" : "text-ink-soft",
       )}
     >
@@ -126,7 +126,7 @@ export function Nav() {
         scrolled ? "border-ink/10 shadow-[0_1px_0_0_rgba(0,0,0,0.04)]" : "border-transparent",
       )}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
         <Link
           id="site-logo"
           href="#home"
@@ -138,7 +138,7 @@ export function Nav() {
 
         {/* Pill-capsule nav — each link is its own pill with a
             pointer-tracked circle-fill hover (see NavPill above). */}
-        <nav className="hidden shrink-0 items-center gap-1 rounded-full border border-ink/10 bg-paper-raised p-1 lg:flex">
+        <nav className="hidden shrink-0 items-center gap-1.5 lg:flex">
           {links.map((link) => (
             <NavPill
               key={link.href}

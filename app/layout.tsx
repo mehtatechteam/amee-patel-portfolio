@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Archivo, Space_Mono } from "next/font/google";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { LoadingScreen } from "@/components/loading/LoadingScreen";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { SITE_URL } from "@/lib/constants/site";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -23,20 +25,50 @@ const spaceMono = Space_Mono({
   display: "swap",
 });
 
-// PLACEHOLDER — docs/client-requirements.md flags the production domain as
-// still unconfirmed. Update this the moment a real domain is chosen; until
-// then, absolute OG/Twitter image URLs below resolve against this fake
-// host and won't actually load when scraped by Slack/WhatsApp/etc.
-const SITE_URL = "https://ameepatel.design";
-
-const title = "Amee Patel — Graphic Designer | Pharmaceutical & Print-Ready Packaging Design";
+// Title kept under ~60 chars and description under ~155 — both were
+// previously long enough that Google would truncate them mid-word in
+// search snippets (77 and 195 chars respectively).
+const title = "Amee Patel — Graphic Designer | Packaging & Print Design";
 const description =
-  "Freelance graphic designer with 10+ years of experience in pharmaceutical & food packaging, branding, brochures, and print-ready design. Based in India, working with clients worldwide.";
+  "Freelance graphic designer with 10+ years in pharmaceutical & food packaging, branding, and print-ready design. Based in Ahmedabad, India.";
+const keywords = [
+  "graphic designer Ahmedabad",
+  "packaging design India",
+  "pharmaceutical packaging design",
+  "print-ready design",
+  "brand identity design",
+  "brochure design",
+  "carton dieline design",
+  "freelance graphic designer India",
+];
 
 export const metadata: Metadata = {
-  title,
+  title: {
+    default: title,
+    template: "%s | Amee Patel — Graphic Designer",
+  },
   description,
+  keywords,
   metadataBase: new URL(SITE_URL),
+  applicationName: "Amee Patel — Graphic Designer",
+  authors: [{ name: "Amee Patel", url: SITE_URL }],
+  creator: "Amee Patel",
+  publisher: "Amee Patel",
+  category: "Graphic Design",
+  alternates: {
+    canonical: SITE_URL,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
     title,
     description,
@@ -44,30 +76,30 @@ export const metadata: Metadata = {
     siteName: "Amee Patel — Graphic Designer",
     locale: "en_IN",
     type: "website",
-    images: [
-      {
-        url: "/portfolio/packaging/madburgs-burger-box.webp",
-        width: 1402,
-        height: 1122,
-        alt: "Madburgs burger box packaging design by Amee Patel",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: ["/portfolio/packaging/madburgs-burger-box.webp"],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fcfcfa" },
+    { media: "(prefers-color-scheme: dark)", color: "#1d1d1f" },
+  ],
+  colorScheme: "light",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
+      lang="en-IN"
       className={`${bricolage.variable} ${archivo.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink font-body">
+        <StructuredData />
         <SmoothScrollProvider>
           <LoadingScreen />
           {children}

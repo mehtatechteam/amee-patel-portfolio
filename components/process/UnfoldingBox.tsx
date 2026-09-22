@@ -45,7 +45,7 @@ export function UnfoldingBox() {
   const current = FOLDING_STAGES[activeStage];
 
   return (
-    <div className="mt-12 overflow-hidden rounded-[2rem] border border-line bg-paper-raised shadow-xs">
+    <div className="mt-12 overflow-hidden rounded-3xl border border-line bg-paper-raised shadow-xs">
       {/* Header bar */}
       <div className="border-b border-line/80 p-5 sm:p-7 lg:p-8">
         <div>
@@ -66,7 +66,7 @@ export function UnfoldingBox() {
               onClick={() => setActiveStage(i)}
               aria-pressed={activeStage === i}
               className={cn(
-                "group rounded-2xl border p-3 text-left transition-all duration-200 active:scale-[0.98]",
+                "group rounded-3xl border p-3 text-left transition-all duration-200 active:scale-[0.98]",
                 activeStage === i
                   ? "border-ink bg-ink text-paper shadow-[0_14px_28px_-20px_rgba(29,29,31,0.65)]"
                   : "border-line bg-paper text-ink-soft hover:border-ink/25 hover:text-ink",

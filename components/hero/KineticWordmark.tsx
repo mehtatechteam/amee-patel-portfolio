@@ -6,6 +6,7 @@ import { gsap } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
 import { LOADING_SCREEN_DONE_EVENT } from "@/lib/loadingScreenEvent";
+import { siteMeta } from "@/lib/constants/site-copy";
 
 /**
  * Oversized headline that drifts and sharpens into focus as the viewer
@@ -97,16 +98,39 @@ export function KineticWordmark({
         variant === "dark" ? "text-paper" : "text-ink",
       )}
     >
-      {lines.map((line, li) => (
-        <span key={li} className={cn("block overflow-hidden py-1", li === accentLine && "text-accent")}>
-          {line.split(" ").map((word, wi) => (
-            <span key={wi} data-word className="relative inline-block whitespace-nowrap will-change-transform">
-              <span data-word-real>{word}</span>
-              {wi < line.split(" ").length - 1 ? " " : ""}
-            </span>
-          ))}
-        </span>
-      ))}
+      {/* Visually hidden — screen readers and search/AI crawlers get the
+          actual name + role up front, in addition to (not instead of) the
+          visible tagline lines below, which stay in the accessible tree
+          exactly as before. */}
+      <span className="sr-only">{siteMeta.name} — {siteMeta.title}. </span>
+      {lines.map((line, li) => {
+        const words = line.split(" ");
+        return (
+          <span key={li} className="block overflow-hidden py-1">
+            {words.map((word, wi) => {
+              // Accent color is reserved for the trailing word of the
+              // accent line only (matching the "Amee Patel." wordmark's
+              // punctuation-level accent elsewhere on the site) — coloring
+              // the whole line competed with the black line above it for
+              // primary visual weight.
+              const isAccentWord = li === accentLine && wi === words.length - 1;
+              return (
+                <span
+                  key={wi}
+                  data-word
+                  className={cn(
+                    "relative inline-block whitespace-nowrap will-change-transform",
+                    isAccentWord && "text-accent",
+                  )}
+                >
+                  <span data-word-real>{word}</span>
+                  {wi < words.length - 1 ? " " : ""}
+                </span>
+              );
+            })}
+          </span>
+        );
+      })}
     </h1>
   );
 }

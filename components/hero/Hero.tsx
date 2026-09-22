@@ -11,8 +11,8 @@ const featuredClients = ["Medween", "Kenheal", "Lil'Aura", "Madburgs", "Globiome
 
 export function Hero() {
   return (
-    <section id="home" className="relative overflow-hidden pb-6 sm:pb-8">
-      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 pt-0 sm:gap-12 sm:px-8 sm:pt-2 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+    <section id="home" className="relative overflow-hidden px-5 pb-6 sm:px-8 sm:pb-8">
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 pt-0 sm:gap-12 sm:pt-2 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
         <div>
           <span className="inline-flex items-center gap-2.5 font-spec text-[11px] font-normal tracking-widest text-ink-soft uppercase sm:gap-3 sm:text-xs">
             <CMYKSwatch />

@@ -15,7 +15,14 @@ const ClothCurtainScene = dynamic(() => import("./ClothCurtainScene").then((m) =
   ssr: false,
 });
 
-const SAFETY_TIMEOUT_MS = 6000;
+// Was 6000ms — real users on a slow connection could be blocked behind
+// the curtain for up to 6s before any content is interactive, a genuine
+// Core Web Vitals (LCP/INP) risk. This is a worst-case safety net only —
+// on any normal connection the real preload (3 hero images + fonts, see
+// useAssetPreloader) finishes and dismisses the curtain well before this
+// fires, so lowering it doesn't change the designed experience for
+// anyone but the slow-network tail.
+const SAFETY_TIMEOUT_MS = 2500;
 
 /**
  * Gated on real asset preload (see useAssetPreloader), not a fake timer.
