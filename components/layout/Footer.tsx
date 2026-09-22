@@ -23,10 +23,14 @@ function BrushStrokes() {
       viewBox="0 0 480 320"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      // -inset-x cancels the CTA band's own gutter (added so its headline
-      // aligns with every other section) so this background art keeps
-      // bleeding to the band's true edge, same as before that change.
-      className="pointer-events-none absolute -inset-x-5 inset-y-0 h-full sm:-inset-x-8"
+      // inset-0 already bleeds to the band's true edge regardless of the
+      // parent's own padding — an absolutely-positioned element's
+      // containing block is the parent's padding box, so padding never
+      // shrinks it. (A previous version of this comment incorrectly
+      // reasoned padding would shrink this and added a negative inset to
+      // compensate — that pushed the shape past the true edge, where the
+      // band's own `overflow-hidden` then clipped it.)
+      className="pointer-events-none absolute inset-0 h-full w-full"
       preserveAspectRatio="xMidYMid slice"
     >
       {/* A soft gaussian blur turns these paths from flat, hard-edged
