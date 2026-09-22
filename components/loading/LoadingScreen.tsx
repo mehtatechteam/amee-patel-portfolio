@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { useGSAP } from "@gsap/react";
 import { useLenis } from "lenis/react";
 import { gsap } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -26,12 +25,20 @@ const SAFETY_TIMEOUT_MS = 2500;
 
 /**
  * Gated on real asset preload (see useAssetPreloader), not a fake timer.
- * The percentage counter advances in mechanical "steps" rather than a
- * smooth tween — reads like a printer/plotter readout, matching Amee's
- * print-production identity. On completion, the counter/label let go
- * (scale + fade) a beat before the WebGL cloth curtain (ClothCurtainScene)
- * lifts up and off-screen, revealing the real page underneath in one
- * continuous motion rather than a hard cut.
+ * The counter is a continuously-eased simulated progress, not a direct
+ * readout of real checkpoints — the real preload only has 4 discrete
+ * steps (3 hero images + fonts ready), so driving the number straight off
+ * it produced an abrupt 0/25/50/75/100 staircase every time a checkpoint
+ * landed, especially on a fast/cached load where all 4 can resolve within
+ * a couple hundred milliseconds. Instead a per-frame ticker glides the
+ * displayed value toward a "ceiling" every frame: the ceiling creeps up
+ * on its own (so the number is always visibly moving, never frozen
+ * between checkpoints) and is raised early by genuine progress, so real
+ * completions still pull it forward rather than being ignored. On
+ * completion, the counter/label let go (scale + fade) a beat before the
+ * WebGL cloth curtain (ClothCurtainScene) lifts up and off-screen,
+ * revealing the real page underneath in one continuous motion rather
+ * than a hard cut.
  */
 export function LoadingScreen() {
   const { progress, ready } = useAssetPreloader();
@@ -43,9 +50,19 @@ export function LoadingScreen() {
 
   const overlayRef = useRef<HTMLDivElement>(null);
   const markRef = useRef<HTMLDivElement>(null);
-  const counterState = useRef({ value: 0 });
   const finishedRef = useRef(false);
   const curtainHandleRef = useRef<ClothCurtainHandle | null>(null);
+
+  // Live-read inside the per-frame ticker via refs rather than
+  // resubscribing the ticker callback on every progress/ready change.
+  const progressRef = useRef(0);
+  const readyRef = useRef(false);
+  useEffect(() => {
+    progressRef.current = progress;
+  }, [progress]);
+  useEffect(() => {
+    readyRef.current = ready;
+  }, [ready]);
 
   // Hold scroll position while the loader is up.
   useEffect(() => {
@@ -56,19 +73,66 @@ export function LoadingScreen() {
     };
   }, [lenis]);
 
-  // Stepped counter: re-targets to real `progress` every time it advances.
-  useGSAP(() => {
-    gsap.to(counterState.current, {
-      value: progress,
-      duration: 0.5,
-      ease: "steps(12)",
-      onUpdate: () => setDisplayProgress(Math.round(counterState.current.value)),
-    });
-  }, [progress]);
+  // Plain requestAnimationFrame loop, not gsap.ticker/useGSAP — this needs
+  // to run every frame for the whole loading-screen lifetime (not "create
+  // a tween and let it finish"), and empirically gsap.ticker.add() here
+  // never actually fired a single frame in this component (confirmed via
+  // logging: zero ticks over a 5s window while the surrounding app's own
+  // GSAP-driven Lenis sync ran fine) — not worth chasing why inside a
+  // library integration when a plain rAF loop is the more natural tool
+  // for this job anyway and has no such ambiguity.
+  useEffect(() => {
+    if (reducedMotion) {
+      // One-time sync to an external condition (matches the same pattern,
+      // with the same justification, in useReducedMotion.ts itself) — not
+      // a state update in response to a state/prop change during render.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setDisplayProgress(100);
+      return;
+    }
+
+    const CREEP_CAP = 92; // Never self-creep past this — the last stretch
+    // to 100 only happens once actually ready, so the number can't lie
+    // about being finished before the page really is.
+    const CREEP_MS = 1800;
+    const startedAt = performance.now();
+    const value = { current: 0 };
+    const ceiling = { current: 0 };
+    let frameId: number;
+
+    function tick() {
+      const t = Math.min(1, (performance.now() - startedAt) / CREEP_MS);
+      const creep = CREEP_CAP * (1 - Math.pow(1 - t, 3)); // ease-out cubic
+      const target = readyRef.current ? 100 : Math.max(creep, progressRef.current);
+      ceiling.current = Math.max(ceiling.current, target);
+
+      // Exponential smoothing toward the ceiling every frame — continuous
+      // motion, no discrete steps, no restarting tweens fighting each
+      // other as real checkpoints land. Converges faster once ready so
+      // the finish sequence below isn't left waiting on the last couple
+      // of percent.
+      const rate = readyRef.current ? 0.18 : 0.1;
+      value.current += (ceiling.current - value.current) * rate;
+      if (readyRef.current && ceiling.current - value.current < 0.1) {
+        value.current = 100;
+      }
+
+      setDisplayProgress(Math.round(value.current));
+      frameId = requestAnimationFrame(tick);
+    }
+
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
+  }, [reducedMotion]);
 
   function finish() {
     if (finishedRef.current) return;
     finishedRef.current = true;
+    // Also covers the safety-timeout path (real assets never actually
+    // finished loading) — either way, once we're committed to lifting the
+    // curtain the counter should race to 100 rather than sit stuck at
+    // whatever it happened to reach.
+    readyRef.current = true;
 
     const unlock = () => {
       setHidden(true);
@@ -93,16 +157,20 @@ export function LoadingScreen() {
     const curtainState = { progress: 0 };
     gsap
       .timeline({ onComplete: unlock })
-      .to(markRef.current, { scale: 0.85, autoAlpha: 0, duration: 0.35, ease: "power2.in" })
+      .to(markRef.current, { scale: 0.9, autoAlpha: 0, duration: 0.4, ease: "power1.in" })
       .to(
         curtainState,
         {
+          // Was power4.inOut — a much sharper acceleration curve that read
+          // as a snap/flick rather than a lift. power2.inOut covers the
+          // same distance more gradually at both ends, and the slightly
+          // longer duration keeps it from feeling rushed.
           progress: 1,
-          duration: 0.9,
-          ease: "power4.inOut",
+          duration: 1.1,
+          ease: "power2.inOut",
           onUpdate: () => curtainHandleRef.current?.setProgress(curtainState.progress),
         },
-        "-=0.05",
+        "-=0.1",
       )
       .set(overlayRef.current, { autoAlpha: 0 });
   }
