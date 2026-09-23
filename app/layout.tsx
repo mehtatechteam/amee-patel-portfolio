@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Bricolage_Grotesque, Archivo, Space_Mono } from "next/font/google";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { LoadingScreen } from "@/components/loading/LoadingScreen";
@@ -105,6 +106,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </SmoothScrollProvider>
       </body>
+      <GoogleAnalytics gaId="G-Z1ZZRRM57L" />
     </html>
   );
 }
