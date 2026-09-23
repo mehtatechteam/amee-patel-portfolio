@@ -4,6 +4,7 @@ import { Bricolage_Grotesque, Archivo, Space_Mono } from "next/font/google";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { LoadingScreen } from "@/components/loading/LoadingScreen";
 import { StructuredData } from "@/components/seo/StructuredData";
+import { ContactClickLogger } from "@/components/analytics/ContactClickLogger";
 import { SITE_URL } from "@/lib/constants/site";
 import "./globals.css";
 
@@ -101,6 +102,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col bg-paper text-ink font-body">
         <StructuredData />
+        <ContactClickLogger />
         <SmoothScrollProvider>
           <LoadingScreen />
           {children}

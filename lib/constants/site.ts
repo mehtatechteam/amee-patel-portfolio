@@ -13,3 +13,9 @@ export const SITE_URL = "https://www.ameepatel.co.in";
  * from `new Date()` at request time, which Google explicitly discourages
  * (a `lastmod` that's always "just now" erodes trust in the signal). */
 export const SITE_LAST_MODIFIED = "2026-09-22";
+
+/** Apps Script web-app URL that appends contact clicks to the shared
+ * "Amee Patel — Website Contact Clicks" Google Sheet. Empty = sheet logging
+ * off (GA events still fire). See components/analytics/ContactClickLogger. */
+export const CLICK_LOG_URL =
+  "https://script.google.com/macros/s/AKfycbzoH4NPeJL88KsZ9kCqWem4vtQY70opjkXbkjQcKq6Tdv9YsE_tIM0s3P4PbGnysdHT/exec";
